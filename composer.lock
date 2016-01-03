@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0c5929a8e7f30463de4e7c0a1fd272f9",
-    "content-hash": "8f7e84f6b201978effb6e257609e1090",
+    "hash": "537f50846d1d9bde7e4df2bb6203d398",
+    "content-hash": "7b49e0ed9db6fa2fd263c04f5749a3f5",
     "packages": [
         {
             "name": "stubbles/sequence",
