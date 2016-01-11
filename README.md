@@ -36,7 +36,9 @@ from annotations.
 Reflection helper functions
 ---------------------------
 
-### `stubbles\reflect\reflect()`
+All functions are in namespace `stubbles\reflect`.
+
+### `reflect()`
 
 _Available since release 3.1.0_
 
@@ -56,7 +58,7 @@ $refFunction = reflect('someFunction'); // creates instance of \ReflectionFuncti
 ````
 
 
-### `stubbles\reflect\reflectConstructor()`
+### `reflectConstructor(): \ReflectionMethod`
 
 Shortcut for `reflect($someObject, '__construct')`
 
