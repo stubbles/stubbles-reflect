@@ -14,6 +14,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\hasKey;
 /**
@@ -100,21 +101,25 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
      * @since  3.0.0
      * @group  issue_58
      * @test
-     * @expectedException  RuntimeException
      */
     public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException()
     {
-        AnnotationCache::start(function() { return serialize('foo'); }, function() {});
+        expect(function() {
+                AnnotationCache::start(function() { return serialize('foo'); }, function() {});
+        })
+        ->throws(\RuntimeException::class);
     }
 
     /**
      * @since  3.0.0
      * @group  issue_58
      * @test
-     * @expectedException  RuntimeException
      */
     public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException()
     {
-        AnnotationCache::start(function() { return 'foo'; }, function() {});
+        expect(function() {
+                AnnotationCache::start(function() { return 'foo'; }, function() {});
+        })
+        ->throws(\RuntimeException::class);
     }
 }

@@ -12,6 +12,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertNull;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
  * Helper class for the test.
@@ -49,12 +50,14 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
-     * @expectedExceptionMessage  The value with name "invalid" for annotation @Example[Life] at someFunction() does not exist
      */
     public function callUndefinedMethodThrowsReflectionException()
     {
-        $this->createAnnotation()->invalid();
+        expect(function() {
+                $this->createAnnotation()->invalid();
+        })
+        ->throws(\ReflectionException::class)
+        ->withMessage('The value with name "invalid" for annotation @Example[Life] at someFunction() does not exist');
     }
 
     /**
@@ -88,13 +91,15 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
-     * @expectedExceptionMessage  The value with name "invalid" for annotation @Example at someFunction() does not exist
      */
     public function throwsReflectionExceptionForMethodCallsWithoutGetOrIsOnSpecialValue()
     {
-        $annotation = new Annotation('Example', 'someFunction()', ['__value' => 'true']);
-        $annotation->invalid();
+        expect(function() {
+                $annotation = new Annotation('Example', 'someFunction()', ['__value' => 'true']);
+                $annotation->invalid();
+        })
+        ->throws(\ReflectionException::class)
+        ->withMessage('The value with name "invalid" for annotation @Example at someFunction() does not exist');
     }
 
     /**

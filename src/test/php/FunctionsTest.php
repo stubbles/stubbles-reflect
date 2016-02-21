@@ -9,8 +9,10 @@
  */
 namespace stubbles\reflect;
 use stubbles\reflect\annotation\parser\AnnotationParser;
+
 use function bovigo\assert\assert;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\each;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isGreaterThan;
@@ -86,11 +88,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
      */
     public function annotationsWithUnknownClassAndFunctionNameThrowsReflectionException()
     {
-        annotationsOf('doesNotExist');
+        expect(function() {
+                annotationsOf('doesNotExist');
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
@@ -168,20 +172,24 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
      */
     public function annotationTargetThrowsReflectionExceptionForNonSupportedAnnotationPlaces()
     {
-        _annotationTarget(new \ReflectionExtension('date'));
+        expect(function() {
+                _annotationTarget(new \ReflectionExtension('date'));
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
-     * @expectedException  ReflectionException
      */
     public function docCommentThrowsReflectionExceptionForNonSupportedAnnotationPlaces()
     {
-        docComment(new \ReflectionExtension('date'));
+        expect(function() {
+                docComment(new \ReflectionExtension('date'));
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
@@ -211,11 +219,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function methodsWithNonClassThrowsInvalidArgumentException()
     {
-        methodsOf(404);
+        expect(function() {
+                methodsOf(404);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -245,11 +255,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function propertiesOfWithNonClassThrowsInvalidArgumentException()
     {
-        propertiesOf(404);
+        expect(function() {
+                propertiesOf(404);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -298,11 +310,13 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      */
     public function parametersOfWithNonParametersReferenceThrowsInvalidArgumentException()
     {
-        parametersOf(404);
+        expect(function() {
+                parametersOf(404);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**
@@ -360,12 +374,14 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
      * @since  4.0.0
      */
     public function reflectWithUnknownClassAndFunctionNameThrowsReflectionException()
     {
-        reflect('doesNotExist');
+        expect(function() {
+                reflect('doesNotExist');
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
@@ -387,13 +403,15 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  InvalidArgumentException
      * @dataProvider  invalidValues
      * @since  4.0.0
      */
     public function reflectInvalidValueThrowsIllegalArgumentException($invalidValue)
     {
-        reflect($invalidValue);
+        expect(function() use ($invalidValue) {
+                reflect($invalidValue);
+        })
+        ->throws(\InvalidArgumentException::class);
     }
 
     /**

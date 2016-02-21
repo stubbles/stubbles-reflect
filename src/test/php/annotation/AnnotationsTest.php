@@ -12,6 +12,7 @@ use function bovigo\assert\assert;
 use function bovigo\assert\assertEmptyArray;
 use function bovigo\assert\assertFalse;
 use function bovigo\assert\assertTrue;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 use function bovigo\assert\predicate\isSameAs;
 /**
@@ -85,12 +86,14 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  ReflectionException
      * @since  5.3.0
      */
     public function firstNamedThrowsReflectionExceptionIfNoSuchAnnotationExists()
     {
-        $this->annotations->firstNamed('foo');
+        expect(function() {
+                $this->annotations->firstNamed('foo');
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**

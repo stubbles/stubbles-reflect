@@ -11,6 +11,7 @@ namespace stubbles\reflect\annotation\parser;
 use stubbles\reflect\annotation\Annotation;
 
 use function bovigo\assert\assert;
+use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
  * This is a test class that has many annotations.
@@ -342,38 +343,46 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @test
-     * @expectedException  \ReflectionException
      */
     public function parseIncompleteDocblockThrowsReflectionException()
     {
-        $this->annotationStateParser->parse('/**
-     * a method with an annotation for its parameter
-     *
-     * @ForArgument1{bar}',
-                'incomplete');
+        expect(function() {
+                $this->annotationStateParser->parse('/**
+             * a method with an annotation for its parameter
+             *
+             * @ForArgument1{bar}',
+                        'incomplete');
+        })
+        ->throws(\ReflectionException::class);
     }
 
 
 
     /**
      * @test
-     * @expectedException  \ReflectionException
      */
     public function changeStateToUnknownStateThrowsReflectionException()
     {
-        $this->annotationStateParser->changeState('invald');
+        expect(function() {
+                $this->annotationStateParser->changeState('invald');
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
-     * @expectedException  \ReflectionException
      */
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
     {
         $this->annotationStateParser->registerAnnotation('foo');
         $this->annotationStateParser->registerAnnotationParam('paramName');
         $this->annotationStateParser->setAnnotationParamValue('paramValue');
-        $this->annotationStateParser->registerSingleAnnotationParam('singleAnnotationValue');
+        expect(function() {
+                $this->annotationStateParser->registerSingleAnnotationParam(
+                        'singleAnnotationValue'
+                );
+        })
+        ->throws(\ReflectionException::class);
     }
 
     /**
