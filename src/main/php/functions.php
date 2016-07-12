@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -36,7 +37,7 @@ namespace stubbles\reflect {
      * @since   3.1.0
      * @api
      */
-    function reflect($class, $methodName = null)
+    function reflect($class, string $methodName = null): \Reflector
     {
         if (is_array($class) && is_callable($class)) {
             return reflect($class[0], $class[1]);
@@ -72,7 +73,7 @@ namespace stubbles\reflect {
      * @since   3.1.0
      * @api
      */
-    function reflectConstructor($class)
+    function reflectConstructor($class): \ReflectionMethod
     {
         return reflect($class, '__construct');
     }
@@ -85,7 +86,7 @@ namespace stubbles\reflect {
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
-    function annotationsOf($reflected, $methodName = null)
+    function annotationsOf($reflected, string $methodName = null): Annotations
     {
         $reflector = ($reflected instanceof \Reflector) ? $reflected : reflect($reflected, $methodName);
         $target    = _annotationTarget($reflector);
@@ -117,7 +118,7 @@ namespace stubbles\reflect {
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
-    function annotationsOfConstructor($reflected)
+    function annotationsOfConstructor($reflected): Annotations
     {
         return annotationsOf(
                 ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : reflectConstructor($reflected)
@@ -134,7 +135,7 @@ namespace stubbles\reflect {
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
-    function annotationsOfParameter($name, $classOrFunction, $methodName = null)
+    function annotationsOfParameter(string $name, $classOrFunction, string $methodName = null): Annotations
     {
         return annotationsOf(parameter($name, $classOrFunction, $methodName));
     }
@@ -147,7 +148,7 @@ namespace stubbles\reflect {
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
-    function annotationsOfConstructorParameter($name, $classOrFunction)
+    function annotationsOfConstructorParameter(string $name, $classOrFunction): Annotations
     {
         return annotationsOf(constructorParameter($name, $classOrFunction));
     }
@@ -161,7 +162,7 @@ namespace stubbles\reflect {
      * @throws  \ReflectionException
      * @since   5.3.0
      */
-    function _annotationTarget(\Reflector $reflector)
+    function _annotationTarget(\Reflector $reflector): string
     {
         if ($reflector instanceof \ReflectionClass) {
             return $reflector->getName();
@@ -195,7 +196,7 @@ namespace stubbles\reflect {
      * @throws  \ReflectionException
      * @since   5.3.0
      */
-    function docComment(\Reflector $reflector)
+    function docComment(\Reflector $reflector): string
     {
         if ($reflector instanceof \ReflectionClass
                 || $reflector instanceof \ReflectionFunctionAbstract
@@ -219,7 +220,7 @@ namespace stubbles\reflect {
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
-    function methodsOf($class, $filter = null)
+    function methodsOf($class, int $filter = null): Sequence
     {
         if (!($class instanceof \ReflectionClass)) {
             $class = reflect($class);
@@ -251,7 +252,7 @@ namespace stubbles\reflect {
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
-    function propertiesOf($class, $filter = null)
+    function propertiesOf($class, int $filter = null): Sequence
     {
         if (!($class instanceof \ReflectionClass)) {
             $class = reflect($class);
@@ -282,7 +283,7 @@ namespace stubbles\reflect {
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
-    function parametersOf($classOrFunction, $methodName = null)
+    function parametersOf($classOrFunction, string $methodName = null): Sequence
     {
         if (!($classOrFunction instanceof \ReflectionFunctionAbstract)) {
             $function = reflect($classOrFunction, $methodName);
@@ -312,7 +313,7 @@ namespace stubbles\reflect {
      * @return  \stubbles\sequence\Sequence
      * @since   5.3.0
      */
-    function parametersOfConstructor($class)
+    function parametersOfConstructor($class): Sequence
     {
         return parametersOf($class, '__construct');
     }
@@ -326,7 +327,7 @@ namespace stubbles\reflect {
      * @return  \ReflectionParameter
      * @since   5.3.0
      */
-    function parameter($name, $classOrFunction, $methodName = null)
+    function parameter(string $name, $classOrFunction, string $methodName = null): \ReflectionParameter
     {
         return parametersOf($classOrFunction, $methodName)
                 ->filter(
@@ -345,7 +346,7 @@ namespace stubbles\reflect {
      * @return  \ReflectionParameter
      * @since   5.3.0
      */
-    function constructorParameter($name, $class)
+    function constructorParameter(string $name, $class): \ReflectionParameter
     {
         return parameter($name, $class, '__construct');
     }
@@ -402,5 +403,4 @@ namespace stubbles\reflect\annotation {
     {
         AnnotationCache::startFromFileCache($cacheFile);
     }
-
 }

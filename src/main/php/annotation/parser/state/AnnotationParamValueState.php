@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -20,7 +21,7 @@ class AnnotationParamValueState extends AnnotationAbstractState implements Annot
      *
      * @return  string[]
      */
-    public function signalTokens()
+    public function signalTokens(): array
     {
         return ["'", '"', ',', ')'];
     }
@@ -33,7 +34,7 @@ class AnnotationParamValueState extends AnnotationAbstractState implements Annot
      * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process($word, $currentToken, $nextToken)
+    public function process(string $word, string $currentToken, string $nextToken): bool
     {
         if (strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
             $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);

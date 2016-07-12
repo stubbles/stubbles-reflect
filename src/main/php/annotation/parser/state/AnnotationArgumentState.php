@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -20,7 +21,7 @@ class AnnotationArgumentState extends AnnotationAbstractState implements Annotat
      *
      * @return  string[]
      */
-    public function signalTokens()
+    public function signalTokens(): array
     {
         return ['}'];
     }
@@ -34,7 +35,7 @@ class AnnotationArgumentState extends AnnotationAbstractState implements Annotat
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process($word, $currentToken, $nextToken)
+    public function process(string $word, string $currentToken, string $nextToken): bool
     {
         if (strlen($word) > 0) {
             if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -21,7 +22,7 @@ interface AnnotationParser
      * @param  int     $state
      * @param  string  $token  token that should be processed by the state
      */
-    public function changeState($state, $token = null);
+    public function changeState(int $state, string $token = null);
 
     /**
      * parse a docblock and return all annotations found
@@ -30,21 +31,21 @@ interface AnnotationParser
      * @param   string  $target
      * @return  \stubbles\reflect\annotation\Annotations[]
      */
-    public function parse($docComment, $target);
+    public function parse(string $docComment, string $target): array;
 
     /**
      * register a new annotation
      *
      * @param  string  $name
      */
-    public function registerAnnotation($name);
+    public function registerAnnotation(string $name);
 
     /**
      * register a new annotation param
      *
      * @param  string  $name
      */
-    public function registerAnnotationParam($name);
+    public function registerAnnotationParam(string $name);
 
     /**
      * register single annotation param
@@ -52,7 +53,7 @@ interface AnnotationParser
      * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value);
+    public function registerSingleAnnotationParam(string $value);
 
     /**
      * set the annoation param value for the current annotation
@@ -60,19 +61,19 @@ interface AnnotationParser
      * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function setAnnotationParamValue($value);
+    public function setAnnotationParamValue(string $value);
 
     /**
      * set the type of the current annotation
      *
      * @param  string  $type  type of the annotation
      */
-    public function setAnnotationType($type);
+    public function setAnnotationType(string $type);
 
     /**
      * marks the current annotation as being an annotation for a function/method parameter
      *
      * @param  string  $parameterName  name of the parameter
      */
-    public function markAsParameterAnnotation($parameterName);
+    public function markAsParameterAnnotation(string $parameterName);
 }

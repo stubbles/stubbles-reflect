@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -27,7 +28,7 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      *
      * @return  string[]
      */
-    public function signalTokens()
+    public function signalTokens(): array
     {
         return [' ', ')'];
     }
@@ -40,7 +41,7 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process($word, $currentToken, $nextToken)
+    public function process(string $word, string $currentToken, string $nextToken): bool
     {
         if (')' === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);

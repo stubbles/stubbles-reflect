@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -62,7 +63,7 @@ interface AnnotationState
      *
      * @return  string[]
      */
-    public function signalTokens();
+    public function signalTokens(): array;
 
     /**
      * processes a token
@@ -72,5 +73,5 @@ interface AnnotationState
      * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process($word, $currentToken, $nextToken);
+    public function process(string $word, string $currentToken, string $nextToken): bool;
 }

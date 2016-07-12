@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -34,7 +35,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
      * @param   array $values
      * @return  \stubbles\reflect\annotation\Annotation
      */
-    private function createAnnotation(array $values = [])
+    private function createAnnotation(array $values = []): Annotation
     {
         return new Annotation('Life', 'someFunction()', $values, 'Example');
     }
@@ -199,10 +200,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    /**
-     * @return  array
-     */
-    public function booleanValues()
+    public function booleanValues(): array
     {
         return [['true'], ['yes'], ['on']];
     }
@@ -276,10 +274,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         assertTrue($this->createAnnotation(['foo' => 'true'])->foo());
     }
 
-    /**
-     * @return  array
-     */
-    public function valueTypes()
+    public function valueTypes(): array
     {
         return [
             [true, 'true'],
@@ -373,10 +368,9 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return  array
      * @since  5.0.0
      */
-    public function parseList()
+    public function parseList(): array
     {
         return [
             ['This is a string', 'This is a string', 'asString'],

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -25,7 +26,7 @@ class RecursiveArrayIterator extends \RecursiveArrayIterator
      *
      * @return  bool
      */
-    public function hasChildren()
+    public function hasChildren(): bool
     {
         return is_array($this->current());
     }

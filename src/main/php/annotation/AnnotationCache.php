@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -99,7 +100,7 @@ class AnnotationCache
      * @param  string  $cacheFile  path to file wherein cached annotation data is stored
      * @since  3.0.0
      */
-    public static function startFromFileCache($cacheFile)
+    public static function startFromFileCache(string $cacheFile)
     {
         self::start(
                 function() use($cacheFile)
@@ -166,7 +167,7 @@ class AnnotationCache
      * @param   string  $target  name of the target
      * @return  bool
      */
-    public static function has($target)
+    public static function has(string $target): bool
     {
         return isset(self::$annotations[$target]);
     }
@@ -177,7 +178,7 @@ class AnnotationCache
      * @param   string  $target
      * @return  \stubbles\reflect\annotation\Annotations
      */
-    public static function get($target)
+    public static function get(string $target)
     {
         if (!self::has($target)) {
             return null;

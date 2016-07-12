@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -91,7 +92,7 @@ class AnnotationStateParser implements AnnotationParser
      * @param   string  $nextToken     optional  next token that will be processed
      * @throws  \ReflectionException
      */
-    public function changeState($state, $currentToken = null, $nextToken = null)
+    public function changeState(int $state, string $currentToken = null, string $nextToken = null)
     {
         if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
@@ -114,7 +115,7 @@ class AnnotationStateParser implements AnnotationParser
      * @return  \stubbles\reflect\annotation\Annotations[]
      * @throws  \ReflectionException
      */
-    public static function parseFrom($docComment, $target)
+    public static function parseFrom(string $docComment, string $target): array
     {
         static $self = null;
         if (null === $self) {
@@ -132,7 +133,7 @@ class AnnotationStateParser implements AnnotationParser
      * @return  \stubbles\reflect\annotation\Annotations[]
      * @throws  \ReflectionException
      */
-    public function parse($docComment, $target)
+    public function parse(string $docComment, string $target): array
     {
         $this->currentTarget = $target;
         $this->annotations   = [$target => new Annotations($target)];
@@ -145,7 +146,7 @@ class AnnotationStateParser implements AnnotationParser
                 $j = $i + 1;
                 $nextToken = $docComment{$j};
             } else {
-                $nextToken = null;
+                $nextToken = '';
             }
 
             if (isset($this->currentSignals[$currentToken])) {
@@ -159,7 +160,12 @@ class AnnotationStateParser implements AnnotationParser
 
         if (!($this->currentState instanceof AnnotationDocblockState)
           && !($this->currentState instanceof AnnotationTextState)) {
-            throw new \ReflectionException('Annotation parser finished in wrong state for annotation ' . $target . (isset($this->currentAnnotation['name']) ? '@' . $this->currentAnnotation['name'] : '') . ', annotation probably closed incorrectly, last state was ' . get_class($this->currentState));
+            throw new \ReflectionException(
+                    'Annotation parser finished in wrong state for annotation '
+                    . $target
+                    . (isset($this->currentAnnotation['name']) ? '@' . $this->currentAnnotation['name'] : '')
+                    . ', annotation probably closed incorrectly, last state was '
+                    . get_class($this->currentState));
         }
 
         $this->finalize();
@@ -197,7 +203,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param  string  $name
      */
-    public function registerAnnotation($name)
+    public function registerAnnotation(string $name)
     {
         $this->finalize();
         $this->currentAnnotation = ['name'   => $name,
@@ -211,7 +217,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param  string  $name
      */
-    public function registerAnnotationParam($name)
+    public function registerAnnotationParam(string $name)
     {
         $this->currentParam = trim($name);
     }
@@ -222,7 +228,7 @@ class AnnotationStateParser implements AnnotationParser
      * @param   string  $value  the value of the param
      * @throws  \ReflectionException
      */
-    public function registerSingleAnnotationParam($value)
+    public function registerSingleAnnotationParam(string $value)
     {
         if (count($this->currentAnnotation['params']) > 0) {
             throw new \ReflectionException('Error parsing annotation ' . $this->currentAnnotation['type']);
@@ -236,7 +242,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param  string  $value  the value of the param
      */
-    public function setAnnotationParamValue($value)
+    public function setAnnotationParamValue(string $value)
     {
         $this->currentAnnotation['params'][$this->currentParam] = $value;
     }
@@ -246,7 +252,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param  string  $type  type of the annotation
      */
-    public function setAnnotationType($type)
+    public function setAnnotationType(string $type)
     {
         $this->currentAnnotation['type'] = $type;
     }
@@ -256,7 +262,7 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param  string  $parameterName  name of the argument
      */
-    public function markAsParameterAnnotation($parameterName)
+    public function markAsParameterAnnotation(string $parameterName)
     {
         $this->currentAnnotation['target'] = $this->currentTarget . '#' . $parameterName;
     }

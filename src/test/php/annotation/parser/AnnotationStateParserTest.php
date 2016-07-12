@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -46,7 +47,7 @@ class MyTestClass2
      * @MoreArgument4[CastedAround]{bar}(key='value')
      * @another
      */
-    public function foo($bar) { }
+    public function foo(string $bar) { }
 }
 /**
  * Test for stubbles\reflect\annotation\parser\AnnotationStateParser.
@@ -77,7 +78,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      * @param   array   $values
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    private function expectedClassAnnotation($name, array $values = [], $type = null)
+    private function expectedClassAnnotation(string $name, array $values = [], string $type = null): array
     {
         return [new Annotation($name, MyTestClass::class, $values, $type)];
     }
@@ -85,7 +86,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     /**
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    private function parseMyTestClassAnnotation($type)
+    private function parseMyTestClassAnnotation(string $type): array
     {
         $clazz = new \ReflectionClass(MyTestClass::class);
         return $this->annotationStateParser->parse(
@@ -364,7 +365,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function changeStateToUnknownStateThrowsReflectionException()
     {
         expect(function() {
-                $this->annotationStateParser->changeState('invald');
+                $this->annotationStateParser->changeState(-1);
         })
         ->throws(\ReflectionException::class);
     }

@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -43,6 +44,11 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         assertTrue(AnnotationCache::has('foo', 'bar'));
     }
 
+    private function createdCachedAnnotation(): array
+    {
+        return ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]];
+    }
+
     /**
      * @since  3.1.0
      * @group  issue_58
@@ -58,15 +64,5 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                            function($data) {}
         );
         assertTrue(AnnotationCache::has('foo', 'bar'));
-    }
-
-    /**
-     * creates a annotation cache with one annotation
-     *
-     * @return  string
-     */
-    private function createdCachedAnnotation()
-    {
-        return ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]];
     }
 }

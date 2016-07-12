@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -50,7 +51,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      *
      * @return  string[]
      */
-    public function signalTokens()
+    public function signalTokens(): array
     {
         return [' ', "\n", "\r", '{', '[', '('];
     }
@@ -64,7 +65,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process($word, $currentToken, $nextToken)
+    public function process(string $word, string $currentToken, string $nextToken): bool
     {
         if (' ' === $currentToken) {
             if (strlen($word) == 0) {
@@ -120,7 +121,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      * @param   string  $word
      * @throws  \ReflectionException
      */
-    protected function checkName($word)
+    protected function checkName(string $word)
     {
         if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
             throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains an invalid character.');
@@ -134,7 +135,7 @@ class AnnotationNameState extends AnnotationAbstractState implements AnnotationS
      * @param  string  $word
      * @param  int     $targetState  original target state
      */
-    protected function changeState($word, $targetState)
+    protected function changeState(string $word, int $targetState)
     {
         if (isset($this->forbiddenAnnotationNames[$word])) {
             $targetState = AnnotationState::DOCBLOCK;

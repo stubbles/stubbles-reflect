@@ -20,7 +20,7 @@ class AnnotationDocblockState extends AnnotationAbstractState implements Annotat
      *
      * @return  string[]
      */
-    public function signalTokens()
+    public function signalTokens(): array
     {
         return ['@'];
     }
@@ -33,7 +33,7 @@ class AnnotationDocblockState extends AnnotationAbstractState implements Annotat
      * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process($word, $currentToken, $nextToken)
+    public function process(string $word, string $currentToken, string $nextToken): bool
     {
         $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
         return true;

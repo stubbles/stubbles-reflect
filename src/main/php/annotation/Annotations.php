@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -60,7 +61,7 @@ class Annotations implements \IteratorAggregate
      *
      * @return  string
      */
-    public function target()
+    public function target(): string
     {
         return $this->target;
     }
@@ -72,7 +73,7 @@ class Annotations implements \IteratorAggregate
      * @param   string  $type
      * @return  bool
      */
-    public function contain($type)
+    public function contain(string $type): bool
     {
         return isset($this->types[$type]);
     }
@@ -87,7 +88,7 @@ class Annotations implements \IteratorAggregate
      * @throws  \ReflectionException
      * @since   5.3.0
      */
-    public function firstNamed($type)
+    public function firstNamed(string $type): Annotation
     {
         if ($this->contain($type)) {
             return $this->types[$type][0];
@@ -104,7 +105,7 @@ class Annotations implements \IteratorAggregate
      * @return  \stubbles\reflect\annotation\Annotation[]
      * @since   5.3.0
      */
-    public function named($type)
+    public function named(string $type): array
     {
         if ($this->contain($type)) {
             return $this->types[$type];
@@ -119,7 +120,7 @@ class Annotations implements \IteratorAggregate
      * @api
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    public function all()
+    public function all(): array
     {
         $all = [];
         foreach ($this as $annotation) {
@@ -134,7 +135,7 @@ class Annotations implements \IteratorAggregate
      *
      * @return  \Traversable
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return new \RecursiveIteratorIterator(
                 new RecursiveArrayIterator($this->types)

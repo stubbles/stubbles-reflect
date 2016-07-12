@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -100,7 +101,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
     /**
      * @param  string  $refParam
      */
-    private function example($refParam)
+    private function example(string $refParam)
     {
 
     }
@@ -149,10 +150,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     private static $otherProperty = 313;
 
-    /**
-     * @return  array
-     */
-    public function properties()
+    public function properties(): array
     {
         return [['->', 'someProperty'], ['::$', 'otherProperty']];
     }
@@ -161,8 +159,10 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      * @test
      * @dataProvider  properties
      */
-    public function annotationsWithReflectionPropertyReturnsPropertyAnnotations($connector, $propertyName)
-    {
+    public function annotationsWithReflectionPropertyReturnsPropertyAnnotations(
+            string $connector,
+            string $propertyName
+    ) {
         $refProperty = new \ReflectionProperty($this, $propertyName);
         assert(
                 annotationsOf($refProperty)->target(),
@@ -264,10 +264,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
         ->throws(\InvalidArgumentException::class);
     }
 
-    /**
-     * @return  array
-     */
-    public function argumentsForParametersOf()
+    public function argumentsForParametersOf(): array
     {
         return [
             [$this, 'example'],
