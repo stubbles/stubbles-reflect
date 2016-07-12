@@ -9,13 +9,15 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation;
-use function bovigo\assert\assert;
-use function bovigo\assert\assertEmptyArray;
-use function bovigo\assert\assertFalse;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isSameAs;
+use function bovigo\assert\{
+    assert,
+    assertEmptyArray,
+    assertFalse,
+    assertTrue,
+    expect,
+    predicate\equals,
+    predicate\isSameAs
+};
 /**
  * Test for stubbles\reflect\annotation\Annotations.
  *

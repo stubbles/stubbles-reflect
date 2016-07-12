@@ -11,13 +11,15 @@ declare(strict_types=1);
 namespace stubbles\reflect;
 use stubbles\reflect\annotation\parser\AnnotationParser;
 
-use function bovigo\assert\assert;
-use function bovigo\assert\assertTrue;
-use function bovigo\assert\expect;
-use function bovigo\assert\predicate\each;
-use function bovigo\assert\predicate\equals;
-use function bovigo\assert\predicate\isGreaterThan;
-use function bovigo\assert\predicate\isInstanceOf;
+use function bovigo\assert\{
+    assert,
+    assertTrue,
+    expect,
+    predicate\each,
+    predicate\equals,
+    predicate\isGreaterThan,
+    predicate\isInstanceOf
+};
 /**
  * Tests for stubbles\reflect\*().
  *

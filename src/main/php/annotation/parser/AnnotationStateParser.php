@@ -11,17 +11,19 @@ declare(strict_types=1);
 namespace stubbles\reflect\annotation\parser;
 use stubbles\reflect\annotation\Annotation;
 use stubbles\reflect\annotation\Annotations;
-use stubbles\reflect\annotation\parser\state\AnnotationState;
-use stubbles\reflect\annotation\parser\state\AnnotationAnnotationState;
-use stubbles\reflect\annotation\parser\state\AnnotationArgumentState;
-use stubbles\reflect\annotation\parser\state\AnnotationDocblockState;
-use stubbles\reflect\annotation\parser\state\AnnotationNameState;
-use stubbles\reflect\annotation\parser\state\AnnotationParamEnclosedValueState;
-use stubbles\reflect\annotation\parser\state\AnnotationParamNameState;
-use stubbles\reflect\annotation\parser\state\AnnotationParamsState;
-use stubbles\reflect\annotation\parser\state\AnnotationParamValueState;
-use stubbles\reflect\annotation\parser\state\AnnotationTextState;
-use stubbles\reflect\annotation\parser\state\AnnotationTypeState;
+use stubbles\reflect\annotation\parser\state\{
+    AnnotationState,
+    AnnotationAnnotationState,
+    AnnotationArgumentState,
+    AnnotationDocblockState,
+    AnnotationNameState,
+    AnnotationParamEnclosedValueState,
+    AnnotationParamNameState,
+    AnnotationParamsState,
+    AnnotationParamValueState,
+    AnnotationTextState,
+    AnnotationTypeState
+};
 /**
  * Parser to parse Java-Style annotations.
  *
