@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class AnnotationAnnotationState extends AnnotationAbstractState implements AnnotationState
+class InAnnotation extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * returns list of tokens that signal state change

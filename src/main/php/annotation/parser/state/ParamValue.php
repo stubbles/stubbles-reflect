@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -9,11 +10,11 @@
  */
 namespace stubbles\reflect\annotation\parser\state;
 /**
- * Parser is in docblock, but not in any annotation.
+ * Parser is inside an annotation param value.
  *
  * @internal
  */
-class AnnotationDocblockState extends AnnotationAbstractState implements AnnotationState
+class ParamValue extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * returns list of tokens that signal state change
@@ -22,7 +23,7 @@ class AnnotationDocblockState extends AnnotationAbstractState implements Annotat
      */
     public function signalTokens(): array
     {
-        return ['@'];
+        return ["'", '"', ',', ')'];
     }
 
     /**
@@ -35,7 +36,16 @@ class AnnotationDocblockState extends AnnotationAbstractState implements Annotat
      */
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
-        $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
+        if (strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
+            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
+        } elseif (',' === $currentToken) {
+            $this->parser->setAnnotationParamValue($word);
+            $this->parser->changeState(AnnotationState::PARAMS);
+        } elseif (')' === $currentToken) {
+            $this->parser->setAnnotationParamValue($word);
+            $this->parser->changeState(AnnotationState::DOCBLOCK);
+        }
+
         return true;
     }
 }

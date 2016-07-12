@@ -10,12 +10,19 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation\parser\state;
 /**
- * Parser is inside an annotation param value.
+ * Parser is inside the annotation params.
  *
  * @internal
  */
-class AnnotationParamValueState extends AnnotationAbstractState implements AnnotationState
+class Parameters extends AnnotationAbstractState implements AnnotationState
 {
+    /**
+     * list of tokens that lead to no actions in this state
+     *
+     * @type  string[]
+     */
+    private $doNothingTokens = ["\r", "\n", "\t", '*', ' '];
+
     /**
      * returns list of tokens that signal state change
      *
@@ -23,7 +30,7 @@ class AnnotationParamValueState extends AnnotationAbstractState implements Annot
      */
     public function signalTokens(): array
     {
-        return ["'", '"', ',', ')'];
+        return [' ', ')'];
     }
 
     /**
@@ -36,14 +43,12 @@ class AnnotationParamValueState extends AnnotationAbstractState implements Annot
      */
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
-        if (strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
-            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
-        } elseif (',' === $currentToken) {
-            $this->parser->setAnnotationParamValue($word);
-            $this->parser->changeState(AnnotationState::PARAMS);
-        } elseif (')' === $currentToken) {
-            $this->parser->setAnnotationParamValue($word);
+        if (')' === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);
+        } elseif (in_array($nextToken, $this->doNothingTokens)) {
+            // do nothing
+        } else {
+            $this->parser->changeState(AnnotationState::PARAM_NAME);
         }
 
         return true;

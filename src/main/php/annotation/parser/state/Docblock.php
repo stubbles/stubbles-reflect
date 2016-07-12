@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 /**
  * This file is part of stubbles.
  *
@@ -10,11 +9,11 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation\parser\state;
 /**
- * Parser is inside the annotation type.
+ * Parser is in docblock, but not in any annotation.
  *
  * @internal
  */
-class AnnotationTypeState extends AnnotationAbstractState implements AnnotationState
+class Docblock extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * returns list of tokens that signal state change
@@ -23,7 +22,7 @@ class AnnotationTypeState extends AnnotationAbstractState implements AnnotationS
      */
     public function signalTokens(): array
     {
-        return [']'];
+        return ['@'];
     }
 
     /**
@@ -33,19 +32,10 @@ class AnnotationTypeState extends AnnotationAbstractState implements AnnotationS
      * @param   string  $currentToken  current token that signaled end of word
      * @param   string  $nextToken     next token after current token
      * @return  bool
-     * @throws  \ReflectionException
      */
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
-        if (strlen($word) > 0) {
-            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
-                throw new \ReflectionException('Annotation type may contain letters, underscores and numbers, but contains an invalid character.');
-            }
-
-            $this->parser->setAnnotationType($word);
-        }
-
-        $this->parser->changeState(AnnotationState::ANNOTATION);
+        $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
         return true;
     }
 }

@@ -13,16 +13,15 @@ use stubbles\reflect\annotation\Annotation;
 use stubbles\reflect\annotation\Annotations;
 use stubbles\reflect\annotation\parser\state\{
     AnnotationState,
-    AnnotationAnnotationState,
-    AnnotationArgumentState,
-    AnnotationDocblockState,
-    AnnotationNameState,
-    AnnotationParamEnclosedValueState,
-    AnnotationParamNameState,
-    AnnotationParamsState,
-    AnnotationParamValueState,
-    AnnotationTextState,
-    AnnotationTypeState
+    InAnnotation,
+    AnnotationForArgument,
+    AnnotationName,
+    AnnotationType,
+    Docblock,
+    EnclosedParamValue,
+    Parameters,
+    ParamName,
+    ParamValue
 };
 /**
  * Parser to parse Java-Style annotations.
@@ -75,15 +74,15 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function __construct()
     {
-        $this->states[AnnotationState::DOCBLOCK]             = new AnnotationDocblockState($this);
-        $this->states[AnnotationState::ANNOTATION]           = new AnnotationAnnotationState($this);
-        $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationNameState($this);
-        $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationTypeState($this);
-        $this->states[AnnotationState::ARGUMENT]             = new AnnotationArgumentState($this);
-        $this->states[AnnotationState::PARAMS]               = new AnnotationParamsState($this);
-        $this->states[AnnotationState::PARAM_NAME]           = new AnnotationParamNameState($this);
-        $this->states[AnnotationState::PARAM_VALUE]          = new AnnotationParamValueState($this);
-        $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new AnnotationParamEnclosedValueState($this);
+        $this->states[AnnotationState::DOCBLOCK]             = new Docblock($this);
+        $this->states[AnnotationState::ANNOTATION]           = new InAnnotation($this);
+        $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationName($this);
+        $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationType($this);
+        $this->states[AnnotationState::ARGUMENT]             = new AnnotationForArgument($this);
+        $this->states[AnnotationState::PARAMS]               = new Parameters($this);
+        $this->states[AnnotationState::PARAM_NAME]           = new ParamName($this);
+        $this->states[AnnotationState::PARAM_VALUE]          = new ParamValue($this);
+        $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new EnclosedParamValue($this);
     }
 
     /**
@@ -160,8 +159,7 @@ class AnnotationStateParser implements AnnotationParser
             }
         }
 
-        if (!($this->currentState instanceof AnnotationDocblockState)
-          && !($this->currentState instanceof AnnotationTextState)) {
+        if (!($this->currentState instanceof Docblock)) {
             throw new \ReflectionException(
                     'Annotation parser finished in wrong state for annotation '
                     . $target

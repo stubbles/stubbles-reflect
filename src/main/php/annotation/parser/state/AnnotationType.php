@@ -10,11 +10,11 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation\parser\state;
 /**
- * Parser is inside the annotation argument.
+ * Parser is inside the annotation type.
  *
  * @internal
  */
-class AnnotationArgumentState extends AnnotationAbstractState implements AnnotationState
+class AnnotationType extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * returns list of tokens that signal state change
@@ -23,7 +23,7 @@ class AnnotationArgumentState extends AnnotationAbstractState implements Annotat
      */
     public function signalTokens(): array
     {
-        return ['}'];
+        return [']'];
     }
 
     /**
@@ -39,10 +39,10 @@ class AnnotationArgumentState extends AnnotationAbstractState implements Annotat
     {
         if (strlen($word) > 0) {
             if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
-                throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
+                throw new \ReflectionException('Annotation type may contain letters, underscores and numbers, but contains an invalid character.');
             }
 
-            $this->parser->markAsParameterAnnotation($word);
+            $this->parser->setAnnotationType($word);
         }
 
         $this->parser->changeState(AnnotationState::ANNOTATION);

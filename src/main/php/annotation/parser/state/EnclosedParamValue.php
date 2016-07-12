@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class AnnotationParamEnclosedValueState extends AnnotationAbstractState implements AnnotationState
+class EnclosedParamValue extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * character in which the value is enclosed

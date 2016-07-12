@@ -10,19 +10,12 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation\parser\state;
 /**
- * Parser is inside the annotation params.
+ * Parser is inside the annotation argument.
  *
  * @internal
  */
-class AnnotationParamsState extends AnnotationAbstractState implements AnnotationState
+class AnnotationForArgument extends AnnotationAbstractState implements AnnotationState
 {
-    /**
-     * list of tokens that lead to no actions in this state
-     *
-     * @type  string[]
-     */
-    private $doNothingTokens = ["\r", "\n", "\t", '*', ' '];
-
     /**
      * returns list of tokens that signal state change
      *
@@ -30,7 +23,7 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      */
     public function signalTokens(): array
     {
-        return [' ', ')'];
+        return ['}'];
     }
 
     /**
@@ -40,17 +33,19 @@ class AnnotationParamsState extends AnnotationAbstractState implements Annotatio
      * @param   string  $currentToken  current token that signaled end of word
      * @param   string  $nextToken     next token after current token
      * @return  bool
+     * @throws  \ReflectionException
      */
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
-        if (')' === $currentToken) {
-            $this->parser->changeState(AnnotationState::DOCBLOCK);
-        } elseif (in_array($nextToken, $this->doNothingTokens)) {
-            // do nothing
-        } else {
-            $this->parser->changeState(AnnotationState::PARAM_NAME);
+        if (strlen($word) > 0) {
+            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+                throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
+            }
+
+            $this->parser->markAsParameterAnnotation($word);
         }
 
+        $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }
 }

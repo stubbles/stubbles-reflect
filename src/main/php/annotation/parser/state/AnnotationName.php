@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class AnnotationNameState extends AnnotationAbstractState implements AnnotationState
+class AnnotationName extends AnnotationAbstractState implements AnnotationState
 {
     /**
      * list of forbidden annotation names
