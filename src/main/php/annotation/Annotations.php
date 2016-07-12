@@ -120,14 +120,11 @@ class Annotations implements \IteratorAggregate
      * @api
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    public function all(): array
+    public function all(): \Generator
     {
-        $all = [];
         foreach ($this as $annotation) {
-            $all[] = $annotation;
+            yield $annotation;
         }
-
-        return $all;
     }
 
     /**

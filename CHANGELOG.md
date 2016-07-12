@@ -5,6 +5,7 @@
 
   * raised minimum required PHP version to 7.0.0
   * introduced scalar type hints and strict type checking
+  * `stubbles\reflect\annotation\Annotations::all()` now returns a `\Generator` instead of an `array`
 
 
 7.0.0 (2016-01-11)

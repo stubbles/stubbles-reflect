@@ -230,7 +230,10 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
         assert(
-                $this->annotationStateParser->parse($comment, 'tabs')['tabs']->all(),
+                iterator_to_array(
+                        $this->annotationStateParser->parse($comment, 'tabs')['tabs']
+                                ->all()
+                ),
                 equals([new Annotation('Foo', 'tabs')])
         );
     }

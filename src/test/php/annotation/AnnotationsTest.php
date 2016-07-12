@@ -127,10 +127,12 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function returnsAllAnnotations()
     {
         assert(
-                $this->annotations->add(new Annotation('foo'))
-                        ->add(new Annotation('bar'))
-                        ->add(new Annotation('foo'))
-                        ->all(),
+                iterator_to_array(
+                        $this->annotations->add(new Annotation('foo'))
+                                ->add(new Annotation('bar'))
+                                ->add(new Annotation('foo'))
+                                ->all()
+                ),
                 equals([
                         new Annotation('foo'),
                         new Annotation('foo'),
