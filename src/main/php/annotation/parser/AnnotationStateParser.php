@@ -183,7 +183,7 @@ class AnnotationStateParser implements AnnotationParser
             return;
         }
 
-        $target = isset($this->currentAnnotation['target']) ? $this->currentAnnotation['target'] : $this->currentTarget;
+        $target = $this->currentAnnotation['target'] ?? $this->currentTarget;
         if (!isset($this->annotations[$target])) {
             $this->annotations[$target] = new Annotations($target);
         }
