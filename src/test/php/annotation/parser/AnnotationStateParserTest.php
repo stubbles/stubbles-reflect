@@ -424,4 +424,22 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
             ->throws(\ReflectionException::class)
             ->withMessage('Argument name for annotation is empty.');
     }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function canNotUseEmptyAnnotationType()
+    {
+        expect(function() {
+            $this->annotationStateParser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo[]
+     */',
+                'target');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage('Annotation type can not be empty.');
+    }
 }
