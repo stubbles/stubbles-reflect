@@ -36,9 +36,11 @@ abstract class AnnotationAbstractState
 
     /**
      * mark this state as the currently used state
+     *
+     * @return  AnnotationState
      */
-    public function selected()
+    public function select(): AnnotationState
     {
-        // intentionally empty
+        return $this;
     }
 }

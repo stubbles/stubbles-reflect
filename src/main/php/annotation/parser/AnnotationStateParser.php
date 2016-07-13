@@ -99,8 +99,7 @@ class AnnotationStateParser implements AnnotationParser
             throw new \ReflectionException('Unknown state ' . $state);
         }
 
-        $this->currentState = $this->states[$state];
-        $this->currentState->selected();
+        $this->currentState = $this->states[$state]->select();
         if (null != $currentToken) {
             $this->currentState->process('', $currentToken, $nextToken);
         }
@@ -155,7 +154,7 @@ class AnnotationStateParser implements AnnotationParser
                     $word = '';
                 }
             } else {
-                $word .= $docComment{$i};
+                $word .= $currentToken;
             }
         }
 

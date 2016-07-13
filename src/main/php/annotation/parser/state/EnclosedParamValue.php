@@ -37,13 +37,16 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
 
     /**
      * mark this state as the currently used state
+     *
+     * @return  AnnotationState
      */
-    public function selected()
+    public function select(): AnnotationState
     {
-        parent::selected();
+        parent::select();
         $this->enclosed  = null;
         $this->escaped   = false;
         $this->collected = '';
+        return $this;
     }
 
     /**

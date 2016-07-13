@@ -55,8 +55,10 @@ interface AnnotationState
 
     /**
      * mark this state as the currently used state
+     *
+     * @return  AnnotationState
      */
-    public function selected();
+    public function select(): self;
 
     /**
      * returns list of tokens that signal state change
