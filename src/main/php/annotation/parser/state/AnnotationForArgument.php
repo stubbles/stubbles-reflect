@@ -37,14 +37,15 @@ class AnnotationForArgument extends AnnotationAbstractState implements Annotatio
      */
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
-        if (strlen($word) > 0) {
-            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
-                throw new \ReflectionException('Annotation argument may contain letters, underscores and numbers, but contains an invalid character.');
-            }
-
-            $this->parser->markAsParameterAnnotation($word);
+        if (empty($word)) {
+            throw new \ReflectionException('Argument name for annotation is empty.');
         }
 
+        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+            throw new \ReflectionException('Argument name for annotation may contain letters, underscores and numbers, but contains an invalid character.');
+        }
+
+        $this->parser->markAsParameterAnnotation($word);
         $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }

@@ -406,4 +406,22 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
                 equals('dum "di" dam')
         );
     }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function canNotUseEmptyParameterNamesInParamAnnotation()
+    {
+        expect(function() {
+            $this->annotationStateParser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo{}
+     */',
+                'target');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage('Argument name for annotation is empty.');
+    }
 }
