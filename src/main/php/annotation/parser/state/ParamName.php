@@ -21,13 +21,12 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
      *
      * @type  array
      */
-    public $signalTokens = ["'" => 0, '"' => 1, '=' => 2, ')' => 3, "\r" => 4, "\n" => 5, "\t" => 6, '*' => 7, ' ' => 8, ',' => 9];
-    /**
-     * list of tokens that lead to no actions in this state
-     *
-     * @type  string[]
-     */
-    private $doNothingTokens = ["\r" => 0, "\n" => 1, "\t" => 2, '*' => 3, ' ' => 4, ',' => 5];
+    public $signalTokens = [
+            "'" => AnnotationState::PARAM_VALUE_ENCLOSED,
+            '"' => AnnotationState::PARAM_VALUE_ENCLOSED,
+            '=' => AnnotationState::PARAM_VALUE,
+            ')' => AnnotationState::DOCBLOCK,
+    ];
 
     /**
      * processes a token
@@ -39,11 +38,7 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
      */
     public function process(string $word, string $currentToken): bool
     {
-        $paramName = trim($word);
-        if (strlen($paramName) === 0 && isset($this->doNothingTokens[$currentToken])) {
-            return true;
-        }
-
+        $paramName = trim(ltrim(trim($word), ',*'));
         if ("'" === $currentToken || '"' === $currentToken) {
             if (strlen($paramName) > 0) {
                 throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $currentToken . '. Probably an equal sign is missing: ' . $paramName);

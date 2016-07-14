@@ -19,7 +19,7 @@ interface AnnotationState
     /**
      * parser is inside the standard docblock
      */
-    const DOCBLOCK             = 0;
+    const DOCBLOCK             = 1;
     /**
      * parser is inside an annotation
      */

@@ -21,19 +21,16 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      *
      * @type  array
      */
-    public $signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
+    public $signalTokens = [
+            "'" => AnnotationState::PARAM_NAME,
+            '"' => AnnotationState::PARAM_NAME
+    ];
     /**
      * character in which the value is enclosed
      *
      * @type  string
      */
     private $enclosed  = null;
-    /**
-     * whether next character is escaped
-     *
-     * @type  bool
-     */
-    private $escaped   = false;
     /**
      * collected value until an escaping sign occurred
      *
@@ -50,26 +47,17 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      */
     public function process(string $word, string $currentToken): bool
     {
-        if (strlen($this->collected) === 0 && strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
+        if (strlen($this->collected) === 0 && strlen($word) === 0) {
             $this->enclosed = $currentToken;
-            if ('""' === $currentToken) {
-                unset($this->signalTokens["'"]);
-            } else {
-                unset($this->signalTokens['"']);
-            }
-        } elseif (!$this->escaped && $this->enclosed === $currentToken) {
+        } elseif ($this->enclosed === $currentToken && substr($word, -1) === '\\') {
+            $this->collected .= substr($word, 0, strlen($word) - 1) . $currentToken;
+        } elseif ($this->enclosed === $currentToken) {
             $this->parser->setAnnotationParamValue($this->collected . $word);
-            $this->signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
             $this->enclosed     = null;
-            $this->escaped      = false;
             $this->collected    = '';
             $this->parser->changeState(AnnotationState::PARAM_NAME);
-        } elseif (!$this->escaped && '\\' === $currentToken && null !== $this->enclosed) {
-            $this->escaped = true;
-            return false;
-        } elseif ($this->escaped) {
+        } else {
             $this->collected .= $word . $currentToken;
-            $this->escaped = false;
         }
 
         return true;

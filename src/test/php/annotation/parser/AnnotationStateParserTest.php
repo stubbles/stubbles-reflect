@@ -24,7 +24,7 @@ use function bovigo\assert\predicate\equals;
  * @TwoParams(foo='bar', test=42)
  * @InvalidChars(foo='ba@r=,')
  * @Constant(foo=stubbles\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
- * @WithEscaped(foo='This string contains \' and \\, which is possible using escaping...')
+ * @WithEscaped(foo='This string contains \' and \, which is possible using escaping...')
  * @Multiline(one=1,
  *            two=2)
  * @Class(stubbles\reflect\annotation\parser\MyTestClass.class)

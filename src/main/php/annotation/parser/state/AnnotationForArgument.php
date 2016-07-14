@@ -21,7 +21,7 @@ class AnnotationForArgument extends AnnotationAbstractState implements Annotatio
      *
      * @type  array
      */
-    public $signalTokens = ['}' => 0];
+    public $signalTokens = ['}' => AnnotationState::ANNOTATION];
 
     /**
      * processes a token

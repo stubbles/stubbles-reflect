@@ -20,7 +20,7 @@ class Docblock extends AnnotationAbstractState implements AnnotationState
      *
      * @type  array
      */
-    public $signalTokens = ['@' => 0];
+    public $signalTokens = ['@' => AnnotationState::ANNOTATION_NAME];
 
     /**
      * processes a token

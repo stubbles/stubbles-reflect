@@ -21,7 +21,7 @@ class AnnotationType extends AnnotationAbstractState implements AnnotationState
      *
      * @type  array
      */
-    public $signalTokens = [']' => 0];
+    public $signalTokens = [']' => AnnotationState::ANNOTATION];
 
     /**
      * processes a token

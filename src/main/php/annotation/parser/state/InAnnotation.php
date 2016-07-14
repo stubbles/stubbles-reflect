@@ -21,7 +21,12 @@ class InAnnotation extends AnnotationAbstractState implements AnnotationState
      *
      * @type  array
      */
-    public $signalTokens = ["\n" => 0, '{' => 1, '[' => 2, '(' => 3];
+    public $signalTokens = [
+            "\n" => AnnotationState::DOCBLOCK,
+            '{'  => AnnotationState::ARGUMENT,
+            '['  => AnnotationState::ANNOTATION_TYPE,
+            '('  => AnnotationState::PARAM_NAME
+    ];
 
     /**
      * processes a token

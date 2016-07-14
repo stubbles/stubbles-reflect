@@ -21,7 +21,12 @@ class ParamValue extends AnnotationAbstractState implements AnnotationState
      *
      * @type  array
      */
-    public $signalTokens = ["'" => 0, '"' => 1, ',' => 2, ')' => 3];
+    public $signalTokens = [
+            "'" => AnnotationState::PARAM_VALUE_ENCLOSED,
+            '"' => AnnotationState::PARAM_VALUE_ENCLOSED,
+            ',' => AnnotationState::PARAM_NAME,
+            ')' => AnnotationState::DOCBLOCK
+    ];
 
     /**
      * processes a token
