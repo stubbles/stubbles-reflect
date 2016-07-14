@@ -40,7 +40,7 @@ class ParamValue extends AnnotationAbstractState implements AnnotationState
             $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
         } elseif (',' === $currentToken) {
             $this->parser->setAnnotationParamValue($word);
-            $this->parser->changeState(AnnotationState::PARAMS);
+            $this->parser->changeState(AnnotationState::PARAM_NAME);
         } elseif (')' === $currentToken) {
             $this->parser->setAnnotationParamValue($word);
             $this->parser->changeState(AnnotationState::DOCBLOCK);

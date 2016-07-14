@@ -80,7 +80,7 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
         } elseif (!$this->escaped && $this->enclosed === $currentToken) {
             $this->parser->setAnnotationParamValue($this->collected . $word);
             $this->enclosed = null;
-            $this->parser->changeState(AnnotationState::PARAMS);
+            $this->parser->changeState(AnnotationState::PARAM_NAME);
         } elseif (!$this->escaped && '\\' === $currentToken && null !== $this->enclosed) {
             $this->escaped = true;
             return false;

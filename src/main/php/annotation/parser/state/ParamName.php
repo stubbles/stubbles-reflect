@@ -17,13 +17,20 @@ namespace stubbles\reflect\annotation\parser\state;
 class ParamName extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * list of tokens that lead to no actions in this state
+     *
+     * @type  string[]
+     */
+    private $doNothingTokens = ["\r" => 0, "\n" => 1, "\t" => 2, '*' => 3, ' ' => 4, ',' => 5];
+
+    /**
      * returns list of tokens that signal state change
      *
      * @return  string[]
      */
     public function signalTokens(): array
     {
-        return ["'", '"', '=', ')'];
+        return ["'", '"', '=', ')', "\r" , "\n", "\t", '*', ' ', ','];
     }
 
     /**
@@ -38,6 +45,10 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
     public function process(string $word, string $currentToken, string $nextToken): bool
     {
         $paramName = trim($word);
+        if (strlen($paramName) === 0 && isset($this->doNothingTokens[$currentToken])) {
+            return true;
+        }
+
         if ("'" === $currentToken || '"' === $currentToken) {
             if (strlen($paramName) > 0) {
                 throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $currentToken . '. Probably an equal sign is missing: ' . $paramName);

@@ -79,7 +79,6 @@ class AnnotationStateParser implements AnnotationParser
         $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationName($this);
         $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationType($this);
         $this->states[AnnotationState::ARGUMENT]             = new AnnotationForArgument($this);
-        $this->states[AnnotationState::PARAMS]               = new Parameters($this);
         $this->states[AnnotationState::PARAM_NAME]           = new ParamName($this);
         $this->states[AnnotationState::PARAM_VALUE]          = new ParamValue($this);
         $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new EnclosedParamValue($this);
