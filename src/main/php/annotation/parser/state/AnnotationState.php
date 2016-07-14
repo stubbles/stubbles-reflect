@@ -33,10 +33,6 @@ interface AnnotationState
      */
     const ANNOTATION_TYPE      = 4;
     /**
-     * parser is inside the annotation params
-     */
-    const PARAMS               = 5;
-    /**
      * parser is inside an annotation param name
      */
     const PARAM_NAME           = 6;
