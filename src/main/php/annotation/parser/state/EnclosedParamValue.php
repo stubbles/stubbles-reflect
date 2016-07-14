@@ -42,21 +42,6 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
     private $collected = '';
 
     /**
-     * mark this state as the currently used state
-     *
-     * @return  AnnotationState
-     */
-    public function select(): AnnotationState
-    {
-        parent::select();
-        $this->signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
-        $this->enclosed     = null;
-        $this->escaped      = false;
-        $this->collected    = '';
-        return $this;
-    }
-
-    /**
      * processes a token
      *
      * @param   string  $word          parsed word to be processed
@@ -75,7 +60,10 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
             }
         } elseif (!$this->escaped && $this->enclosed === $currentToken) {
             $this->parser->setAnnotationParamValue($this->collected . $word);
-            $this->enclosed = null;
+            $this->signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
+            $this->enclosed     = null;
+            $this->escaped      = false;
+            $this->collected    = '';
             $this->parser->changeState(AnnotationState::PARAM_NAME);
         } elseif (!$this->escaped && '\\' === $currentToken && null !== $this->enclosed) {
             $this->escaped = true;

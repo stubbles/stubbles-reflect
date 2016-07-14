@@ -33,14 +33,4 @@ abstract class AnnotationAbstractState
     {
         $this->parser = $parser;
     }
-
-    /**
-     * mark this state as the currently used state
-     *
-     * @return  AnnotationState
-     */
-    public function select(): AnnotationState
-    {
-        return $this;
-    }
 }

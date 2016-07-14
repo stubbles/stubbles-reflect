@@ -96,7 +96,7 @@ class AnnotationStateParser implements AnnotationParser
             throw new \ReflectionException('Unknown state ' . $state);
         }
 
-        $this->currentState = $this->states[$state]->select();
+        $this->currentState = $this->states[$state];
         if (null != $currentToken) {
             $this->currentState->process('', $currentToken, $nextToken);
         }

@@ -54,13 +54,6 @@ interface AnnotationState
     const PARAM_VALUE_ENCLOSED = 9;
 
     /**
-     * mark this state as the currently used state
-     *
-     * @return  AnnotationState
-     */
-    public function select(): self;
-
-    /**
      * processes a token
      *
      * @param   string  $word          parsed word to be processed
