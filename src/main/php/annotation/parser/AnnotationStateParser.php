@@ -87,10 +87,9 @@ class AnnotationStateParser implements AnnotationParser
      *
      * @param   int     $state
      * @param   string  $currentToken  optional  current token that should be processed
-     * @param   string  $nextToken     optional  next token that will be processed
      * @throws  \ReflectionException
      */
-    public function changeState(int $state, string $currentToken = null, string $nextToken = null)
+    public function changeState(int $state, string $currentToken = null)
     {
         if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
@@ -98,7 +97,7 @@ class AnnotationStateParser implements AnnotationParser
 
         $this->currentState = $this->states[$state];
         if (null != $currentToken) {
-            $this->currentState->process('', $currentToken, $nextToken);
+            $this->currentState->process('', $currentToken);
         }
     }
 
@@ -137,15 +136,8 @@ class AnnotationStateParser implements AnnotationParser
         $word = '';
         for ($i = 6; $i < $len; $i++) {
             $currentToken = $docComment{$i};
-            if ($i + 1 < $len) {
-                $j = $i + 1;
-                $nextToken = $docComment{$j};
-            } else {
-                $nextToken = '';
-            }
-
             if (isset($this->currentState->signalTokens[$currentToken])) {
-                if ($this->currentState->process($word, $currentToken, $nextToken)) {
+                if ($this->currentState->process($word, $currentToken)) {
                     $word = '';
                 }
             } else {

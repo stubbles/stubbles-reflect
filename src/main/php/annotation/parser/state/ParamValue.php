@@ -28,13 +28,12 @@ class ParamValue extends AnnotationAbstractState implements AnnotationState
      *
      * @param   string  $word          parsed word to be processed
      * @param   string  $currentToken  current token that signaled end of word
-     * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process(string $word, string $currentToken, string $nextToken): bool
+    public function process(string $word, string $currentToken): bool
     {
         if (strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
-            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
+            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken);
         } elseif (',' === $currentToken) {
             $this->parser->setAnnotationParamValue($word);
             $this->parser->changeState(AnnotationState::PARAM_NAME);

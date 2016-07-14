@@ -34,11 +34,10 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
      *
      * @param   string  $word          parsed word to be processed
      * @param   string  $currentToken  current token that signaled end of word
-     * @param   string  $nextToken     next token after current token
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process(string $word, string $currentToken, string $nextToken): bool
+    public function process(string $word, string $currentToken): bool
     {
         $paramName = trim($word);
         if (strlen($paramName) === 0 && isset($this->doNothingTokens[$currentToken])) {
@@ -51,7 +50,7 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
             }
 
             $this->parser->registerAnnotationParam('__value');
-            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken, $nextToken);
+            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken);
         } elseif ('=' === $currentToken) {
             if (strlen($paramName) == 0) {
                 throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =: ' . $paramName);

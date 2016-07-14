@@ -46,10 +46,9 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      *
      * @param   string  $word          parsed word to be processed
      * @param   string  $currentToken  current token that signaled end of word
-     * @param   string  $nextToken     next token after current token
      * @return  bool
      */
-    public function process(string $word, string $currentToken, string $nextToken): bool
+    public function process(string $word, string $currentToken): bool
     {
         if (strlen($this->collected) === 0 && strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
             $this->enclosed = $currentToken;
