@@ -61,13 +61,6 @@ interface AnnotationState
     public function select(): self;
 
     /**
-     * returns list of tokens that signal state change
-     *
-     * @return  string[]
-     */
-    public function signalTokens(): array;
-
-    /**
      * processes a token
      *
      * @param   string  $word          parsed word to be processed

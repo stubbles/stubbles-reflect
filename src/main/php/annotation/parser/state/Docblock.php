@@ -16,14 +16,11 @@ namespace stubbles\reflect\annotation\parser\state;
 class Docblock extends AnnotationAbstractState implements AnnotationState
 {
     /**
-     * returns list of tokens that signal state change
+     * list of tokens which signal that a word must be processed
      *
-     * @return  string[]
+     * @type  array
      */
-    public function signalTokens(): array
-    {
-        return ['@'];
-    }
+    public $signalTokens = ['@' => 0];
 
     /**
      * processes a token

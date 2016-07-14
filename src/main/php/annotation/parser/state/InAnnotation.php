@@ -17,14 +17,11 @@ namespace stubbles\reflect\annotation\parser\state;
 class InAnnotation extends AnnotationAbstractState implements AnnotationState
 {
     /**
-     * returns list of tokens that signal state change
+     * list of tokens which signal that a word must be processed
      *
-     * @return  string[]
+     * @type  array
      */
-    public function signalTokens(): array
-    {
-        return ["\n", '{', '[', '('];
-    }
+    public $signalTokens = ["\n" => 0, '{' => 1, '[' => 2, '(' => 3];
 
     /**
      * processes a token

@@ -17,21 +17,17 @@ namespace stubbles\reflect\annotation\parser\state;
 class ParamName extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * list of tokens which signal that a word must be processed
+     *
+     * @type  array
+     */
+    public $signalTokens = ["'" => 0, '"' => 1, '=' => 2, ')' => 3, "\r" => 4, "\n" => 5, "\t" => 6, '*' => 7, ' ' => 8, ',' => 9];
+    /**
      * list of tokens that lead to no actions in this state
      *
      * @type  string[]
      */
     private $doNothingTokens = ["\r" => 0, "\n" => 1, "\t" => 2, '*' => 3, ' ' => 4, ',' => 5];
-
-    /**
-     * returns list of tokens that signal state change
-     *
-     * @return  string[]
-     */
-    public function signalTokens(): array
-    {
-        return ["'", '"', '=', ')', "\r" , "\n", "\t", '*', ' ', ','];
-    }
 
     /**
      * processes a token

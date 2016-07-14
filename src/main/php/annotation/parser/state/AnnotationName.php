@@ -17,6 +17,12 @@ namespace stubbles\reflect\annotation\parser\state;
 class AnnotationName extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * list of tokens which signal that a word must be processed
+     *
+     * @type  array
+     */
+    public $signalTokens = [' ' => 0, "\n" => 1, "\r" => 2, '{' => 3, '[' => 4, '(' => 5];
+    /**
      * list of forbidden annotation names
      *
      * @type  string[]
@@ -45,16 +51,6 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
                                            'version' => 1,
                                            'api' => 1
                                           ];
-
-    /**
-     * returns list of tokens that signal state change
-     *
-     * @return  string[]
-     */
-    public function signalTokens(): array
-    {
-        return [' ', "\n", "\r", '{', '[', '('];
-    }
 
     /**
      * processes a token

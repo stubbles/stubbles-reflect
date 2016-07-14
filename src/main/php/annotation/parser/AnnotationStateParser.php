@@ -42,8 +42,6 @@ class AnnotationStateParser implements AnnotationParser
      * @type  \stubbles\reflect\annotation\parser\state\AnnotationParserState
      */
     private $currentState       = null;
-
-    private $currentSignals     = [];
     /**
      * the name of the current annotation
      *
@@ -102,8 +100,6 @@ class AnnotationStateParser implements AnnotationParser
         if (null != $currentToken) {
             $this->currentState->process('', $currentToken, $nextToken);
         }
-
-        $this->currentSignals = array_flip($this->currentState->signalTokens());
     }
 
     /**
@@ -148,7 +144,7 @@ class AnnotationStateParser implements AnnotationParser
                 $nextToken = '';
             }
 
-            if (isset($this->currentSignals[$currentToken])) {
+            if (isset($this->currentState->signalTokens[$currentToken])) {
                 if ($this->currentState->process($word, $currentToken, $nextToken)) {
                     $word = '';
                 }

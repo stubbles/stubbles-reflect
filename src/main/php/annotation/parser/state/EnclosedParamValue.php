@@ -17,6 +17,12 @@ namespace stubbles\reflect\annotation\parser\state;
 class EnclosedParamValue extends AnnotationAbstractState implements AnnotationState
 {
     /**
+     * list of tokens which signal that a word must be processed
+     *
+     * @type  array
+     */
+    public $signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
+    /**
      * character in which the value is enclosed
      *
      * @type  string
@@ -43,26 +49,11 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
     public function select(): AnnotationState
     {
         parent::select();
-        $this->enclosed  = null;
-        $this->escaped   = false;
-        $this->collected = '';
+        $this->signalTokens = ["'" => 0, '"' => 1, '\\' => 2];
+        $this->enclosed     = null;
+        $this->escaped      = false;
+        $this->collected    = '';
         return $this;
-    }
-
-    /**
-     * returns list of tokens that signal state change
-     *
-     * @return  string[]
-     */
-    public function signalTokens(): array
-    {
-        if (null === $this->enclosed) {
-            return ["'", '"', '\\'];
-        } elseif ('"' === $this->enclosed) {
-            return ['"', '\\'];
-        }
-
-        return ["'", '\\'];
     }
 
     /**
@@ -77,6 +68,11 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
     {
         if (strlen($this->collected) === 0 && strlen($word) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
             $this->enclosed = $currentToken;
+            if ('""' === $currentToken) {
+                unset($this->signalTokens["'"]);
+            } else {
+                unset($this->signalTokens['"']);
+            }
         } elseif (!$this->escaped && $this->enclosed === $currentToken) {
             $this->parser->setAnnotationParamValue($this->collected . $word);
             $this->enclosed = null;
