@@ -103,7 +103,8 @@ class AnnotationStateParser implements AnnotationParser
     {
         $annotations = [$target => new Annotations($target)];
         $annotation  = new CurrentAnnotation($target);
-        $len  = strlen($docComment);
+        // substract last two characters which close the doc comment from length
+        $len  = strlen($docComment) - 2;
         $word = new \stdClass();
         $word->content = '';
         for ($i = 6; $i < $len; $i++) {
