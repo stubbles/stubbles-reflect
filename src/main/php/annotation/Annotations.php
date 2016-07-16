@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation;
+use stubbles\reflect\annotation\parser\Parser;
 /**
  * Contains a list of all annotations for a target.
  *
@@ -28,6 +29,24 @@ class Annotations implements \IteratorAggregate
      * @type  string
      */
     private $target;
+
+    /**
+     * parse a docblock and return all annotations found
+     *
+     * @param   string  $docComment
+     * @param   string  $target
+     * @return  \stubbles\reflect\annotation\Annotations[]
+     * @since   8.0.0
+     */
+    public static function parse(string $docComment, string $target): array
+    {
+        static $parser = null;
+        if (null === $parser) {
+            $parser = new Parser();
+        }
+
+        return $parser->parse($docComment, $target);
+    }
 
     /**
      * constructor

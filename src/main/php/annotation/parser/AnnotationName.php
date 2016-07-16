@@ -8,26 +8,26 @@ declare(strict_types=1);
  *
  * @package  stubbles\reflect
  */
-namespace stubbles\reflect\annotation\parser\state;
+namespace stubbles\reflect\annotation\parser;
 /**
  * Parser is inside the annotation name.
  *
  * @internal
  */
-class AnnotationName implements AnnotationState
+class AnnotationName implements Expression
 {
     /**
-     * list of tokens which signal that a word must be processed
+     * map of characters which signal that this expressions ends and which expression follows
      *
      * @type  array
      */
-    public $signalTokens = [
-            ' '  => AnnotationState::ANNOTATION,
-            "\n" => AnnotationState::DOCBLOCK,
-            "\r" => AnnotationState::DOCBLOCK,
-            '{'  => AnnotationState::ARGUMENT,
-            '['  => AnnotationState::ANNOTATION_TYPE,
-            '('  => AnnotationState::PARAM_NAME
+    public $after = [
+            ' '  => Expression::ANNOTATION,
+            "\n" => Expression::DOCBLOCK,
+            "\r" => Expression::DOCBLOCK,
+            '{'  => Expression::ARGUMENT,
+            '['  => Expression::ANNOTATION_TYPE,
+            '('  => Expression::PARAM_NAME
     ];
     /**
      * list of forbidden annotation names
@@ -61,34 +61,28 @@ class AnnotationName implements AnnotationState
     ];
 
     /**
-     * processes a token
-     *
-     * @param   string             $word          parsed word to be processed
-     * @param   string             $currentToken  current token that signaled end of word
-     * @param   CurrentAnnotation  $annotation    currently parsed annotation
-     * @return  bool
+     * @inheritDoc
      */
-    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
+    public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
     {
-        if (empty($word->content)) {
+        if (empty($token->value)) {
             throw new \ReflectionException('Annotation name can not be empty');
         }
 
-        if (isset($this->forbiddenAnnotationNames[$word->content])) {
+        if (isset($this->forbiddenAnnotationNames[$token->value])) {
             $annotation->ignored = true;
             return false;
         }
 
-        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
+        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $token->value) == false) {
             throw new \ReflectionException(
                     'Annotation parameter name may contain letters, underscores '
                     . 'and numbers, but contains an invalid character: '
-                    . $word->content
+                    . $token->value
             );
         }
 
-        $annotation->name = $word->content;
-        $annotation->type = $word->content;
+        $annotation->type = $annotation->name = $token->value;
         return true;
     }
 }

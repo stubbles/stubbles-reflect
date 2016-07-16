@@ -50,27 +50,27 @@ class MyTestClass2
     public function foo(string $bar) { }
 }
 /**
- * Test for stubbles\reflect\annotation\parser\AnnotationStateParser.
+ * Test for stubbles\reflect\annotation\Parser.
  *
  * @group  reflect
  * @group  annotation
  * @group  parser
  */
-class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
+class ParserTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * instance to test
      *
-     * @type  \stubbles\reflect\annotation\parser\AnnotationStateParser
+     * @type  \stubbles\reflect\annotation\parser\Parser
      */
-    private $annotationStateParser;
+    private $parser;
 
     /**
      * set up test environment
      */
     public function setUp()
     {
-        $this->annotationStateParser = new AnnotationStateParser();
+        $this->parser = new Parser();
     }
 
     /**
@@ -89,7 +89,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     private function parseMyTestClassAnnotation(string $type): array
     {
         $clazz = new \ReflectionClass(MyTestClass::class);
-        return $this->annotationStateParser->parse(
+        return $this->parser->parse(
                 $clazz->getDocComment(),
                 MyTestClass::class
         )[MyTestClass::class]->named($type);
@@ -231,7 +231,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
         assert(
                 iterator_to_array(
-                        $this->annotationStateParser->parse($comment, 'tabs')['tabs']
+                        $this->parser->parse($comment, 'tabs')['tabs']
                                 ->all()
                 ),
                 equals([new Annotation('Foo', 'tabs')])
@@ -254,7 +254,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     private function parseMyTestClass2Annotation($type)
     {
         $method = new \ReflectionMethod(MyTestClass2::class, 'foo');
-        return $this->annotationStateParser->parse(
+        return $this->parser->parse(
                 $method->getDocComment(),
                 MyTestClass2::class . '::foo()'
         )[MyTestClass2::class . '::foo()#bar']->named($type);
@@ -351,7 +351,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function parseIncompleteDocblockThrowsReflectionException()
     {
         expect(function() {
-                $this->annotationStateParser->parse('/**
+                $this->parser->parse('/**
              * a method with an annotation for its parameter
              *
              * @ForArgument1{bar}',
@@ -366,7 +366,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
     {
         expect(function() {
-            $this->annotationStateParser->parse('/**
+            $this->parser->parse('/**
          * a method with an annotation for its parameter
          *
          * @Foo(name=\'dum "di" dam\', true)
@@ -386,7 +386,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
      */
     public function foobar()
     {
-        $annotations = $this->annotationStateParser->parse('/**
+        $annotations = $this->parser->parse('/**
      * a method with an annotation for its parameter
      *
      * @Foo(name=\'dum "di" dam\')
@@ -405,7 +405,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function canNotUseEmptyParameterNamesInParamAnnotation()
     {
         expect(function() {
-            $this->annotationStateParser->parse('/**
+            $this->parser->parse('/**
      * a method with an annotation for its parameter
      *
      * @Foo{}
@@ -423,7 +423,7 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
     public function canNotUseEmptyAnnotationType()
     {
         expect(function() {
-            $this->annotationStateParser->parse('/**
+            $this->parser->parse('/**
      * a method with an annotation for its parameter
      *
      * @Foo[]

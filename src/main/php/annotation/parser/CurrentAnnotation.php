@@ -8,7 +8,7 @@ declare(strict_types=1);
  *
  * @package  stubbles\reflect
  */
-namespace stubbles\reflect\annotation\parser\state;
+namespace stubbles\reflect\annotation\parser;
 /**
  * Information about the currently parsed annotation.
  *
@@ -39,7 +39,7 @@ class CurrentAnnotation
      *
      * @type  string
      */
-    public $currentParam = null;
+    public $currentParam = '__value';
     /**
      * annotation target
      *

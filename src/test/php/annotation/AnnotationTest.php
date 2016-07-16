@@ -18,13 +18,6 @@ use function bovigo\assert\{
     predicate\equals
 };
 /**
- * Helper class for the test.
- */
-class MyTestClass
-{
-    const TEST_CONSTANT = 'baz';
-}
-/**
  * Test for stubbles\reflect\annotation\Annotation.
  *
  * @group  reflect
@@ -33,6 +26,8 @@ class MyTestClass
  */
 class AnnotationTest extends \PHPUnit_Framework_TestCase
 {
+    const TEST_CONSTANT = 'baz';
+
     /**
      * @param   array $values
      * @return  \stubbles\reflect\annotation\Annotation
@@ -289,7 +284,7 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
             [new \ReflectionClass(__CLASS__), __CLASS__ . '.class'],
             ['true', "'true'"],
             ['null', '"null"'],
-            [MyTestClass::TEST_CONSTANT, MyTestClass::class . '::TEST_CONSTANT']
+            [AnnotationTest::TEST_CONSTANT, __CLASS__ . '::TEST_CONSTANT']
         ];
     }
 

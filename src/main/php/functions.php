@@ -12,7 +12,6 @@ namespace stubbles\reflect {
     use stubbles\sequence\Sequence;
     use stubbles\reflect\annotation\AnnotationCache;
     use stubbles\reflect\annotation\Annotations;
-    use stubbles\reflect\annotation\parser\AnnotationStateParser;
 
     use function stubbles\values\typeOf;
 
@@ -96,7 +95,7 @@ namespace stubbles\reflect {
 
         list($sourceTarget) = explode('#', $target);
         $return = null;
-        foreach (AnnotationStateParser::parseFrom(docComment($reflector), $sourceTarget) as $annotations) {
+        foreach (Annotations::parse(docComment($reflector), $sourceTarget) as $annotations) {
             AnnotationCache::put($annotations);
             if ($annotations->target() === $target) {
                 $return = $annotations;
