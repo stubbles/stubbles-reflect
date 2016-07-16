@@ -22,8 +22,8 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
      * @type  array
      */
     public $signalTokens = [
-            "'" => AnnotationState::PARAM_VALUE_ENCLOSED,
-            '"' => AnnotationState::PARAM_VALUE_ENCLOSED,
+            "'" => AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES,
+            '"' => AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES,
             '=' => AnnotationState::PARAM_VALUE,
             ')' => AnnotationState::DOCBLOCK,
     ];
@@ -36,16 +36,20 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
-        $paramName = trim(ltrim(trim($word), ',*'));
+        $paramName = trim(ltrim(trim($word->content), ',*'));
         if ("'" === $currentToken || '"' === $currentToken) {
             if (strlen($paramName) > 0) {
                 throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $currentToken . '. Probably an equal sign is missing: ' . $paramName);
             }
 
             $this->parser->registerAnnotationParam('__value');
-            $this->parser->changeState(AnnotationState::PARAM_VALUE_ENCLOSED, $currentToken);
+            if ("'" === $currentToken) {
+                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES);
+            } else {
+                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES);
+            }
         } elseif ('=' === $currentToken) {
             if (strlen($paramName) == 0) {
                 throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =: ' . $paramName);

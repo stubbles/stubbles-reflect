@@ -31,17 +31,17 @@ class AnnotationType extends AnnotationAbstractState implements AnnotationState
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
-        if (empty($word)) {
+        if (empty($word->content)) {
             throw new \ReflectionException('Annotation type can not be empty.');
         }
 
-        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
             throw new \ReflectionException('Annotation type may contain letters, underscores and numbers, but contains an invalid character.');
         }
 
-        $this->parser->setAnnotationType($word);
+        $this->parser->setAnnotationType($word->content);
         $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }

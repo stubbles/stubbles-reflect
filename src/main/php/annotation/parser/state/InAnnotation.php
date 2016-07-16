@@ -35,7 +35,7 @@ class InAnnotation extends AnnotationAbstractState implements AnnotationState
      * @param   string  $currentToken  current token that signaled end of word
      * @return  bool
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
         if ("\n" === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);

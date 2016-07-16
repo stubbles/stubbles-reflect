@@ -68,27 +68,27 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
-        if (strlen($word) > 0) {
-            if (isset($this->forbiddenAnnotationNames[$word])) {
+        if (strlen($word->content) > 0) {
+            if (isset($this->forbiddenAnnotationNames[$word->content])) {
                 $this->parser->changeState(AnnotationState::DOCBLOCK);
                 return true;
             }
 
-            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
                 throw new \ReflectionException(
                         'Annotation parameter name may contain letters, underscores '
                         . 'and numbers, but contains an invalid character: '
-                        . $word
+                        . $word->content
                 );
             }
 
-            $this->parser->registerAnnotation($word);
+            $this->parser->registerAnnotation($word->content);
         }
 
         if (' ' === $currentToken) {
-            if (empty($word)) {
+            if (empty($word->content)) {
                 $this->parser->changeState(AnnotationState::DOCBLOCK);
             } else {
                 $this->parser->changeState(AnnotationState::ANNOTATION);
@@ -96,19 +96,19 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
         } elseif ("\n" === $currentToken || "\r" === $currentToken) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);
         } elseif ('{' === $currentToken) {
-            if (empty($word)) {
+            if (empty($word->content)) {
                 throw new \ReflectionException('Annotation name can not be empty');
             }
 
             $this->parser->changeState(AnnotationState::ARGUMENT);
         } elseif ('[' === $currentToken) {
-            if (empty($word)) {
+            if (empty($word->content)) {
                 throw new \ReflectionException('Annotation name can not be empty');
             }
 
             $this->parser->changeState(AnnotationState::ANNOTATION_TYPE);
         } elseif ('(' === $currentToken) {
-            if (empty($word)) {
+            if (empty($word->content)) {
                 throw new \ReflectionException('Annotation name can not be empty');
             }
 

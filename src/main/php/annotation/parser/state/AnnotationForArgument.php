@@ -31,17 +31,17 @@ class AnnotationForArgument extends AnnotationAbstractState implements Annotatio
      * @return  bool
      * @throws  \ReflectionException
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
-        if (empty($word)) {
+        if (empty($word->content)) {
             throw new \ReflectionException('Argument name for annotation is empty.');
         }
 
-        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word) == false) {
+        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
             throw new \ReflectionException('Argument name for annotation may contain letters, underscores and numbers, but contains an invalid character.');
         }
 
-        $this->parser->markAsParameterAnnotation($word);
+        $this->parser->markAsParameterAnnotation($word->content);
         $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }

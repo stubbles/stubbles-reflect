@@ -72,33 +72,32 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function __construct()
     {
-        $this->states[AnnotationState::DOCBLOCK]             = new Docblock($this);
-        $this->states[AnnotationState::ANNOTATION]           = new InAnnotation($this);
-        $this->states[AnnotationState::ANNOTATION_NAME]      = new AnnotationName($this);
-        $this->states[AnnotationState::ANNOTATION_TYPE]      = new AnnotationType($this);
-        $this->states[AnnotationState::ARGUMENT]             = new AnnotationForArgument($this);
-        $this->states[AnnotationState::PARAM_NAME]           = new ParamName($this);
-        $this->states[AnnotationState::PARAM_VALUE]          = new ParamValue($this);
-        $this->states[AnnotationState::PARAM_VALUE_ENCLOSED] = new EnclosedParamValue($this);
+        $this->states = [
+                AnnotationState::DOCBLOCK                     => new Docblock($this),
+                AnnotationState::ANNOTATION                   => new InAnnotation($this),
+                AnnotationState::ANNOTATION_NAME              => new AnnotationName($this),
+                AnnotationState::ANNOTATION_TYPE              => new AnnotationType($this),
+                AnnotationState::ARGUMENT                     => new AnnotationForArgument($this),
+                AnnotationState::PARAM_NAME                   => new ParamName($this),
+                AnnotationState::PARAM_VALUE                  => new ParamValue($this),
+                AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES => new EnclosedParamValue($this, "'"),
+                AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES => new EnclosedParamValue($this, '"')
+        ];
     }
 
     /**
      * change the current state
      *
      * @param   int     $state
-     * @param   string  $currentToken  optional  current token that should be processed
      * @throws  \ReflectionException
      */
-    public function changeState(int $state, string $currentToken = null)
+    public function changeState(int $state)
     {
         if (!isset($this->states[$state])) {
             throw new \ReflectionException('Unknown state ' . $state);
         }
 
         $this->currentState = $this->states[$state];
-        if (null != $currentToken) {
-            $this->currentState->process('', $currentToken);
-        }
     }
 
     /**
@@ -133,15 +132,16 @@ class AnnotationStateParser implements AnnotationParser
         $this->annotations   = [$target => new Annotations($target)];
         $this->changeState(AnnotationState::DOCBLOCK);
         $len  = strlen($docComment);
-        $word = '';
+        $word = new \stdClass();
+        $word->content = '';
         for ($i = 6; $i < $len; $i++) {
             $currentToken = $docComment{$i};
             if (isset($this->currentState->signalTokens[$currentToken])) {
                 if ($this->currentState->process($word, $currentToken)) {
-                    $word = '';
+                    $word->content = '';
                 }
             } else {
-                $word .= $currentToken;
+                $word->content .= $currentToken;
             }
         }
 

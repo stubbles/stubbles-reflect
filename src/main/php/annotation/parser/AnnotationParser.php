@@ -20,9 +20,8 @@ interface AnnotationParser
      * change the current state
      *
      * @param  int     $state
-     * @param  string  $token  token that should be processed by the state
      */
-    public function changeState(int $state, string $token = null);
+    public function changeState(int $state);
 
     /**
      * parse a docblock and return all annotations found

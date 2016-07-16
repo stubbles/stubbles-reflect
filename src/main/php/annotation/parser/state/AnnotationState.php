@@ -47,7 +47,11 @@ interface AnnotationState
     /**
      * parser is inside an enclosed annotation param value
      */
-    const PARAM_VALUE_ENCLOSED = 9;
+    const PARAM_VALUE_IN_SINGLE_QUOTES = 9;
+    /**
+     * parser is inside an enclosed annotation param value
+     */
+    const PARAM_VALUE_IN_DOUBLE_QUOTES = 10;
 
     /**
      * processes a token
@@ -56,5 +60,5 @@ interface AnnotationState
      * @param   string  $currentToken  current token that signaled end of word
      * @return  bool
      */
-    public function process(string $word, string $currentToken): bool;
+    public function process($word, string $currentToken): bool;
 }

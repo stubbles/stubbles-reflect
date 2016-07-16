@@ -9,6 +9,7 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation\parser\state;
+use stubbles\reflect\annotation\parser\AnnotationParser;
 /**
  * Parser is inside an enclosed annotation param value.
  *
@@ -21,22 +22,26 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      *
      * @type  array
      */
-    public $signalTokens = [
-            "'" => AnnotationState::PARAM_NAME,
-            '"' => AnnotationState::PARAM_NAME
-    ];
+    public $signalTokens;
     /**
      * character in which the value is enclosed
      *
      * @type  string
      */
     private $enclosed  = null;
+
     /**
-     * collected value until an escaping sign occurred
+     * constructor
      *
-     * @type  string
+     * @param  \stubbles\reflect\annotation\parser\AnnotationParser  $parser
+     * @param  string                                                $enclosed
      */
-    private $collected = '';
+    public function __construct(AnnotationParser $parser, $enclosed)
+    {
+        parent::__construct($parser);
+        $this->enclosed     = $enclosed;
+        $this->signalTokens = [$enclosed => AnnotationState::PARAM_NAME];
+    }
 
     /**
      * processes a token
@@ -45,19 +50,16 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      * @param   string  $currentToken  current token that signaled end of word
      * @return  bool
      */
-    public function process(string $word, string $currentToken): bool
+    public function process($word, string $currentToken): bool
     {
-        if (strlen($this->collected) === 0 && strlen($word) === 0) {
-            $this->enclosed = $currentToken;
-        } elseif ($this->enclosed === $currentToken && substr($word, -1) === '\\') {
-            $this->collected .= substr($word, 0, strlen($word) - 1) . $currentToken;
-        } elseif ($this->enclosed === $currentToken) {
-            $this->parser->setAnnotationParamValue($this->collected . $word);
-            $this->enclosed     = null;
-            $this->collected    = '';
+        if ($this->enclosed === $currentToken && substr($word->content, -1) === '\\') {
+            $word->content = rtrim($word->content, '\\') . $currentToken;
+            return false;
+        }
+
+        if ($this->enclosed === $currentToken) {
+            $this->parser->setAnnotationParamValue($word->content);
             $this->parser->changeState(AnnotationState::PARAM_NAME);
-        } else {
-            $this->collected .= $word . $currentToken;
         }
 
         return true;
