@@ -9,8 +9,6 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect;
-use stubbles\reflect\annotation\parser\AnnotationParser;
-
 use function bovigo\assert\{
     assert,
     assertTrue,
@@ -20,6 +18,13 @@ use function bovigo\assert\{
     predicate\isGreaterThan,
     predicate\isInstanceOf
 };
+/**
+ * Helper interface for the test.
+ */
+interface SomethingToReflect
+{
+    function something();
+}
 /**
  * Tests for stubbles\reflect\*().
  *
@@ -389,7 +394,7 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
      */
     public function reflectInterface()
     {
-        assert(reflect(AnnotationParser::class), isInstanceOf(\ReflectionClass::class));
+        assert(reflect(SomethingToReflect::class), isInstanceOf(\ReflectionClass::class));
     }
 
     /**
