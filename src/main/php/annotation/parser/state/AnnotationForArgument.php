@@ -42,7 +42,6 @@ class AnnotationForArgument extends AnnotationAbstractState implements Annotatio
         }
 
         $this->parser->markAsParameterAnnotation($word->content);
-        $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }
 }

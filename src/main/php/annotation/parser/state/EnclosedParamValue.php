@@ -52,16 +52,12 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
      */
     public function process($word, string $currentToken): bool
     {
-        if ($this->enclosed === $currentToken && substr($word->content, -1) === '\\') {
+        if (substr($word->content, -1) === '\\') {
             $word->content = rtrim($word->content, '\\') . $currentToken;
             return false;
         }
 
-        if ($this->enclosed === $currentToken) {
-            $this->parser->setAnnotationParamValue($word->content);
-            $this->parser->changeState(AnnotationState::PARAM_NAME);
-        }
-
+        $this->parser->setAnnotationParamValue($word->content);
         return true;
     }
 }

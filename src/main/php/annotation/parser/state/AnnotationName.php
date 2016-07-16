@@ -70,51 +70,25 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
      */
     public function process($word, string $currentToken): bool
     {
-        if (strlen($word->content) > 0) {
-            if (isset($this->forbiddenAnnotationNames[$word->content])) {
-                $this->parser->changeState(AnnotationState::DOCBLOCK);
-                return true;
-            }
-
-            if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
-                throw new \ReflectionException(
-                        'Annotation parameter name may contain letters, underscores '
-                        . 'and numbers, but contains an invalid character: '
-                        . $word->content
-                );
-            }
-
-            $this->parser->registerAnnotation($word->content);
+        if (empty($word->content)) {
+            throw new \ReflectionException('Annotation name can not be empty');
         }
 
-        if (' ' === $currentToken) {
-            if (empty($word->content)) {
-                $this->parser->changeState(AnnotationState::DOCBLOCK);
-            } else {
-                $this->parser->changeState(AnnotationState::ANNOTATION);
-            }
-        } elseif ("\n" === $currentToken || "\r" === $currentToken) {
+        if (isset($this->forbiddenAnnotationNames[$word->content])) {
             $this->parser->changeState(AnnotationState::DOCBLOCK);
-        } elseif ('{' === $currentToken) {
-            if (empty($word->content)) {
-                throw new \ReflectionException('Annotation name can not be empty');
-            }
-
-            $this->parser->changeState(AnnotationState::ARGUMENT);
-        } elseif ('[' === $currentToken) {
-            if (empty($word->content)) {
-                throw new \ReflectionException('Annotation name can not be empty');
-            }
-
-            $this->parser->changeState(AnnotationState::ANNOTATION_TYPE);
-        } elseif ('(' === $currentToken) {
-            if (empty($word->content)) {
-                throw new \ReflectionException('Annotation name can not be empty');
-            }
-
-            $this->parser->changeState(AnnotationState::PARAM_NAME);
+            $word->content = '';
+            return false;
         }
 
+        if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $word->content) == false) {
+            throw new \ReflectionException(
+                    'Annotation parameter name may contain letters, underscores '
+                    . 'and numbers, but contains an invalid character: '
+                    . $word->content
+            );
+        }
+
+        $this->parser->registerAnnotation($word->content);
         return true;
     }
 }

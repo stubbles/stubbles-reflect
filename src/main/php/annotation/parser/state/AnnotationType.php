@@ -42,7 +42,6 @@ class AnnotationType extends AnnotationAbstractState implements AnnotationState
         }
 
         $this->parser->setAnnotationType($word->content);
-        $this->parser->changeState(AnnotationState::ANNOTATION);
         return true;
     }
 }

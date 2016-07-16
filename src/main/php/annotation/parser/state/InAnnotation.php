@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class InAnnotation extends AnnotationAbstractState implements AnnotationState
+class InAnnotation implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -37,16 +37,6 @@ class InAnnotation extends AnnotationAbstractState implements AnnotationState
      */
     public function process($word, string $currentToken): bool
     {
-        if ("\n" === $currentToken) {
-            $this->parser->changeState(AnnotationState::DOCBLOCK);
-        } elseif ('{' === $currentToken) {
-            $this->parser->changeState(AnnotationState::ARGUMENT);
-        } elseif ('[' === $currentToken) {
-            $this->parser->changeState(AnnotationState::ANNOTATION_TYPE);
-        } elseif ('(' === $currentToken) {
-            $this->parser->changeState(AnnotationState::PARAM_NAME);
-        }
-
         return true;
     }
 }

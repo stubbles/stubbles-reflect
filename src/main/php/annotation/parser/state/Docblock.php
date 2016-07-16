@@ -13,7 +13,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class Docblock extends AnnotationAbstractState implements AnnotationState
+class Docblock implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -31,7 +31,6 @@ class Docblock extends AnnotationAbstractState implements AnnotationState
      */
     public function process($word, string $currentToken): bool
     {
-        $this->parser->changeState(AnnotationState::ANNOTATION_NAME);
         return true;
     }
 }

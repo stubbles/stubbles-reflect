@@ -73,8 +73,8 @@ class AnnotationStateParser implements AnnotationParser
     public function __construct()
     {
         $this->states = [
-                AnnotationState::DOCBLOCK                     => new Docblock($this),
-                AnnotationState::ANNOTATION                   => new InAnnotation($this),
+                AnnotationState::DOCBLOCK                     => new Docblock(),
+                AnnotationState::ANNOTATION                   => new InAnnotation(),
                 AnnotationState::ANNOTATION_NAME              => new AnnotationName($this),
                 AnnotationState::ANNOTATION_TYPE              => new AnnotationType($this),
                 AnnotationState::ARGUMENT                     => new AnnotationForArgument($this),
@@ -83,6 +83,7 @@ class AnnotationStateParser implements AnnotationParser
                 AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES => new EnclosedParamValue($this, "'"),
                 AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES => new EnclosedParamValue($this, '"')
         ];
+        $this->currentState = $this->states[AnnotationState::DOCBLOCK];
     }
 
     /**
@@ -130,7 +131,6 @@ class AnnotationStateParser implements AnnotationParser
     {
         $this->currentTarget = $target;
         $this->annotations   = [$target => new Annotations($target)];
-        $this->changeState(AnnotationState::DOCBLOCK);
         $len  = strlen($docComment);
         $word = new \stdClass();
         $word->content = '';
@@ -138,7 +138,8 @@ class AnnotationStateParser implements AnnotationParser
             $currentToken = $docComment{$i};
             if (isset($this->currentState->signalTokens[$currentToken])) {
                 if ($this->currentState->process($word, $currentToken)) {
-                    $word->content = '';
+                    $word->content      = '';
+                    $this->currentState = $this->states[$this->currentState->signalTokens[$currentToken]];
                 }
             } else {
                 $word->content .= $currentToken;

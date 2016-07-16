@@ -45,11 +45,6 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
             }
 
             $this->parser->registerAnnotationParam('__value');
-            if ("'" === $currentToken) {
-                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES);
-            } else {
-                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES);
-            }
         } elseif ('=' === $currentToken) {
             if (strlen($paramName) == 0) {
                 throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =: ' . $paramName);
@@ -58,13 +53,10 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
             }
 
             $this->parser->registerAnnotationParam($paramName);
-            $this->parser->changeState(AnnotationState::PARAM_VALUE);
         } elseif (')' === $currentToken) {
             if (strlen($paramName) > 0) {
                 $this->parser->registerSingleAnnotationParam($paramName);
             }
-
-            $this->parser->changeState(AnnotationState::DOCBLOCK);
         }
 
         return true;

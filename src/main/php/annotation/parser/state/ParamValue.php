@@ -37,18 +37,10 @@ class ParamValue extends AnnotationAbstractState implements AnnotationState
      */
     public function process($word, string $currentToken): bool
     {
-        if (strlen($word->content) === 0 && ('"' === $currentToken || "'" === $currentToken)) {
-            if ("'" === $currentToken) {
-                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES);
-            } else {
-                $this->parser->changeState(AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES);
-            }
-        } elseif (',' === $currentToken) {
+        if (',' === $currentToken) {
             $this->parser->setAnnotationParamValue($word->content);
-            $this->parser->changeState(AnnotationState::PARAM_NAME);
         } elseif (')' === $currentToken) {
             $this->parser->setAnnotationParamValue($word->content);
-            $this->parser->changeState(AnnotationState::DOCBLOCK);
         }
 
         return true;
