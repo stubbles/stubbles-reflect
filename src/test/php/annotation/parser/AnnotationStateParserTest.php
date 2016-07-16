@@ -360,33 +360,24 @@ class AnnotationStateParserTest extends \PHPUnit_Framework_TestCase
         ->throws(\ReflectionException::class);
     }
 
-
-
-    /**
-     * @test
-     */
-    public function changeStateToUnknownStateThrowsReflectionException()
-    {
-        expect(function() {
-                $this->annotationStateParser->changeState(-1);
-        })
-        ->throws(\ReflectionException::class);
-    }
-
     /**
      * @test
      */
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
     {
-        $this->annotationStateParser->registerAnnotation('foo');
-        $this->annotationStateParser->registerAnnotationParam('paramName');
-        $this->annotationStateParser->setAnnotationParamValue('paramValue');
         expect(function() {
-                $this->annotationStateParser->registerSingleAnnotationParam(
-                        'singleAnnotationValue'
-                );
+            $this->annotationStateParser->parse('/**
+         * a method with an annotation for its parameter
+         *
+         * @Foo(name=\'dum "di" dam\', true)
+         */',
+                    'target');
         })
-        ->throws(\ReflectionException::class);
+                ->throws(\ReflectionException::class)
+                ->withMessage(
+                        'Error in annotation Foo, contains value '
+                        . '"true" without a name after named values'
+                );
     }
 
     /**

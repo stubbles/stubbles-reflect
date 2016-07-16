@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class ParamValue extends AnnotationAbstractState implements AnnotationState
+class ParamValue implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -31,16 +31,15 @@ class ParamValue extends AnnotationAbstractState implements AnnotationState
     /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
      */
-    public function process($word, string $currentToken): bool
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
     {
-        if (',' === $currentToken) {
-            $this->parser->setAnnotationParamValue($word->content);
-        } elseif (')' === $currentToken) {
-            $this->parser->setAnnotationParamValue($word->content);
+        if (',' === $currentToken || ')' === $currentToken) {
+            $annotation->params[$annotation->currentParam] = $word->content;
         }
 
         return true;

@@ -9,13 +9,12 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation\parser\state;
-use stubbles\reflect\annotation\parser\AnnotationParser;
 /**
  * Parser is inside an enclosed annotation param value.
  *
  * @internal
  */
-class EnclosedParamValue extends AnnotationAbstractState implements AnnotationState
+class EnclosedParamValue implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -33,12 +32,10 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
     /**
      * constructor
      *
-     * @param  \stubbles\reflect\annotation\parser\AnnotationParser  $parser
-     * @param  string                                                $enclosed
+     * @param  string  $enclosed
      */
-    public function __construct(AnnotationParser $parser, $enclosed)
+    public function __construct($enclosed)
     {
-        parent::__construct($parser);
         $this->enclosed     = $enclosed;
         $this->signalTokens = [$enclosed => AnnotationState::PARAM_NAME];
     }
@@ -46,18 +43,19 @@ class EnclosedParamValue extends AnnotationAbstractState implements AnnotationSt
     /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
      */
-    public function process($word, string $currentToken): bool
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
     {
         if (substr($word->content, -1) === '\\') {
             $word->content = rtrim($word->content, '\\') . $currentToken;
             return false;
         }
 
-        $this->parser->setAnnotationParamValue($word->content);
+        $annotation->params[$annotation->currentParam] = $word->content;
         return true;
     }
 }

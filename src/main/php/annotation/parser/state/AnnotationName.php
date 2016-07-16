@@ -9,12 +9,13 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation\parser\state;
+use stubbles\reflect\annotation\parser\AnnotationParser;
 /**
  * Parser is inside the annotation name.
  *
  * @internal
  */
-class AnnotationName extends AnnotationAbstractState implements AnnotationState
+class AnnotationName implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -30,11 +31,17 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
             '('  => AnnotationState::PARAM_NAME
     ];
     /**
+     * the parser this state belongs to
+     *
+     * @type  \stubbles\reflect\annotation\parser\AnnotationParser
+     */
+    private $parser;
+    /**
      * list of forbidden annotation names
      *
      * @type  string[]
      */
-    protected $forbiddenAnnotationNames = [
+    private $forbiddenAnnotationNames = [
             'deprecated'     => 1,
             'example'        => 1,
             'ignore'         => 1,
@@ -61,14 +68,24 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
     ];
 
     /**
+     * constructor
+     *
+     * @param  \stubbles\reflect\annotation\parser\AnnotationParser  $parser
+     */
+    public function __construct(AnnotationParser $parser)
+    {
+        $this->parser = $parser;
+    }
+
+    /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
-     * @throws  \ReflectionException
      */
-    public function process($word, string $currentToken): bool
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
     {
         if (empty($word->content)) {
             throw new \ReflectionException('Annotation name can not be empty');
@@ -88,7 +105,8 @@ class AnnotationName extends AnnotationAbstractState implements AnnotationState
             );
         }
 
-        $this->parser->registerAnnotation($word->content);
+        $annotation->name = $word->content;
+        $annotation->type = $word->content;
         return true;
     }
 }

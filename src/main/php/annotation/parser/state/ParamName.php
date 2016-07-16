@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class ParamName extends AnnotationAbstractState implements AnnotationState
+class ParamName implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -31,12 +31,12 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
     /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
-     * @throws  \ReflectionException
      */
-    public function process($word, string $currentToken): bool
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
     {
         $paramName = trim(ltrim(trim($word->content), ',*'));
         if ("'" === $currentToken || '"' === $currentToken) {
@@ -44,7 +44,7 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
                 throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains ' . $currentToken . '. Probably an equal sign is missing: ' . $paramName);
             }
 
-            $this->parser->registerAnnotationParam('__value');
+            $annotation->currentParam = '__value';
         } elseif ('=' === $currentToken) {
             if (strlen($paramName) == 0) {
                 throw new \ReflectionException('Annotation parameter name has to start with a letter or underscore, but starts with =: ' . $paramName);
@@ -52,10 +52,18 @@ class ParamName extends AnnotationAbstractState implements AnnotationState
                 throw new \ReflectionException('Annotation parameter name may contain letters, underscores and numbers, but contains an invalid character: ' . $paramName);
             }
 
-            $this->parser->registerAnnotationParam($paramName);
+            $annotation->currentParam = $paramName;
         } elseif (')' === $currentToken) {
             if (strlen($paramName) > 0) {
-                $this->parser->registerSingleAnnotationParam($paramName);
+                if (count($annotation->params) > 0) {
+                    throw new \ReflectionException(
+                        'Error in annotation ' . $annotation->type
+                        . ', contains value "' . $paramName
+                        . '" without a name after named values'
+                    );
+                }
+
+                $annotation->params['__value'] = $paramName;
             }
         }
 

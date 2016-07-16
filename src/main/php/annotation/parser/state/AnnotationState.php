@@ -56,9 +56,10 @@ interface AnnotationState
     /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
      */
-    public function process($word, string $currentToken): bool;
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool;
 }

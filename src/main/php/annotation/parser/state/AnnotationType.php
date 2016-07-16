@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser\state;
  *
  * @internal
  */
-class AnnotationType extends AnnotationAbstractState implements AnnotationState
+class AnnotationType implements AnnotationState
 {
     /**
      * list of tokens which signal that a word must be processed
@@ -26,12 +26,12 @@ class AnnotationType extends AnnotationAbstractState implements AnnotationState
     /**
      * processes a token
      *
-     * @param   string  $word          parsed word to be processed
-     * @param   string  $currentToken  current token that signaled end of word
+     * @param   string             $word          parsed word to be processed
+     * @param   string             $currentToken  current token that signaled end of word
+     * @param   CurrentAnnotation  $annotation    currently parsed annotation
      * @return  bool
-     * @throws  \ReflectionException
      */
-    public function process($word, string $currentToken): bool
+    public function process($word, string $currentToken, CurrentAnnotation $annotation): bool
     {
         if (empty($word->content)) {
             throw new \ReflectionException('Annotation type can not be empty.');
@@ -41,7 +41,7 @@ class AnnotationType extends AnnotationAbstractState implements AnnotationState
             throw new \ReflectionException('Annotation type may contain letters, underscores and numbers, but contains an invalid character.');
         }
 
-        $this->parser->setAnnotationType($word->content);
+        $annotation->type = $word->content;
         return true;
     }
 }
