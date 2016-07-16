@@ -46,6 +46,12 @@ class CurrentAnnotation
      * @param  string
      */
     public $target;
+    /**
+     * whether annotation must be ignored, i.e. because it's a phpdoc one
+     *
+     * @type  bool
+     */
+    public $ignored      = false;
 
     public function __construct(string $target)
     {

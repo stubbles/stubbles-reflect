@@ -37,12 +37,6 @@ class AnnotationStateParser implements AnnotationParser
      * @type  \stubbles\reflect\annotation\parser\state\AnnotationState[]
      */
     private $states;
-    /**
-     * the current state
-     *
-     * @type  \stubbles\reflect\annotation\parser\state\AnnotationParserState
-     */
-    private $currentState;
 
     /**
      * constructor
@@ -52,7 +46,7 @@ class AnnotationStateParser implements AnnotationParser
         $this->states = [
                 AnnotationState::DOCBLOCK                     => new Docblock(),
                 AnnotationState::ANNOTATION                   => new InAnnotation(),
-                AnnotationState::ANNOTATION_NAME              => new AnnotationName($this),
+                AnnotationState::ANNOTATION_NAME              => new AnnotationName(),
                 AnnotationState::ANNOTATION_TYPE              => new AnnotationType(),
                 AnnotationState::ARGUMENT                     => new AnnotationForArgument(),
                 AnnotationState::PARAM_NAME                   => new ParamName(),
@@ -60,17 +54,6 @@ class AnnotationStateParser implements AnnotationParser
                 AnnotationState::PARAM_VALUE_IN_SINGLE_QUOTES => new EnclosedParamValue("'"),
                 AnnotationState::PARAM_VALUE_IN_DOUBLE_QUOTES => new EnclosedParamValue('"')
         ];
-        $this->currentState = $this->states[AnnotationState::DOCBLOCK];
-    }
-
-    /**
-     * change the current state
-     *
-     * @param   int     $state
-     */
-    public function changeState(int $state)
-    {
-        $this->currentState = $this->states[$state];
     }
 
     /**
@@ -101,19 +84,20 @@ class AnnotationStateParser implements AnnotationParser
      */
     public function parse(string $docComment, string $target): array
     {
-        $annotations = [$target => new Annotations($target)];
-        $annotation  = new CurrentAnnotation($target);
+        $annotations  = [$target => new Annotations($target)];
+        $annotation   = new CurrentAnnotation($target);
+        $currentState = $this->states[AnnotationState::DOCBLOCK];
         // substract last two characters which close the doc comment from length
         $len  = strlen($docComment) - 2;
         $word = new \stdClass();
         $word->content = '';
         for ($i = 6; $i < $len; $i++) {
             $currentToken = $docComment{$i};
-            if (isset($this->currentState->signalTokens[$currentToken])) {
-                if ($this->currentState->process($word, $currentToken, $annotation)) {
+            if (isset($currentState->signalTokens[$currentToken])) {
+                if ($currentState->process($word, $currentToken, $annotation)) {
                     $word->content      = '';
-                    $this->currentState = $this->states[$this->currentState->signalTokens[$currentToken]];
-                    if ($this->currentState instanceof Docblock) {
+                    $currentState = $this->states[$currentState->signalTokens[$currentToken]];
+                    if ($currentState instanceof Docblock) {
                         if (null !== $annotation->name) {
                             if (!isset($annotations[$annotation->target])) {
                                 $annotations[$annotation->target] = new Annotations($annotation->target);
@@ -131,18 +115,21 @@ class AnnotationStateParser implements AnnotationParser
 
                         $annotation = new CurrentAnnotation($target);
                     }
+                } elseif ($annotation->ignored) {
+                    $word->content = '';
+                    $currentState  = $this->states[AnnotationState::DOCBLOCK];
                 }
             } else {
                 $word->content .= $currentToken;
             }
         }
 
-        if (!($this->currentState instanceof Docblock)) {
+        if (!($currentState instanceof Docblock)) {
             throw new \ReflectionException(
                     'Annotation parser finished in wrong state for annotation '
                     . $target . '@' . $annotation->name
                     . ', annotation probably closed incorrectly, last state was '
-                    . get_class($this->currentState));
+                    . get_class($currentState));
         }
 
         return $annotations;

@@ -9,7 +9,6 @@ declare(strict_types=1);
  * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation\parser\state;
-use stubbles\reflect\annotation\parser\AnnotationParser;
 /**
  * Parser is inside the annotation name.
  *
@@ -30,12 +29,6 @@ class AnnotationName implements AnnotationState
             '['  => AnnotationState::ANNOTATION_TYPE,
             '('  => AnnotationState::PARAM_NAME
     ];
-    /**
-     * the parser this state belongs to
-     *
-     * @type  \stubbles\reflect\annotation\parser\AnnotationParser
-     */
-    private $parser;
     /**
      * list of forbidden annotation names
      *
@@ -68,16 +61,6 @@ class AnnotationName implements AnnotationState
     ];
 
     /**
-     * constructor
-     *
-     * @param  \stubbles\reflect\annotation\parser\AnnotationParser  $parser
-     */
-    public function __construct(AnnotationParser $parser)
-    {
-        $this->parser = $parser;
-    }
-
-    /**
      * processes a token
      *
      * @param   string             $word          parsed word to be processed
@@ -92,8 +75,7 @@ class AnnotationName implements AnnotationState
         }
 
         if (isset($this->forbiddenAnnotationNames[$word->content])) {
-            $this->parser->changeState(AnnotationState::DOCBLOCK);
-            $word->content = '';
+            $annotation->ignored = true;
             return false;
         }
 

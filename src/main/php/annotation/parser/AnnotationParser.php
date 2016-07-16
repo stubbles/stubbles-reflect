@@ -17,13 +17,6 @@ namespace stubbles\reflect\annotation\parser;
 interface AnnotationParser
 {
     /**
-     * change the current state
-     *
-     * @param  int     $state
-     */
-    public function changeState(int $state);
-
-    /**
      * parse a docblock and return all annotations found
      *
      * @param   string  $docComment
