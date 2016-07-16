@@ -14,44 +14,42 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-interface Expression
+abstract class Expression
 {
+    public static $DOCBLOCK;
+    protected static $ANNOTATION;
+    protected static $ANNOTATION_NAME;
+    protected static $ANNOTATION_TYPE;
+    protected static $PARAM_NAME;
+    protected static $PARAM_VALUE;
+    protected static $ARGUMENT;
+    protected static $PARAM_VALUE_IN_SINGLE_QUOTES;
+    protected static $PARAM_VALUE_IN_DOUBLE_QUOTES;
+
     /**
-     * parser is inside the standard docblock
+     * static initializing
      */
-    const DOCBLOCK                     = 1;
-    /**
-     * parser is inside an annotation
-     */
-    const ANNOTATION                   = 2;
-    /**
-     * parser is inside an annotation name
-     */
-    const ANNOTATION_NAME              = 3;
-    /**
-     * parser is inside an annotation type
-     */
-    const ANNOTATION_TYPE              = 4;
-    /**
-     * parser is inside an annotation param name
-     */
-    const PARAM_NAME                   = 5;
-    /**
-     * parser is inside an annotation param value
-     */
-    const PARAM_VALUE                  = 6;
-    /**
-     * parser is inside a argument declaration
-     */
-    const ARGUMENT                     = 7;
-    /**
-     * parser is inside an enclosed annotation param value
-     */
-    const PARAM_VALUE_IN_SINGLE_QUOTES = 8;
-    /**
-     * parser is inside an enclosed annotation param value
-     */
-    const PARAM_VALUE_IN_DOUBLE_QUOTES = 9;
+    public static function __static()
+    {
+        self::$DOCBLOCK                     = new Docblock();
+        self::$ANNOTATION                   = new InAnnotation();
+        self::$ANNOTATION_NAME              = new AnnotationName();
+        self::$ANNOTATION_TYPE              = new AnnotationType();
+        self::$ARGUMENT                     = new AnnotationForArgument();
+        self::$PARAM_NAME                   = new ParamName();
+        self::$PARAM_VALUE                  = new ParamValue();
+        self::$PARAM_VALUE_IN_SINGLE_QUOTES = new EnclosedParamValue();
+        self::$PARAM_VALUE_IN_DOUBLE_QUOTES = new EnclosedParamValue();
+        self::$DOCBLOCK->init();
+        self::$ANNOTATION->init();
+        self::$ANNOTATION_NAME->init();
+        self::$ANNOTATION_TYPE->init();
+        self::$ARGUMENT->init();
+        self::$PARAM_NAME->init();
+        self::$PARAM_VALUE->init();
+        self::$PARAM_VALUE_IN_SINGLE_QUOTES->init("'");
+        self::$PARAM_VALUE_IN_DOUBLE_QUOTES->init('"');
+    }
 
     /**
      * evaluates a token and the detected signal into the annotation
@@ -61,5 +59,6 @@ interface Expression
      * @param   CurrentAnnotation  $annotation  currently parsed annotation
      * @return  bool
      */
-    public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool;
+    public abstract function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool;
 }
+Expression::__static();

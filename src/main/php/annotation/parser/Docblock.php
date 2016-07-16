@@ -13,14 +13,19 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-class Docblock implements Expression
+class Docblock extends Expression
 {
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
      * @type  array
      */
-    public $after = ['@' => Expression::ANNOTATION_NAME];
+    public $after;
+
+    public function init()
+    {
+        $this->after = ['@' => self::$ANNOTATION_NAME];
+    }
 
     /**
      * @inheritDoc

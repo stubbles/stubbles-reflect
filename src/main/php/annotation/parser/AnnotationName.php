@@ -14,21 +14,27 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-class AnnotationName implements Expression
+class AnnotationName extends Expression
 {
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
      * @type  array
      */
-    public $after = [
-            ' '  => Expression::ANNOTATION,
-            "\n" => Expression::DOCBLOCK,
-            "\r" => Expression::DOCBLOCK,
-            '{'  => Expression::ARGUMENT,
-            '['  => Expression::ANNOTATION_TYPE,
-            '('  => Expression::PARAM_NAME
-    ];
+    public $after;
+
+    public function init()
+    {
+        $this->after = [
+                ' '  => self::$ANNOTATION,
+                "\n" => self::$DOCBLOCK,
+                "\r" => self::$DOCBLOCK,
+                '{'  => self::$ARGUMENT,
+                '['  => self::$ANNOTATION_TYPE,
+                '('  => self::$PARAM_NAME
+        ];
+    }
+
     /**
      * list of forbidden annotation names
      *

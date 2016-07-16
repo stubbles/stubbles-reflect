@@ -14,19 +14,24 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-class ParamName implements Expression
+class ParamName extends Expression
 {
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
      * @type  array
      */
-    public $after = [
-            "'" => Expression::PARAM_VALUE_IN_SINGLE_QUOTES,
-            '"' => Expression::PARAM_VALUE_IN_DOUBLE_QUOTES,
-            '=' => Expression::PARAM_VALUE,
-            ')' => Expression::DOCBLOCK,
-    ];
+    public $after;
+
+    public function init()
+    {
+        $this->after = [
+                "'" => self::$PARAM_VALUE_IN_SINGLE_QUOTES,
+                '"' => self::$PARAM_VALUE_IN_DOUBLE_QUOTES,
+                '=' => self::$PARAM_VALUE,
+                ')' => self::$DOCBLOCK,
+        ];
+    }
 
     /**
      * @inheritDoc

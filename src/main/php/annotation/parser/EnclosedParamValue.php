@@ -14,7 +14,7 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-class EnclosedParamValue implements Expression
+class EnclosedParamValue extends Expression
 {
     /**
      * map of characters which signal that this expressions ends and which expression follows
@@ -23,14 +23,9 @@ class EnclosedParamValue implements Expression
      */
     public $after;
 
-    /**
-     * constructor
-     *
-     * @param  string  $enclosed
-     */
-    public function __construct(string $quoteCharacter)
+    public function init(string $quoteCharacter)
     {
-        $this->after  = [$quoteCharacter => Expression::PARAM_NAME];
+        $this->after = [$quoteCharacter => self::$PARAM_NAME];
     }
 
     /**

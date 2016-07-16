@@ -14,14 +14,19 @@ namespace stubbles\reflect\annotation\parser;
  *
  * @internal
  */
-class AnnotationType implements Expression
+class AnnotationType extends Expression
 {
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
      * @type  array
      */
-    public $after = [']' => Expression::ANNOTATION];
+    public $after;
+
+    public function init()
+    {
+        $this->after = [']' => self::$ANNOTATION];
+    }
 
     /**
      * @inheritDoc
