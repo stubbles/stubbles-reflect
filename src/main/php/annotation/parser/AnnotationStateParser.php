@@ -136,29 +136,28 @@ class AnnotationStateParser implements AnnotationParser
                     . get_class($this->currentState));
         }
 
-        $this->finalize($currentAnnotation);
         return $this->annotations;
     }
 
     /**
      * finalizes the current annotation
      */
-    private function finalize(CurrentAnnotation $currentAnnotation)
+    private function finalize(CurrentAnnotation $annotation)
     {
-        if (null === $currentAnnotation->name) {
+        if (null === $annotation->name) {
             return;
         }
 
-        if (!isset($this->annotations[$currentAnnotation->target])) {
-            $this->annotations[$currentAnnotation->target] = new Annotations($currentAnnotation->target);
+        if (!isset($this->annotations[$annotation->target])) {
+            $this->annotations[$annotation->target] = new Annotations($annotation->target);
         }
 
-        $this->annotations[$currentAnnotation->target]->add(
+        $this->annotations[$annotation->target]->add(
                 new Annotation(
-                        $currentAnnotation->type,
-                        $currentAnnotation->target,
-                        $currentAnnotation->params,
-                        $currentAnnotation->name
+                        $annotation->type,
+                        $annotation->target,
+                        $annotation->params,
+                        $annotation->name
                 )
         );
     }
