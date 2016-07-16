@@ -26,12 +26,4 @@ class Docblock extends Expression
     {
         $this->after = ['@' => self::$ANNOTATION_NAME];
     }
-
-    /**
-     * @inheritDoc
-     */
-    public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
-    {
-        return true;
-    }
 }

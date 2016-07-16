@@ -59,6 +59,9 @@ abstract class Expression
      * @param   CurrentAnnotation  $annotation  currently parsed annotation
      * @return  bool
      */
-    public abstract function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool;
+     public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
+     {
+         return true;
+     }
 }
 Expression::__static();
