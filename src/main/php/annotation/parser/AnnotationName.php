@@ -83,7 +83,7 @@ class AnnotationName extends Expression
         if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $token->value) == false) {
             throw new \ReflectionException(
                     'Annotation parameter name may contain letters, underscores '
-                    . 'and numbers, but contains an invalid character: '
+                    . 'and numbers, but contains an invalid character: @'
                     . $token->value
             );
         }

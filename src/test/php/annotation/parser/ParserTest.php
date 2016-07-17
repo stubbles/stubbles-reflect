@@ -433,4 +433,43 @@ class ParserTest extends \PHPUnit_Framework_TestCase
             ->throws(\ReflectionException::class)
             ->withMessage('Annotation type can not be empty.');
     }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function annotationSignWithoutNameThrowsReflectionException()
+    {
+        expect(function() {
+            $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @
+     */',
+                'target');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage('Annotation name can not be empty');
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function annotationNameWithInvalidCharactersThrowsReflectionException()
+    {
+        expect(function() {
+            $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @1
+     */',
+                'target');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage(
+                    'Annotation parameter name may contain letters, underscores'
+                    . ' and numbers, but contains an invalid character: @1'
+            );
+    }
 }
