@@ -365,6 +365,18 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @test
+     * @since  8.0.0
+     */
+    public function canBeCastedToStringWithSingleValue()
+    {
+        assert(
+                (string) $this->createAnnotation(['__value' => 303]),
+                equals("@Life[Example](303)")
+        );
+    }
+
+    /**
      * @since  5.0.0
      */
     public function parseList(): array
@@ -395,6 +407,17 @@ class AnnotationTest extends \PHPUnit_Framework_TestCase
         assert(
                 $this->createAnnotation(['foo' => $value])->parse('foo')->$type(),
                 equals($expected)
+        );
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function parseReturnsNullWhenNoValueForRequestedNameExists()
+    {
+        assertNull(
+                $this->createAnnotation(['foo' => 303])->parse('bar')->asInt()
         );
     }
 }
