@@ -10,6 +10,11 @@
   * empty refined annotation types like `@Foo[]` are now invalid and throw a `\ReflectionException`
 
 
+### Other changes
+
+  * improved performance for annotation parser by 100%
+
+
 7.0.0 (2016-01-11)
 ------------------
 
