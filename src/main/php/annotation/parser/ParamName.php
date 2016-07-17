@@ -41,23 +41,26 @@ class ParamName extends Expression
         $paramName = trim(ltrim(trim($token->value), ',*'));
         if (("'" === $signal || '"' === $signal) && strlen($paramName) > 0) {
             throw new \ReflectionException(
-                    'Annotation parameter name may contain letters, underscores'
-                    . ' and numbers, but contains ' . $signal
-                    . '. Probably an equal sign is missing: ' . $paramName
+                    'Annotation parameter "' . $paramName . '" for ' . $annotation
+                    . ' may contain letters, underscores and numbers, but contains '
+                    . $signal . '. Probably an equal sign is missing.'
             );
-        } elseif ('=' === $signal) {
+        }
+
+        if ('=' === $signal) {
             if (strlen($paramName) == 0) {
                 throw new \ReflectionException(
-                        'Annotation parameter name has to start with a letter or'
-                        . ' underscore, but starts with =: ' . $paramName
+                        'Annotation parameter for ' . $annotation . ' has to'
+                        . ' start with a letter or underscore, but starts with "="'
                 );
             }
 
             if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $paramName) == false) {
                 throw new \ReflectionException(
-                        'Annotation parameter name may contain letters, underscores'
-                        . ' and numbers, but contains an invalid character: '
-                        . $paramName
+                        'Annotation parameter for ' . $annotation . ' must start'
+                        . ' with a letter or underscore and contain letters,'
+                        . ' underscores and numbers, but contains an invalid'
+                        . ' character: ' . $paramName
                 );
             }
 
@@ -65,11 +68,16 @@ class ParamName extends Expression
         } elseif (')' === $signal) {
             if (strlen($paramName) > 0) {
                 if (count($annotation->params) > 0) {
-                    throw new \ReflectionException(
-                        'Error in annotation ' . $annotation->type
-                        . ', contains value "' . $paramName
-                        . '" without a name after named values'
-                    );
+                    if (isset($annotation->params[CurrentAnnotation::SINGLE_VALUE])) {
+                        $message = 'Error in annotation ' . $annotation . ','
+                                 . ' contains two values without name.';
+                    } else {
+                        $message = 'Error in annotation ' . $annotation . ','
+                                 . ' contains value "' . $paramName . '" without'
+                                 . ' a name after named values';
+                    }
+
+                    throw new \ReflectionException($message);
                 }
 
                 $annotation->params[$annotation->currentParam] = $paramName;

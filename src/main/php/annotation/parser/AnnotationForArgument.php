@@ -34,14 +34,20 @@ class AnnotationForArgument extends Expression
     public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
     {
         if (empty($token->value)) {
-            throw new \ReflectionException('Argument name for annotation is empty.');
+            throw new \ReflectionException(
+                    'Argument name for annotation ' . $annotation . ' is empty.'
+            );
         }
 
         if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $token->value) == false) {
-            throw new \ReflectionException('Argument name for annotation may contain letters, underscores and numbers, but contains an invalid character.');
+            throw new \ReflectionException(
+                    'Argument name for annotation ' . $annotation
+                    . ' is not a valid parameter name: ' . $token->value
+            );
         }
 
-        $annotation->target .= '#' . $token->value;
+        $annotation->target     .= '#' . $token->value;
+        $annotation->targetParam = $token->value;
         return true;
     }
 }

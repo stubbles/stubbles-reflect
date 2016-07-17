@@ -16,6 +16,7 @@ namespace stubbles\reflect\annotation\parser;
  */
 class CurrentAnnotation
 {
+    const SINGLE_VALUE = '__value';
     /**
      * the name of the current annotation
      *
@@ -39,7 +40,7 @@ class CurrentAnnotation
      *
      * @type  string
      */
-    public $currentParam = '__value';
+    public $currentParam = self::SINGLE_VALUE;
     /**
      * annotation target
      *
@@ -47,14 +48,56 @@ class CurrentAnnotation
      */
     public $target;
     /**
+     * name of parameter when annotation is for function/method parameter
+     *
+     * @param  string
+     */
+    public $targetParam;
+    /**
      * whether annotation must be ignored, i.e. because it's a phpdoc one
      *
      * @type  bool
      */
     public $ignored      = false;
+    /**
+     * original target when parser detects its an annotation for a parameter
+     *
+     * @type  string
+     */
+    private $originalTarget;
 
     public function __construct(string $target)
     {
-        $this->target = $target;
+        $this->target         = $target;
+        $this->originalTarget = $target;
+    }
+
+    public function __toString(): string
+    {
+        $return = sprintf(
+                '%s@%s%s%s',
+                $this->originalTarget,
+                $this->name,
+                $this->type != $this->name ? '[' . $this->type . ']' : '',
+                null !== $this->targetParam ? '{' . $this->targetParam . '}' : ''
+        );
+
+        if (count($this->params) > 0) {
+            $return .= '(';
+            if (isset($this->params[self::SINGLE_VALUE])) {
+                $return .= $this->params[self::SINGLE_VALUE];
+            } else {
+                $params = [];
+                foreach ($this->params as $name => $value) {
+                    $params[] = $name . '=' . $value;
+                }
+
+                $return .= join(', ', $params);
+            }
+
+            $return .= ')';
+        }
+
+        return $return;
     }
 }

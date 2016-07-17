@@ -13,6 +13,7 @@
 ### Other changes
 
   * improved performance for annotation parser by 100%
+  * provided more context in exception messages when annotation contains errors
 
 
 7.0.0 (2016-01-11)

@@ -355,9 +355,96 @@ class ParserTest extends \PHPUnit_Framework_TestCase
              * a method with an annotation for its parameter
              *
              * @ForArgument1{bar}',
-                        'incomplete');
+                        'Bar::someMethod()');
         })
         ->throws(\ReflectionException::class);
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function missingEqualSignThrowsReflectionException()
+    {
+        expect(function() {
+                $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo(yo\'dum "di" dam\')
+     */',
+                'Bar::someMethod()');
+        })
+                ->throws(\ReflectionException::class)
+                ->withMessage(
+                        'Annotation parameter "yo" for Bar::someMethod()@Foo may'
+                        . ' contain letters, underscores and numbers, but contains '
+                        . '\'. Probably an equal sign is missing.'
+                );
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function paramNameStartingWithEqualSignThrowsReflectionException()
+    {
+        expect(function() {
+                $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo(=\'dum "di" dam\')
+     */',
+                'Bar::someMethod()');
+        })
+                ->throws(\ReflectionException::class)
+                ->withMessage(
+                        'Annotation parameter for Bar::someMethod()@Foo has to'
+                        . ' start with a letter or underscore, but starts with "="'
+                );
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function paramNameWithInvalidCharacterThrowsReflectionException()
+    {
+        expect(function() {
+                $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo(1=\'dum "di" dam\')
+     */',
+                'Bar::someMethod()');
+        })
+                ->throws(\ReflectionException::class)
+                ->withMessage(
+                        'Annotation parameter for Bar::someMethod()@Foo must start'
+                        . ' with a letter or underscore and contain letters,'
+                        . ' underscores and numbers, but contains an invalid'
+                        . ' character: 1'
+                );
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function moreThanOneSingleValueThrowsReflectionException()
+    {
+        expect(function() {
+            $this->parser->parse('/**
+         * a method with an annotation for its parameter
+         *
+         * @Foo(\'dum "di" dam\', true)
+         */',
+                    'Bar::someMethod()');
+        })
+                ->throws(\ReflectionException::class)
+                ->withMessage(
+                        'Error in annotation Bar::someMethod()@Foo(dum "di" dam),'
+                        . ' contains two values without name.'
+                );
     }
 
     /**
@@ -371,12 +458,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
          *
          * @Foo(name=\'dum "di" dam\', true)
          */',
-                    'target');
+                    'Bar::someMethod()');
         })
                 ->throws(\ReflectionException::class)
                 ->withMessage(
-                        'Error in annotation Foo, contains value '
-                        . '"true" without a name after named values'
+                        'Error in annotation Bar::someMethod()@Foo(name=dum "di" dam),'
+                        . ' contains value "true" without a name after named values'
                 );
     }
 
@@ -384,16 +471,16 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      * @test
      * @since  5.5.1
      */
-    public function foobar()
+    public function stringWithDoubleQuotesInsideSingleQuotes()
     {
         $annotations = $this->parser->parse('/**
      * a method with an annotation for its parameter
      *
      * @Foo(name=\'dum "di" dam\')
      */',
-                'target');
+                'Bar::someMethod()');
         assert(
-                $annotations['target']->firstNamed('Foo')->getName(),
+                $annotations['Bar::someMethod()']->firstNamed('Foo')->getName(),
                 equals('dum "di" dam')
         );
     }
@@ -410,10 +497,31 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      *
      * @Foo{}
      */',
-                'target');
+                'Bar::someMethod()');
         })
             ->throws(\ReflectionException::class)
-            ->withMessage('Argument name for annotation is empty.');
+            ->withMessage('Argument name for annotation Bar::someMethod()@Foo is empty.');
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function canNotUseInvalidParameterNamesInParamAnnotation()
+    {
+        expect(function() {
+            $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo{1}
+     */',
+                'Bar::someMethod()');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage(
+                    'Argument name for annotation Bar::someMethod()@Foo is not a'
+                    . ' valid parameter name: 1'
+            );
     }
 
     /**
@@ -428,10 +536,32 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      *
      * @Foo[]
      */',
-                'target');
+                'Bar::someMethod()');
         })
             ->throws(\ReflectionException::class)
-            ->withMessage('Annotation type can not be empty.');
+            ->withMessage('Annotation type for Bar::someMethod()@Foo can not be empty.');
+    }
+
+    /**
+     * @test
+     * @since  8.0.0
+     */
+    public function canNotUseInvalidAnnotationType()
+    {
+        expect(function() {
+            $this->parser->parse('/**
+     * a method with an annotation for its parameter
+     *
+     * @Foo[1]
+     */',
+                'Bar::someMethod()');
+        })
+            ->throws(\ReflectionException::class)
+            ->withMessage(
+                    'Annotation type for Bar::someMethod()@Foo must start with a'
+                    . ' letter or underscore and may contain letters, underscores'
+                    . ' and numbers, but contains an invalid character: 1'
+            );
     }
 
     /**
@@ -446,10 +576,10 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      *
      * @
      */',
-                'target');
+                'Bar::someMethod()');
         })
             ->throws(\ReflectionException::class)
-            ->withMessage('Annotation name can not be empty');
+            ->withMessage('Annotation name for Bar::someMethod()@ can not be empty');
     }
 
     /**
@@ -464,11 +594,12 @@ class ParserTest extends \PHPUnit_Framework_TestCase
      *
      * @1
      */',
-                'target');
+                'Bar::someMethod()');
         })
             ->throws(\ReflectionException::class)
             ->withMessage(
-                    'Annotation parameter name may contain letters, underscores'
+                    'Annotation name for Bar::someMethod()@ must start with a'
+                    . ' letter or underscore and may contain letters, underscores'
                     . ' and numbers, but contains an invalid character: @1'
             );
     }

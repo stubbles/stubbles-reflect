@@ -72,7 +72,9 @@ class AnnotationName extends Expression
     public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
     {
         if (empty($token->value)) {
-            throw new \ReflectionException('Annotation name can not be empty');
+            throw new \ReflectionException(
+                    'Annotation name for ' . $annotation . ' can not be empty'
+            );
         }
 
         if (isset($this->forbiddenAnnotationNames[$token->value])) {
@@ -82,8 +84,9 @@ class AnnotationName extends Expression
 
         if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $token->value) == false) {
             throw new \ReflectionException(
-                    'Annotation parameter name may contain letters, underscores '
-                    . 'and numbers, but contains an invalid character: @'
+                    'Annotation name for ' . $annotation . ' must start with a'
+                    . ' letter or underscore and may contain letters, underscores'
+                    . ' and numbers, but contains an invalid character: @'
                     . $token->value
             );
         }

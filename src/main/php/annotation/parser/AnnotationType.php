@@ -34,11 +34,18 @@ class AnnotationType extends Expression
     public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
     {
         if (empty($token->value)) {
-            throw new \ReflectionException('Annotation type can not be empty.');
+            throw new \ReflectionException(
+                    'Annotation type for ' . $annotation . ' can not be empty.'
+            );
         }
 
         if (preg_match('/^[a-zA-Z_]{1}[a-zA-Z_0-9]*$/', $token->value) == false) {
-            throw new \ReflectionException('Annotation type may contain letters, underscores and numbers, but contains an invalid character.');
+            throw new \ReflectionException(
+                    'Annotation type for ' . $annotation . ' must start with a'
+                    . ' letter or underscore and may contain letters, underscores'
+                    . ' and numbers, but contains an invalid character: '
+                    . $token->value
+            );
         }
 
         $annotation->type = $token->value;
