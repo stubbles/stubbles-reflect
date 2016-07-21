@@ -11,6 +11,7 @@ declare(strict_types=1);
 namespace stubbles\reflect;
 use function bovigo\assert\{
     assert,
+    assertEmptyString,
     assertTrue,
     expect,
     predicate\each,
@@ -23,7 +24,7 @@ use function bovigo\assert\{
  */
 interface SomethingToReflect
 {
-    function something();
+    function something($foo);
 }
 /**
  * Tests for stubbles\reflect\*().
@@ -186,6 +187,29 @@ class FunctionsTest extends \PHPUnit_Framework_TestCase
                 _annotationTarget(new \ReflectionExtension('date'));
         })
         ->throws(\ReflectionException::class);
+    }
+
+    /**
+     * @since  8.0.1
+     */
+    public function reflectorWithUndefinedDocComments(): array
+    {
+        $refMethod = new \ReflectionMethod(SomethingToReflect::class, 'something');
+        return [
+                [new \ReflectionClass('stdClass')],
+                [$refMethod],
+                [$refMethod->getParameters()[0]]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  reflectorWithUndefinedDocComments
+     * @since  8.0.1
+     */
+    public function undefinedDocCommentIsEmpty(\Reflector $reflector)
+    {
+        assertEmptyString(docComment($reflector));
     }
 
     /**

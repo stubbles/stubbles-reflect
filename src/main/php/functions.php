@@ -200,11 +200,12 @@ namespace stubbles\reflect {
         if ($reflector instanceof \ReflectionClass
                 || $reflector instanceof \ReflectionFunctionAbstract
                 || $reflector instanceof \ReflectionProperty) {
-            return $reflector->getDocComment();
+            $docComment = $reflector->getDocComment();
+            return (false !== $docComment ? $docComment : '');
         }
 
         if ($reflector instanceof \ReflectionParameter) {
-            return $reflector->getDeclaringFunction()->getDocComment();
+            return docComment($reflector->getDeclaringFunction());
         }
 
         throw new \ReflectionException('Can not retrieve doc comment for ' . get_class($reflector));

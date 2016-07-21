@@ -1,3 +1,9 @@
+8.0.1 (2016-07-21)
+------------------
+
+  * fixed bug with `stubbles\reflect\docComment()` trying to return `false` when requested doc comment does not exist, resulting in a `\TypeError`, now returns empty string in such cases
+
+
 8.0.0 (2016-07-17)
 ------------------
 
