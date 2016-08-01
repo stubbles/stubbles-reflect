@@ -38,7 +38,7 @@ class ParamName extends Expression
      */
     public function evaluate(Token $token, string $signal, CurrentAnnotation $annotation): bool
     {
-        $paramName = trim(ltrim(trim($token->value), ',*'));
+        $paramName = trim(ltrim(trim($token->value), ",\n\r *"));
         if (("'" === $signal || '"' === $signal) && strlen($paramName) > 0) {
             throw new \ReflectionException(
                     'Annotation parameter "' . $paramName . '" for ' . $annotation

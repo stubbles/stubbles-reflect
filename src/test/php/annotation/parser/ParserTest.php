@@ -603,4 +603,48 @@ class ParserTest extends \PHPUnit_Framework_TestCase
                     . ' and numbers, but contains an invalid character: @1'
             );
     }
+
+    /**
+     * @test
+     * @group  multiline
+     * @since  8.0.2
+     */
+    public function canParseMultilineIndentedAnnotation()
+    {
+        $annotations = $this->parser->parse("/**
+ * Helper class for the test.
+ *
+ * @RssFeedItem(titleMethod='getHeadline',
+ *              linkMethod='getUrl',
+ *              descriptionMethod='getTeaser',
+ *              authorMethod='getCreator',
+ *              categoriesMethod='getTags',
+ *              getCommentsUrlMethod='getRemarks',
+ *              enclosuresMethod='getImages',
+ *              guidMethod='getId',
+ *              isPermaLinkMethod='isPermanent',
+ *              pubDateMethod='getDate',
+ *              sourcesMethod='getOrigin',
+ *              contentMethod='getText'
+ * )
+ */",
+                'Bar::someMethod()');
+        assert(
+                $annotations['Bar::someMethod()']->firstNamed('RssFeedItem'),
+                equals(new Annotation('RssFeedItem', 'Bar::someMethod()', [
+                        'titleMethod'          => 'getHeadline',
+                        'linkMethod'           => 'getUrl',
+                        'descriptionMethod'    => 'getTeaser',
+                        'authorMethod'         => 'getCreator',
+                        'categoriesMethod'     => 'getTags',
+                        'getCommentsUrlMethod' => 'getRemarks',
+                        'enclosuresMethod'     => 'getImages',
+                        'guidMethod'           => 'getId',
+                        'isPermaLinkMethod'    => 'isPermanent',
+                        'pubDateMethod'        => 'getDate',
+                        'sourcesMethod'        => 'getOrigin',
+                        'contentMethod'        => 'getText'
+                ]))
+        );
+    }
 }

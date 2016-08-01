@@ -1,3 +1,9 @@
+8.0.2 (2016-08-01)
+------------------
+
+  * fixed bug where indented annotation parameter names were not parsed correct
+
+
 8.0.1 (2016-07-21)
 ------------------
 
