@@ -4,34 +4,34 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "874a36591309c5a0ebe49055cd812277",
+    "content-hash": "99aeb0301ec0faa39993cf17fbe7dc5e",
     "packages": [
         {
             "name": "stubbles/sequence",
-            "version": "v8.1.0",
+            "version": "v9.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-sequence.git",
-                "reference": "258d2247f1cdd826818348fe15829d5a98a9de70"
+                "reference": "e704fb42229a435e2034db20a59195fc361a87d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-sequence/zipball/258d2247f1cdd826818348fe15829d5a98a9de70",
-                "reference": "258d2247f1cdd826818348fe15829d5a98a9de70",
+                "url": "https://api.github.com/repos/stubbles/stubbles-sequence/zipball/e704fb42229a435e2034db20a59195fc361a87d4",
+                "reference": "e704fb42229a435e2034db20a59195fc361a87d4",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.0"
+                "php": "^7.3"
             },
             "require-dev": {
-                "bovigo/assert": "^2.0",
-                "bovigo/callmap": "^3.0",
-                "phpunit/phpunit": "^5.4"
+                "bovigo/assert": "^5.0",
+                "bovigo/callmap": "^5.0.1",
+                "phpunit/phpunit": "^8.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.1.x-dev"
+                    "dev-master": "9.0.x-dev"
                 }
             },
             "autoload": {
@@ -48,36 +48,36 @@
             ],
             "description": "Stream your iterators.",
             "homepage": "http://stubbles.net/",
-            "time": "2016-07-11T16:21:11+00:00"
+            "time": "2019-10-29T11:00:01+00:00"
         },
         {
             "name": "stubbles/values",
-            "version": "v8.0.0",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/stubbles/stubbles-values.git",
-                "reference": "d2caf21b46293552c050c38eba7bd50fe4b307c7"
+                "reference": "24901407a79f57b2293fd1005e57b0f9dae8ecc7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/stubbles/stubbles-values/zipball/d2caf21b46293552c050c38eba7bd50fe4b307c7",
-                "reference": "d2caf21b46293552c050c38eba7bd50fe4b307c7",
+                "url": "https://api.github.com/repos/stubbles/stubbles-values/zipball/24901407a79f57b2293fd1005e57b0f9dae8ecc7",
+                "reference": "24901407a79f57b2293fd1005e57b0f9dae8ecc7",
                 "shasum": ""
             },
             "require": {
                 "ext-iconv": "*",
-                "php": "^7.0"
+                "php": "^7.3"
             },
             "require-dev": {
-                "bovigo/assert": "^2.0",
-                "bovigo/callmap": "^3.0",
-                "mikey179/vfsstream": "^1.6",
-                "phpunit/phpunit": "^5.4"
+                "bovigo/assert": "^5.0",
+                "bovigo/callmap": "^5.0.1",
+                "mikey179/vfsstream": "^1.6.7",
+                "phpunit/phpunit": "^8.4"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "8.0.x-dev"
+                    "dev-master": "9.0.x-dev"
                 }
             },
             "autoload": {
@@ -94,7 +94,7 @@
             ],
             "description": "Useful classes to ease the work with values.",
             "homepage": "http://stubbles.net/",
-            "time": "2016-07-11T14:20:22+00:00"
+            "time": "2019-10-29T15:59:41+00:00"
         }
     ],
     "packages-dev": [

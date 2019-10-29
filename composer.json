@@ -5,9 +5,9 @@
     "license": "BSD-3-Clause",
     "description": "Reflection helper functions and annotations.",
     "require": {
-        "php": "^7.0",
-        "stubbles/sequence": "^8.1",
-        "stubbles/values": "^8.0"
+        "php": "^7.3",
+        "stubbles/sequence": "^9.0",
+        "stubbles/values": "^9.0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4",
@@ -27,7 +27,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "8.0.x-dev"
+            "dev-master": "9.0.x-dev"
         }
     },
     "minimum-stability": "dev",
