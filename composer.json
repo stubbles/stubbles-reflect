@@ -10,15 +10,20 @@
         "stubbles/values": "^8.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^5.4",
-        "mikey179/vfsStream": "^1.6",
-        "bovigo/assert": "^2.0"
+        "phpunit/phpunit": "^8.4",
+        "mikey179/vfsstream": "^1.6.7",
+        "bovigo/assert": "^5.0"
     },
     "autoload": {
         "psr-4": {
             "stubbles\\reflect\\": "src/main/php"
         },
         "files": ["src/main/php/functions.php"]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "stubbles\\reflect\\": "src/test/php"
+        }
     },
     "extra": {
         "branch-alias": {

@@ -5,12 +5,11 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation;
+use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertEmptyArray,
     assertFalse,
     assertTrue,
@@ -25,7 +24,7 @@ use function bovigo\assert\{
  * @group  annotation
  * @since  5.0.0
  */
-class AnnotationsTest extends \PHPUnit_Framework_TestCase
+class AnnotationsTest extends TestCase
 {
     /**
      * instance to test
@@ -34,10 +33,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     private $annotations;
 
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         $this->annotations = new Annotations('someTarget');
     }
@@ -79,7 +75,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
     public function firstNamedReturnsFirstAddedAnnotationWithThisName()
     {
         $first = new Annotation('foo');
-        assert(
+        assertThat(
                 $this->annotations->add($first)
                         ->add(new Annotation('foo'))
                         ->firstNamed('foo'),
@@ -112,7 +108,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotationsOfThisType()
     {
-        assert(
+        assertThat(
                 $this->annotations->add(new Annotation('foo'))
                         ->add(new Annotation('bar'))
                         ->add(new Annotation('foo'))
@@ -126,7 +122,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
      */
     public function returnsAllAnnotations()
     {
-        assert(
+        assertThat(
                 iterator_to_array(
                         $this->annotations->add(new Annotation('foo'))
                                 ->add(new Annotation('bar'))
@@ -154,7 +150,7 @@ class AnnotationsTest extends \PHPUnit_Framework_TestCase
             $types[] = $annotation->getAnnotationName();
         }
 
-        assert($types, equals(['foo', 'foo', 'bar']));
+        assertThat($types, equals(['foo', 'foo', 'bar']));
     }
 
 }

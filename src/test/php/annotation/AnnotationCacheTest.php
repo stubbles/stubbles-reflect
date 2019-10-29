@@ -5,14 +5,13 @@ declare(strict_types=1);
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- *
- * @package  stubbles\reflect
  */
 namespace stubbles\reflect\annotation;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
-    assert,
+    assertThat,
     assertFalse,
     assertNull,
     assertTrue,
@@ -26,22 +25,16 @@ use function bovigo\assert\{
  * @group  reflect
  * @group  annotation
  */
-class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
+class AnnotationCacheTest extends TestCase
 {
-    /**
-     * set up test environment
-     */
-    public function setUp()
+    protected function setUp(): void
     {
         AnnotationCache::flush();
         vfsStream::setup();
         AnnotationCache::startFromFileCache(vfsStream::url('root/annotations.cache'));
     }
 
-    /**
-     * clean up test environment
-     */
-    public function tearDown()
+    protected function tearDown(): void
     {
         AnnotationCache::stop();
     }
@@ -75,8 +68,8 @@ class AnnotationCacheTest extends \PHPUnit_Framework_TestCase
         AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
         $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
-        assert($data, hasKey('someTarget'));
-        assert(unserialize($data['someTarget']), equals($annotations));
+        assertThat($data, hasKey('someTarget'));
+        assertThat(unserialize($data['someTarget']), equals($annotations));
     }
 
     /**
