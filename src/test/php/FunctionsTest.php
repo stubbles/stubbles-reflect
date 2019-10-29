@@ -19,13 +19,6 @@ use function bovigo\assert\{
     predicate\isInstanceOf
 };
 /**
- * Helper interface for the test.
- */
-interface SomethingToReflect
-{
-    function something($foo);
-}
-/**
  * Tests for stubbles\reflect\*().
  *
  * @since  5.3.0
@@ -243,7 +236,8 @@ class FunctionsTest extends TestCase
      */
     public function keyIsNameOfMethod()
     {
-        $methodName = key(methodsOf($this)->data());
+        // cast for phpstan :/
+        $methodName = (string) key(methodsOf($this)->data());
         assertTrue(method_exists($this, $methodName));
     }
 

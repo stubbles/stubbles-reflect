@@ -137,7 +137,7 @@ class Annotations implements \IteratorAggregate
      * @api
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    public function all(): \Generator
+    public function all(): iterable
     {
         foreach ($this as $annotation) {
             yield $annotation;

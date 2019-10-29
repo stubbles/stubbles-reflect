@@ -104,7 +104,10 @@ class AnnotationCache
                 function() use($cacheFile)
                 {
                     if (file_exists($cacheFile)) {
-                        return unserialize(file_get_contents($cacheFile));
+                        $contents = file_get_contents($cacheFile);
+                        if (false !== $contents) {
+                          return unserialize($contents);
+                        }
                     }
 
                     return [];
@@ -176,10 +179,10 @@ class AnnotationCache
      * @param   string  $target
      * @return  \stubbles\reflect\annotation\Annotations
      */
-    public static function get(string $target)
+    public static function get(string $target): Annotations
     {
         if (!self::has($target)) {
-            return null;
+            return new Annotations($target);
         }
 
         if (!isset(self::$unserialized[$target])) {

@@ -27,8 +27,8 @@ namespace stubbles\reflect {
      * \ReflectionMethod which allows reflection on the
      * specific method.
      *
-     * @param   string|object  $class       class name, function name of or object instance to reflect
-     * @param   string         $methodName  optional  specific method to reflect
+     * @param   string|array|object|\Closure  $class       class name, function name of or object instance to reflect
+     * @param   string                        $methodName  optional  specific method to reflect
      * @return  \ReflectionClass|\ReflectionMethod|\ReflectionFunction
      * @throws  \InvalidArgumentException
      * @since   3.1.0
@@ -36,8 +36,15 @@ namespace stubbles\reflect {
      */
     function reflect($class, string $methodName = null): \Reflector
     {
-        if (is_array($class) && is_callable($class)) {
-            return reflect($class[0], $class[1]);
+        if (is_array($class)) {
+            if (is_callable($class)) {
+              return reflect($class[0], $class[1]);
+            }
+
+            throw new \InvalidArgumentException(
+              'Given class must either be a function name, a callable'
+              . ' class name or class instance, array which is not a callable given'
+            );
         }
 
         if (null != $methodName) {
@@ -117,9 +124,16 @@ namespace stubbles\reflect {
      */
     function annotationsOfConstructor($reflected): Annotations
     {
-        return annotationsOf(
-                ($reflected instanceof \ReflectionClass) ? $reflected->getConstructor() : reflectConstructor($reflected)
-        );
+        if ($reflected instanceof \ReflectionClass) {
+            $constructor = $reflected->getConstructor();
+            if (null === $constructor) {
+              return new Annotations(_annotationTarget($reflected));
+            }
+        } else {
+          $constructor = reflectConstructor($reflected);
+        }
+
+        return annotationsOf($constructor);
     }
 
     /**
@@ -128,7 +142,6 @@ namespace stubbles\reflect {
      * @param   string                                           $name             name of parameter to retrieve annotations for
      * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
      * @param   string                                           $methodName       optional  in case first param references a class
-     * @return
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -140,8 +153,8 @@ namespace stubbles\reflect {
     /**
      * retrieves parameter with given name from referenced function or method
      *
-     * @param   string                                           $name             name of parameter to retrieve
-     * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                     $name             name of parameter to retrieve
+     * @param   string|object|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */

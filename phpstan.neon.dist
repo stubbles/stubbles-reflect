@@ -1,0 +1,13 @@
+parameters:
+  level: 7
+  paths:
+    - ./src
+  ignoreErrors:
+    # Class has dynamicly added methods which are called using __call()
+    - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation#'
+    # Explicit tests that int throws an exception
+    - '#expects object\|string, int given#'
+    - '#expects array\|object\|string, int given#'
+    - '#expects array\|object\|string, Closure\(\): mixed given#'
+    # phpstan is sometimes not knowledgeable enough
+    - '#Function stubbles\\reflect\\reflectConstructor\(\) should return ReflectionMethod but returns ReflectionClass\|ReflectionFunction\|ReflectionMethod.#'

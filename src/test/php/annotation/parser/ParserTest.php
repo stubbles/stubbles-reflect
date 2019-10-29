@@ -14,41 +14,6 @@ use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
 use function bovigo\assert\predicate\equals;
 /**
- * This is a test class that has many annotations.
- *
- * @Foo
- * @FooWithBrackets ()
- * @Bar[TomTom]
- * @MyAnnotation(foo='bar')
- * @TwoParams(foo='bar', test=42)
- * @InvalidChars(foo='ba@r=,')
- * @Constant(foo=stubbles\reflect\annotation\parser\MyTestClass::TEST_CONSTANT)
- * @WithEscaped(foo='This string contains \' and \, which is possible using escaping...')
- * @Multiline(one=1,
- *            two=2)
- * @Class(stubbles\reflect\annotation\parser\MyTestClass.class)
- */
-class MyTestClass
-{
-    const TEST_CONSTANT = 'baz';
-}
-class MyTestClass2
-{
-    /**
-     * a method with an annotation for its parameter
-     *
-     * @param  string  $bar
-     * @ForArgument1{bar}
-     * @ForArgument2{bar}(key='value')
-     * @MoreArgument1{bar}[Casted]
-     * @MoreArgument2{bar}[Casted](key='value')
-     * @MoreArgument3[CastedAround]{bar}
-     * @MoreArgument4[CastedAround]{bar}(key='value')
-     * @another
-     */
-    public function foo(string $bar) { }
-}
-/**
  * Test for stubbles\reflect\annotation\Parser.
  *
  * @group  reflect

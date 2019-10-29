@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.0.0 (2019-10-29)
+
+* fixed various potential bugs discovered by phpstan
+
 ## 8.0.2 (2016-08-01)
 
 * fixed bug where indented annotation parameter names were not parsed correct

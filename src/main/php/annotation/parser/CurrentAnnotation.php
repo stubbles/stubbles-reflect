@@ -42,13 +42,13 @@ class CurrentAnnotation
     /**
      * annotation target
      *
-     * @param  string
+     * @type  string
      */
     public $target;
     /**
      * name of parameter when annotation is for function/method parameter
      *
-     * @param  string
+     * @type  string
      */
     public $targetParam;
     /**

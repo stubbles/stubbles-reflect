@@ -288,14 +288,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     *
-     * @param type $expected
-     * @param type $stringValue
      * @test
      * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypes($expected, $stringValue)
+    public function parsesValuesToTypes($expected, string $stringValue)
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->foo(),
@@ -304,14 +301,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     *
-     * @param type $expected
-     * @param type $stringValue
      * @test
      * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithGet($expected, $stringValue)
+    public function parsesValuesToTypesWithGet($expected, string $stringValue)
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->getFoo(),
@@ -320,14 +314,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     *
-     * @param type $expected
-     * @param type $stringValue
      * @test
      * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithGetValueByName($expected, $stringValue)
+    public function parsesValuesToTypesWithGetValueByName($expected, string $stringValue)
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->getValueByName('foo'),
@@ -336,14 +327,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     *
-     * @param type $expected
-     * @param type $stringValue
      * @test
      * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithSingleValue($expected, $stringValue)
+    public function parsesValuesToTypesWithSingleValue($expected, string $stringValue)
     {
         assertThat(
                 $this->createSingleValueAnnotation($stringValue)->getValue(),

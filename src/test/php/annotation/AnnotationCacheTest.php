@@ -13,11 +13,12 @@ use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
     assertThat,
     assertFalse,
-    assertNull,
     assertTrue,
     expect,
+    fail,
     predicate\equals,
-    predicate\hasKey
+    predicate\hasKey,
+    predicate\isOfSize
 };
 /**
  * Test for stubbles\reflect\annotation\AnnotationCache.
@@ -67,7 +68,13 @@ class AnnotationCacheTest extends TestCase
         $annotations = new Annotations('someTarget');
         AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
-        $data = unserialize(file_get_contents(vfsStream::url('root/annotations.cache')));
+        $fileContent = file_get_contents(vfsStream::url('root/annotations.cache'));
+        if (false === $fileContent) {
+          fail('Could not read annotations cache');
+          return; // just for phpstan :/
+        }
+
+        $data = unserialize($fileContent);
         assertThat($data, hasKey('someTarget'));
         assertThat(unserialize($data['someTarget']), equals($annotations));
     }
@@ -88,9 +95,10 @@ class AnnotationCacheTest extends TestCase
     /**
      * @test
      */
-    public function retrieveAnnotationsForUncachedTargetReturnsNull()
+    public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotations()
     {
-        assertNull(AnnotationCache::get('DoesNotExist'));
+        $annotations = iterator_to_array(AnnotationCache::get('DoesNotExist'));
+        assertThat($annotations, isOfSize(0));
     }
 
     /**

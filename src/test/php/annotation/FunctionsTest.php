@@ -37,7 +37,7 @@ class FunctionsTest extends TestCase
                          ->withContent(serialize($this->createdCachedAnnotation()))
                          ->at($root);
         persistAnnotationsInFile($file->url());
-        assertTrue(AnnotationCache::has('foo', 'bar'));
+        assertTrue(AnnotationCache::has('foo'));
     }
 
     private function createdCachedAnnotation(): array
@@ -59,6 +59,6 @@ class FunctionsTest extends TestCase
                            },
                            function($data) {}
         );
-        assertTrue(AnnotationCache::has('foo', 'bar'));
+        assertTrue(AnnotationCache::has('foo'));
     }
 }
