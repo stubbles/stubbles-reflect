@@ -19,13 +19,13 @@ _stubbles/reflect_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/reflect": "^8.0"
+    composer require "stubbles/reflect": "^9.0"
 
 
 Requirements
 ------------
 
-_stubbles/reflect_ requires at least PHP 7.0. For PHP 5.6 use the 7.x releases.
+_stubbles/reflect_ requires at least PHP 7.3.
 
 Additionally it uses _[stubbles/sequence](https://github.com/stubbles/stubbles-sequence)_
 to return sequences from some of the functions, and
