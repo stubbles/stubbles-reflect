@@ -4,6 +4,7 @@
 
 * raised minimum required PHP version to 7.3
 * fixed various potential bugs discovered by phpstan
+* fixed curly brace syntax to be forward compatible with PHP 7.4
 
 ## 8.0.2 (2016-08-01)
 

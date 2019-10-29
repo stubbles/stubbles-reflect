@@ -33,7 +33,7 @@ class Parser
         $len  = strlen($docComment) - 2;
         $token = new Token();
         for ($i = 6; $i < $len; $i++) {
-            $character = $docComment{$i};
+            $character = $docComment[$i];
             if (isset($expression->after[$character])) {
                 if ($expression->evaluate($token, $character, $annotation)) {
                     $token->value = '';
