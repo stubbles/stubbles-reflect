@@ -41,15 +41,19 @@ namespace stubbles\reflect {
             return new \ReflectionFunction($class);
         }
 
-        if (\is_object($class) && null === $methodName) {
+        if (\is_callable($class) && \is_array($class)) {
+            list($class, $methodName) = $class;
+        }
+
+        if (\is_object($class)) {
+            if (null != $methodName) {
+                return new \ReflectionMethod($class, $methodName);
+            }
+
             return new \ReflectionObject($class);
         }
 
-        if (\is_callable($class) && \is_array($class)) {
-          list($class, $methodName) = $class;
-        }
-
-        if (\is_object($class) || (\is_string($class) && (\class_exists($class) || \interface_exists($class)))) {
+        if (\is_string($class) && (\class_exists($class) || \interface_exists($class))) {
             if (null != $methodName) {
                 return new \ReflectionMethod($class, $methodName);
             }
