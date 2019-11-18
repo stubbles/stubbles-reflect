@@ -1,7 +1,6 @@
 {
     "name": "stubbles/reflect",
     "type": "library",
-    "homepage": "http://stubbles.net/",
     "license": "BSD-3-Clause",
     "description": "Reflection helper functions and annotations.",
     "require": {
