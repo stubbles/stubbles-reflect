@@ -1,5 +1,14 @@
 # Changelog
 
+## 9.0.1 (2019-11-18)
+
+* replace `array` in allowed values of parameters in functions with `callable`
+  * `stubbles\reflect\reflect()`
+  * `stubbles\reflect\annotationsOf()`
+  * `stubbles\reflect\annotationsOfParameter()`
+  * `stubbles\reflect\parametersOf()`
+  * `stubbles\reflect\parameter()`
+
 ## 9.0.0 (2019-10-29)
 
 * raised minimum required PHP version to 7.3

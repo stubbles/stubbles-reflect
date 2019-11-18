@@ -7,7 +7,6 @@ parameters:
     - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation#'
     # Explicit tests that int throws an exception
     - '#expects object\|string, int given#'
-    - '#expects array\|object\|string, int given#'
-    - '#expects array\|object\|string, Closure\(\): mixed given#'
+    - '#expects \(callable\)\|object\|string, int given#'
     # phpstan is sometimes not knowledgeable enough
     - '#Function stubbles\\reflect\\reflectConstructor\(\) should return ReflectionMethod but returns ReflectionClass\|ReflectionFunction\|ReflectionMethod.#'

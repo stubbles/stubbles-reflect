@@ -92,10 +92,9 @@ class FunctionsTest extends TestCase
      */
     public function annotationsWithUnknownClassAndFunctionNameThrowsReflectionException()
     {
-        expect(function() {
-                annotationsOf('doesNotExist');
-        })
-        ->throws(\ReflectionException::class);
+        expect(function() { annotationsOf('doesNotExist'); })
+            ->throws(\ReflectionException::class)
+            ->withMessage('Given function or class "doesNotExist" does not exist');
     }
 
     /**
@@ -399,10 +398,9 @@ class FunctionsTest extends TestCase
      */
     public function reflectWithUnknownClassAndFunctionNameThrowsReflectionException()
     {
-        expect(function() {
-                reflect('doesNotExist');
-        })
-        ->throws(\ReflectionException::class);
+        expect(function() { reflect('doesNotExist');})
+            ->throws(\ReflectionException::class)
+            ->withMessage('Given function or class "doesNotExist" does not exist');
     }
 
     /**

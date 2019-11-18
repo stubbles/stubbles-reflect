@@ -27,45 +27,44 @@ namespace stubbles\reflect {
      * \ReflectionMethod which allows reflection on the
      * specific method.
      *
-     * @param   string|array|object|\Closure  $class       class name, function name of or object instance to reflect
-     * @param   string                        $methodName  optional  specific method to reflect
+     * @param   string|object|callable  $class       class name, function name of or object instance to reflect
+     * @param   string                  $methodName  optional  specific method to reflect when first parameter refers to a class
      * @return  \ReflectionClass|\ReflectionMethod|\ReflectionFunction
+     * @throws  \ReflectionException
      * @throws  \InvalidArgumentException
      * @since   3.1.0
      * @api
      */
     function reflect($class, string $methodName = null): \Reflector
     {
-        if (is_array($class)) {
-            if (is_callable($class)) {
-              return reflect($class[0], $class[1]);
-            }
-
-            throw new \InvalidArgumentException(
-              'Given class must either be a function name, a callable'
-              . ' class name or class instance, array which is not a callable given'
-            );
-        }
-
-        if (null != $methodName) {
-            return new \ReflectionMethod($class, $methodName);
-        }
-
-        if (is_string($class)) {
-            if (class_exists($class) || interface_exists($class)) {
-                return new \ReflectionClass($class);
-            }
-
+        if (\is_callable($class) && \is_string($class)) {
             return new \ReflectionFunction($class);
         }
 
-        if (is_object($class)) {
+        if (\is_object($class) && null === $methodName) {
             return new \ReflectionObject($class);
+        }
+
+        if (\is_callable($class) && \is_array($class)) {
+          list($class, $methodName) = $class;
+        }
+
+        if (\is_object($class) || (\is_string($class) && (\class_exists($class) || \interface_exists($class)))) {
+            if (null != $methodName) {
+                return new \ReflectionMethod($class, $methodName);
+            }
+
+            return new \ReflectionClass($class);
+        }
+
+        if (\is_string($class)) {
+            throw new \ReflectionException('Given function or class "' . $class . '" does not exist');
         }
 
         throw new \InvalidArgumentException(
                 'Given class must either be a function name,'
-                . ' class name or class instance, ' . typeOf($class) . ' given'
+                . ' class name or class instance, or callable; but '
+                . typeOf($class) . ' given'
         );
     }
 
@@ -85,8 +84,8 @@ namespace stubbles\reflect {
     /**
      * returns annotations for given reflected
      *
-     * @param   \Reflector|string|object  $reflected   class name, function name of or object instance to reflect
-     * @param   string                    $methodName  optional  specific method to reflect
+     * @param   \Reflector|string|object|callable  $reflected   class name, function name of or object instance to reflect
+     * @param   string                             $methodName  optional  method to reflect when first parameter refers to a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -139,9 +138,9 @@ namespace stubbles\reflect {
     /**
      * returns annotations for given parameter
      *
-     * @param   string                                           $name             name of parameter to retrieve annotations for
-     * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
-     * @param   string                                           $methodName       optional  in case first param references a class
+     * @param   string                                              $name             name of parameter to retrieve annotations for
+     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                              $methodName       optional  in case first param references a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -288,8 +287,8 @@ namespace stubbles\reflect {
     /**
      * returns sequence of parameters of a function or method
      *
-     * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
-     * @param   string                                           $methodName       optional  name of method in case first param references a class
+     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                              $methodName       optional  name of method in case first param references a class
      * @return  \stubbles\sequence\Sequence
      * @throws  \InvalidArgumentException
      * @since   5.3.0
@@ -332,9 +331,9 @@ namespace stubbles\reflect {
     /**
      * retrieves parameter with given name from referenced function or method
      *
-     * @param   string                                           $name             name of parameter to retrieve
-     * @param   string|object|array|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
-     * @param   string                                           $methodName       optional  in case first param references a class
+     * @param   string                                              $name             name of parameter to retrieve
+     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                              $methodName       optional  in case first param references a class
      * @return  \ReflectionParameter
      * @since   5.3.0
      */
