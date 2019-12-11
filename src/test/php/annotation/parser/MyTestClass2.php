@@ -21,5 +21,5 @@ class MyTestClass2
      * @MoreArgument4[CastedAround]{bar}(key='value')
      * @another
      */
-    public function foo(string $bar) { }
+    public function foo(string $bar): void { }
 }

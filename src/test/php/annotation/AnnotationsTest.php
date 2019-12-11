@@ -29,7 +29,7 @@ class AnnotationsTest extends TestCase
     /**
      * instance to test
      *
-     * @type  \stubbles\reflect\annotation\Annotations
+     * @var  \stubbles\reflect\annotation\Annotations
      */
     private $annotations;
 
@@ -41,7 +41,7 @@ class AnnotationsTest extends TestCase
     /**
      * @test
      */
-    public function doNotContainNonAddedAnnotation()
+    public function doNotContainNonAddedAnnotation(): void
     {
         assertFalse($this->annotations->contain('foo'));
     }
@@ -49,21 +49,21 @@ class AnnotationsTest extends TestCase
     /**
      * @test
      */
-    public function containsAddedAnnotation()
+    public function containsAddedAnnotation(): void
     {
         assertTrue(
-                $this->annotations->add(new Annotation('foo'))->contain('foo')
+                $this->annotations->add(new Annotation('foo', __METHOD__))->contain('foo')
         );
     }
 
     /**
      * @test
      */
-    public function containsMoreThanOneAnnotation()
+    public function containsMoreThanOneAnnotation(): void
     {
         assertTrue(
-                $this->annotations->add(new Annotation('foo'))
-                        ->add(new Annotation('foo'))
+                $this->annotations->add(new Annotation('foo', __METHOD__))
+                        ->add(new Annotation('foo', __METHOD__))
                         ->contain('foo')
         );
     }
@@ -72,12 +72,12 @@ class AnnotationsTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function firstNamedReturnsFirstAddedAnnotationWithThisName()
+    public function firstNamedReturnsFirstAddedAnnotationWithThisName(): void
     {
-        $first = new Annotation('foo');
+        $first = new Annotation('foo', __METHOD__);
         assertThat(
                 $this->annotations->add($first)
-                        ->add(new Annotation('foo'))
+                        ->add(new Annotation('foo', __METHOD__))
                         ->firstNamed('foo'),
                 isSameAs($first)
         );
@@ -87,18 +87,16 @@ class AnnotationsTest extends TestCase
      * @test
      * @since  5.3.0
      */
-    public function firstNamedThrowsReflectionExceptionIfNoSuchAnnotationExists()
+    public function firstNamedThrowsReflectionExceptionIfNoSuchAnnotationExists(): void
     {
-        expect(function() {
-                $this->annotations->firstNamed('foo');
-        })
-        ->throws(\ReflectionException::class);
+        expect(function() { $this->annotations->firstNamed('foo'); })
+            ->throws(\ReflectionException::class);
     }
 
     /**
      * @test
      */
-    public function returnsEmptyListIfNoneOfThisTypeAdded()
+    public function returnsEmptyListIfNoneOfThisTypeAdded(): void
     {
         assertEmptyArray($this->annotations->named('foo'));
     }
@@ -106,33 +104,33 @@ class AnnotationsTest extends TestCase
     /**
      * @test
      */
-    public function returnsAllAnnotationsOfThisType()
+    public function returnsAllAnnotationsOfThisType(): void
     {
         assertThat(
-                $this->annotations->add(new Annotation('foo'))
-                        ->add(new Annotation('bar'))
-                        ->add(new Annotation('foo'))
+                $this->annotations->add(new Annotation('foo', __METHOD__))
+                        ->add(new Annotation('bar', __METHOD__))
+                        ->add(new Annotation('foo', __METHOD__))
                         ->named('foo'),
-                equals([new Annotation('foo'), new Annotation('foo')])
+                equals([new Annotation('foo', __METHOD__), new Annotation('foo', __METHOD__)])
         );
     }
 
     /**
      * @test
      */
-    public function returnsAllAnnotations()
+    public function returnsAllAnnotations(): void
     {
         assertThat(
                 iterator_to_array(
-                        $this->annotations->add(new Annotation('foo'))
-                                ->add(new Annotation('bar'))
-                                ->add(new Annotation('foo'))
+                        $this->annotations->add(new Annotation('foo', __METHOD__))
+                                ->add(new Annotation('bar', __METHOD__))
+                                ->add(new Annotation('foo', __METHOD__))
                                 ->all()
                 ),
                 equals([
-                        new Annotation('foo'),
-                        new Annotation('foo'),
-                        new Annotation('bar')
+                        new Annotation('foo', __METHOD__),
+                        new Annotation('foo', __METHOD__),
+                        new Annotation('bar', __METHOD__)
                 ])
         );
     }
@@ -140,11 +138,11 @@ class AnnotationsTest extends TestCase
     /**
      * @test
      */
-    public function canIteratorOverAllAnnotations()
+    public function canIteratorOverAllAnnotations(): void
     {
-        $this->annotations->add(new Annotation('foo'))
-                ->add(new Annotation('bar'))
-                ->add(new Annotation('foo'));
+        $this->annotations->add(new Annotation('foo', __METHOD__))
+                ->add(new Annotation('bar', __METHOD__))
+                ->add(new Annotation('foo', __METHOD__));
         $types = [];
         foreach ($this->annotations as $annotation) {
             $types[] = $annotation->getAnnotationName();

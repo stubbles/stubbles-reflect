@@ -43,7 +43,7 @@ class AnnotationCacheTest extends TestCase
     /**
      * @test
      */
-    public function noAnnotationAddedDoesNotWriteCacheFile()
+    public function noAnnotationAddedDoesNotWriteCacheFile(): void
     {
         AnnotationCache::__shutdown();
         assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
@@ -52,7 +52,7 @@ class AnnotationCacheTest extends TestCase
     /**
      * @test
      */
-    public function addingAnnotationWritesCacheFile()
+    public function addingAnnotationWritesCacheFile(): void
     {
         $annotations = new Annotations('someTarget');
         AnnotationCache::put($annotations);
@@ -63,15 +63,14 @@ class AnnotationCacheTest extends TestCase
     /**
      * @test
      */
-    public function cacheFileContainsSerializedAnnotationData()
+    public function cacheFileContainsSerializedAnnotationData(): void
     {
         $annotations = new Annotations('someTarget');
         AnnotationCache::put($annotations);
         AnnotationCache::__shutdown();
         $fileContent = file_get_contents(vfsStream::url('root/annotations.cache'));
         if (false === $fileContent) {
-          fail('Could not read annotations cache');
-          return; // just for phpstan :/
+            fail('Could not read annotations cache');
         }
 
         $data = unserialize($fileContent);
@@ -84,7 +83,7 @@ class AnnotationCacheTest extends TestCase
      * @group  issue_58
      * @test
      */
-    public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown()
+    public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown(): void
     {
         AnnotationCache::put(new Annotations('someTarget'));
         AnnotationCache::stop();
@@ -95,7 +94,7 @@ class AnnotationCacheTest extends TestCase
     /**
      * @test
      */
-    public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotations()
+    public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotations(): void
     {
         $annotations = iterator_to_array(AnnotationCache::get('DoesNotExist'));
         assertThat($annotations, isOfSize(0));
@@ -106,7 +105,7 @@ class AnnotationCacheTest extends TestCase
      * @group  issue_58
      * @test
      */
-    public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException()
+    public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
                 AnnotationCache::start(function() { return serialize('foo'); }, function() {});
@@ -119,7 +118,7 @@ class AnnotationCacheTest extends TestCase
      * @group  issue_58
      * @test
      */
-    public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException()
+    public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
                 AnnotationCache::start(function() { return 'foo'; }, function() {});

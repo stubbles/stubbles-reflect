@@ -1,12 +1,32 @@
+includes:
+  - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
-  level: 7
+  inferPrivatePropertyTypeFromConstructor: true
+  level: 8
   paths:
     - ./src
   ignoreErrors:
     # Class has dynamicly added methods which are called using __call()
     - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation#'
-    # Explicit tests that int throws an exception
-    - '#expects object\|string, int given#'
-    - '#expects \(callable\)\|object\|string, int given#'
-    # phpstan is sometimes not knowledgeable enough
-    - '#Function stubbles\\reflect\\reflectConstructor\(\) should return ReflectionMethod but returns ReflectionClass\|ReflectionFunction\|ReflectionMethod.#'
+    # Explicit tests that invalid values throw an exception
+    -
+        message: '#expects \(callable\(\): mixed\)\|class-string<object>|object, 404 given#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#expects \(callable\(\): mixed\)\|object\|string, bool|float|int|string given#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#of function stubbles\\reflect\\reflect expects \(callable\(\): mixed\)|class-string<doesNotExist>|doesNotExist, doesNotExist given#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\reflect#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\propertiesOf#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\parametersOf#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\methodsOf#'
+        path: src/test/php/FunctionsTest.php

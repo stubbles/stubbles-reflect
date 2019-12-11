@@ -12,6 +12,7 @@ use stubbles\reflect\annotation\Annotation;
 
 use function bovigo\assert\assertThat;
 use function bovigo\assert\expect;
+use function bovigo\assert\fail;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\reflect\annotation\Parser.
@@ -25,7 +26,7 @@ class ParserTest extends TestCase
     /**
      * instance to test
      *
-     * @type  \stubbles\reflect\annotation\parser\Parser
+     * @var  \stubbles\reflect\annotation\parser\Parser
      */
     private $parser;
 
@@ -35,8 +36,8 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @param   string  $name
-     * @param   array   $values
+     * @param   string               $name
+     * @param   array<string,mixed>  $values
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
     private function expectedClassAnnotation(string $name, array $values = [], string $type = null): array
@@ -50,16 +51,18 @@ class ParserTest extends TestCase
     private function parseMyTestClassAnnotation(string $type): array
     {
         $clazz = new \ReflectionClass(MyTestClass::class);
-        return $this->parser->parse(
-                $clazz->getDocComment(),
-                MyTestClass::class
-        )[MyTestClass::class]->named($type);
+        $docComment = $clazz->getDocComment();
+        if (false === $docComment) {
+            fail('Could not retriece doc comment');
+        }
+
+        return $this->parser->parse($docComment, MyTestClass::class)[MyTestClass::class]->named($type);
     }
 
     /**
      * @test
      */
-    public function parsesAnnotationWithoutValues()
+    public function parsesAnnotationWithoutValues(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('Foo'),
@@ -70,7 +73,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithoutValuesButParentheses()
+    public function parsesAnnotationWithoutValuesButParentheses(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('FooWithBrackets'),
@@ -81,7 +84,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesCastedAnnotation()
+    public function parsesCastedAnnotation(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('Bar'),
@@ -92,7 +95,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithSingleValue()
+    public function parsesAnnotationWithSingleValue(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('MyAnnotation'),
@@ -103,7 +106,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithValues()
+    public function parsesAnnotationWithValues(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('TwoParams'),
@@ -117,7 +120,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithValueContainingSignalCharacters()
+    public function parsesAnnotationWithValueContainingSignalCharacters(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('InvalidChars'),
@@ -131,7 +134,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithConstantAsValue()
+    public function parsesAnnotationWithConstantAsValue(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('Constant'),
@@ -145,7 +148,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithStringContainingEscapedCharacters()
+    public function parsesAnnotationWithStringContainingEscapedCharacters(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('WithEscaped'),
@@ -159,7 +162,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationSpanningMultipleLine()
+    public function parsesAnnotationSpanningMultipleLine(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('Multiline'),
@@ -173,7 +176,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesAnnotationWithClassAsValue()
+    public function parsesAnnotationWithClassAsValue(): void
     {
         assertThat(
                 $this->parseMyTestClassAnnotation('Class'),
@@ -187,7 +190,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function tabsAreNoProblemForParsing()
+    public function tabsAreNoProblemForParsing(): void
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
         assertThat(
@@ -200,23 +203,30 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @param   string  $name
-     * @param   array   $values
+     * @param   string               $name
+     * @param   array<string,mixed>  $values
+     * @param   string               $type
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    private function expectedParameterAnnotation($name, array $values = [], $type = null)
+    private function expectedParameterAnnotation(string $name, array $values = [], string $type = null): array
     {
         return [new Annotation($name, MyTestClass2::class . '::foo()#bar', $values, $type)];
     }
 
     /**
+     * @param   string  $type
      * @return  \stubbles\reflect\annotation\Annotation[]
      */
-    private function parseMyTestClass2Annotation($type)
+    private function parseMyTestClass2Annotation(string $type): array
     {
         $method = new \ReflectionMethod(MyTestClass2::class, 'foo');
+        $docComment = $method->getDocComment();
+        if (false === $docComment) {
+            fail('Could not retrieve doc comment');
+        }
+
         return $this->parser->parse(
-                $method->getDocComment(),
+                $docComment,
                 MyTestClass2::class . '::foo()'
         )[MyTestClass2::class . '::foo()#bar']->named($type);
     }
@@ -224,7 +234,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesArgumentAnnotationFromMethodDocComment()
+    public function parsesArgumentAnnotationFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('ForArgument1'),
@@ -235,7 +245,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesArgumentAnnotationWithValuesFromMethodDocComment()
+    public function parsesArgumentAnnotationWithValuesFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('ForArgument2'),
@@ -249,7 +259,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesCastedArgumentAnnotationFromMethodDocComment()
+    public function parsesCastedArgumentAnnotationFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('MoreArgument1'),
@@ -264,7 +274,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesCastedArgumentAnnotationWithValuesFromMethodDocComment()
+    public function parsesCastedArgumentAnnotationWithValuesFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('MoreArgument2'),
@@ -279,7 +289,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesCastedArgumentAnnotationDifferentOrderFromMethodDocComment()
+    public function parsesCastedArgumentAnnotationDifferentOrderFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('MoreArgument3'),
@@ -294,7 +304,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parsesCastedArgumentAnnotationDifferentOrderWithValuesFromMethodDocComment()
+    public function parsesCastedArgumentAnnotationDifferentOrderWithValuesFromMethodDocComment(): void
     {
         assertThat(
                 $this->parseMyTestClass2Annotation('MoreArgument4'),
@@ -309,7 +319,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function parseIncompleteDocblockThrowsReflectionException()
+    public function parseIncompleteDocblockThrowsReflectionException(): void
     {
         expect(function() {
                 $this->parser->parse('/**
@@ -325,7 +335,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function missingEqualSignThrowsReflectionException()
+    public function missingEqualSignThrowsReflectionException(): void
     {
         expect(function() {
                 $this->parser->parse('/**
@@ -347,7 +357,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function paramNameStartingWithEqualSignThrowsReflectionException()
+    public function paramNameStartingWithEqualSignThrowsReflectionException(): void
     {
         expect(function() {
                 $this->parser->parse('/**
@@ -368,7 +378,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function paramNameWithInvalidCharacterThrowsReflectionException()
+    public function paramNameWithInvalidCharacterThrowsReflectionException(): void
     {
         expect(function() {
                 $this->parser->parse('/**
@@ -391,7 +401,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function moreThanOneSingleValueThrowsReflectionException()
+    public function moreThanOneSingleValueThrowsReflectionException(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -411,7 +421,7 @@ class ParserTest extends TestCase
     /**
      * @test
      */
-    public function registerSingleAnnotationAfterParamValueThrowsReflectionException()
+    public function registerSingleAnnotationAfterParamValueThrowsReflectionException(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -432,7 +442,7 @@ class ParserTest extends TestCase
      * @test
      * @since  5.5.1
      */
-    public function stringWithDoubleQuotesInsideSingleQuotes()
+    public function stringWithDoubleQuotesInsideSingleQuotes(): void
     {
         $annotations = $this->parser->parse('/**
      * a method with an annotation for its parameter
@@ -450,7 +460,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function canNotUseEmptyParameterNamesInParamAnnotation()
+    public function canNotUseEmptyParameterNamesInParamAnnotation(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -468,7 +478,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function canNotUseInvalidParameterNamesInParamAnnotation()
+    public function canNotUseInvalidParameterNamesInParamAnnotation(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -489,7 +499,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function canNotUseEmptyAnnotationType()
+    public function canNotUseEmptyAnnotationType(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -507,7 +517,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function canNotUseInvalidAnnotationType()
+    public function canNotUseInvalidAnnotationType(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -529,7 +539,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function annotationSignWithoutNameThrowsReflectionException()
+    public function annotationSignWithoutNameThrowsReflectionException(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -547,7 +557,7 @@ class ParserTest extends TestCase
      * @test
      * @since  8.0.0
      */
-    public function annotationNameWithInvalidCharactersThrowsReflectionException()
+    public function annotationNameWithInvalidCharactersThrowsReflectionException(): void
     {
         expect(function() {
             $this->parser->parse('/**
@@ -570,7 +580,7 @@ class ParserTest extends TestCase
      * @group  multiline
      * @since  8.0.2
      */
-    public function canParseMultilineIndentedAnnotation()
+    public function canParseMultilineIndentedAnnotation(): void
     {
         $annotations = $this->parser->parse("/**
  * Helper class for the test.

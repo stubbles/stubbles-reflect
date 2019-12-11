@@ -12,19 +12,20 @@ use stubbles\reflect\annotation\parser\Parser;
  * Contains a list of all annotations for a target.
  *
  * @since  5.0.0
+ * @implements \IteratorAggregate<Annotation>
  */
 class Annotations implements \IteratorAggregate
 {
     /**
      * list of annotation types and their instances
      *
-     * @type  array
+     * @var  array<string,Annotation[]>
      */
     private $types       = [];
     /**
      * target for which annotations are for
      *
-     * @type  string
+     * @var  string
      */
     private $target;
 
@@ -62,7 +63,7 @@ class Annotations implements \IteratorAggregate
      * @internal  only to be called by the parser
      * @param   \stubbles\reflect\annotation\Annotation  $annotation
      */
-    public function add(Annotation $annotation)
+    public function add(Annotation $annotation): self
     {
         if (!isset($this->types[$annotation->type()])) {
             $this->types[$annotation->type()] = [$annotation];
@@ -135,9 +136,9 @@ class Annotations implements \IteratorAggregate
      * returns a list of all annotations
      *
      * @api
-     * @return  \stubbles\reflect\annotation\Annotation[]
+     * @return  \Generator<Annotation>
      */
-    public function all(): iterable
+    public function all(): \Generator
     {
         foreach ($this as $annotation) {
             yield $annotation;
@@ -147,7 +148,7 @@ class Annotations implements \IteratorAggregate
     /**
      * returns an iterator to iterate over all annotations
      *
-     * @return  \Traversable
+     * @return  \Traversable<Annotation>
      */
     public function getIterator(): \Traversable
     {

@@ -35,6 +35,7 @@ class Parser
         for ($i = 6; $i < $len; $i++) {
             $character = $docComment[$i];
             if (isset($expression->after[$character])) {
+                /** @var  Expression  $expression */
                 if ($expression->evaluate($token, $character, $annotation)) {
                     $token->value = '';
                     $expression   = $expression->after[$character];

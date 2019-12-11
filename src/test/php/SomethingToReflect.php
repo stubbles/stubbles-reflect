@@ -12,5 +12,5 @@ namespace stubbles\reflect;
  */
 interface SomethingToReflect
 {
-    function something($foo);
+    function something(string $foo): void;
 }

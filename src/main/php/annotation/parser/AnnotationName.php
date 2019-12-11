@@ -17,11 +17,11 @@ class AnnotationName extends Expression
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
-     * @type  array
+     * @var  array<string,Expression>
      */
     public $after;
 
-    public function init()
+    public function init(): void
     {
         $this->after = [
                 ' '  => self::$ANNOTATION,
@@ -36,7 +36,7 @@ class AnnotationName extends Expression
     /**
      * list of forbidden annotation names
      *
-     * @type  string[]
+     * @var  array<string,int>
      */
     private $forbiddenAnnotationNames = [
             'deprecated'     => 1,

@@ -16,39 +16,39 @@ class Annotation
     /**
      * name of annotation
      *
-     * @type  string
+     * @var  string
      */
     private $name;
     /**
      * values of annotation
      *
-     * @type  array
+     * @var  array<string,mixed>
      */
     private $values     = [];
     /**
      * target from which annotation was retrieved
      *
-     * @type  string
+     * @var  string
      */
     private $target;
     /**
      * original annotation type
      *
-     * @type  string
+     * @var  string
      */
     private $type;
 
     /**
      * constructor
      *
-     * @param  string  $name    name of annotation, in case of casted annotations it the casted type
-     * @param  string  $target  optional  name of target where annotation is for, i.e. the class, method, function, property or parameter
-     * @param  array   $values  optional  map of all annotation values
-     * @param  string  $type    optional  type of annotation in case $name reflects a casted type
+     * @param  string               $name    name of annotation, in case of casted annotations it the casted type
+     * @param  string               $target  optional  name of target where annotation is for, i.e. the class, method, function, property or parameter
+     * @param  array<string,mixed>  $values  optional  map of all annotation values
+     * @param  string               $type    optional  type of annotation in case $name reflects a casted type
      */
     public function __construct(
             string $name,
-            string $target = null,
+            string $target,
             array $values = [],
             string $type = null
     ) {
@@ -152,8 +152,8 @@ class Annotation
     /**
      * responds to a method call of an undefined method
      *
-     * @param   string  $name
-     * @param   array   $arguments
+     * @param   string               $name
+     * @param   array<string,mixed>  $arguments
      * @return  mixed
      * @throws  \ReflectionException
      */
@@ -188,7 +188,7 @@ class Annotation
     /**
      * returns first value in array or null if it does not exist
      *
-     * @param   array  $arguments
+     * @param   array<string,mixed>  $arguments
      * @return  mixed
      */
     protected function extractDefaultValue(array $arguments)

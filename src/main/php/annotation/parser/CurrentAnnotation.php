@@ -18,49 +18,49 @@ class CurrentAnnotation
     /**
      * the name of the current annotation
      *
-     * @type  string
+     * @var  string
      */
     public $name;
     /**
      * actual type
      *
-     * @type  string
+     * @var  string
      */
     public $type;
     /**
      * map of parameters
      *
-     * @type  array
+     * @var  array<string,string>
      */
     public $params       = [];
     /**
      * the name of the current annotation parameter
      *
-     * @type  string
+     * @var  string
      */
     public $currentParam = self::SINGLE_VALUE;
     /**
      * annotation target
      *
-     * @type  string
+     * @var  string
      */
     public $target;
     /**
      * name of parameter when annotation is for function/method parameter
      *
-     * @type  string
+     * @var  string
      */
     public $targetParam;
     /**
      * whether annotation must be ignored, i.e. because it's a phpdoc one
      *
-     * @type  bool
+     * @var  bool
      */
     public $ignored      = false;
     /**
      * original target when parser detects its an annotation for a parameter
      *
-     * @type  string
+     * @var  string
      */
     private $originalTarget;
 

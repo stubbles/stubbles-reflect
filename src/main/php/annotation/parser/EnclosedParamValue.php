@@ -17,11 +17,11 @@ class EnclosedParamValue extends Expression
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
-     * @type  array
+     * @var  array<string,Expression>
      */
     public $after;
 
-    public function init(string $quoteCharacter)
+    public function init(string $quoteCharacter): void
     {
         $this->after = [$quoteCharacter => self::$PARAM_NAME];
     }

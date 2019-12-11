@@ -18,25 +18,25 @@ class AnnotationCache
     /**
      * map of stored serialized annotations
      *
-     * @type  string[]
+     * @var  string[]
      */
     private static $annotations  = [];
     /**
      * map of stored annotations
      *
-     * @type  \stubbles\reflect\annotation\Annotations[]
+     * @var  \stubbles\reflect\annotation\Annotations[]
      */
     private static $unserialized = [];
     /**
      * flag whether cache contents changed
      *
-     * @type  bool
+     * @var  bool
      */
     private static $cacheChanged = false;
     /**
      * closure which stores the current annotation cache
      *
-     * @type  callable
+     * @var  callable|null
      */
     private static $storeCache;
 
@@ -78,7 +78,7 @@ class AnnotationCache
      * @throws  \RuntimeException
      * @since   3.0.0
      */
-    public static function start(callable $readCache, callable $storeCache)
+    public static function start(callable $readCache, callable $storeCache): void
     {
         self::$annotations = $readCache();
         if (!is_array(self::$annotations)) {
@@ -89,7 +89,9 @@ class AnnotationCache
         self::$unserialized = [];
         self::$cacheChanged = false;
         self::$storeCache   = $storeCache;
-        register_shutdown_function([__CLASS__, '__shutdown']);
+        $shutdown = [__CLASS__, '__shutdown'];
+        /** @var  callable(): void  $shutdown */
+        register_shutdown_function($shutdown);
     }
 
     /**
@@ -98,7 +100,7 @@ class AnnotationCache
      * @param  string  $cacheFile  path to file wherein cached annotation data is stored
      * @since  3.0.0
      */
-    public static function startFromFileCache(string $cacheFile)
+    public static function startFromFileCache(string $cacheFile): void
     {
         self::start(
                 function() use($cacheFile)
@@ -124,7 +126,7 @@ class AnnotationCache
      *
      * @since  3.0.0
      */
-    public static function stop()
+    public static function stop(): void
     {
         self::$storeCache = null;
     }
@@ -132,7 +134,7 @@ class AnnotationCache
     /**
      * static shutdown
      */
-    public static function __shutdown()
+    public static function __shutdown(): void
     {
         if (self::$cacheChanged && null !== self::$storeCache) {
             $storeCache = self::$storeCache;
@@ -143,7 +145,7 @@ class AnnotationCache
     /**
      * flushes all contents from cache
      */
-    public static function flush()
+    public static function flush(): void
     {
         self::$annotations  = [];
         self::$unserialized = [];
@@ -155,7 +157,7 @@ class AnnotationCache
      *
      * @param  \stubbles\reflect\annotation\Annotations  $annotations
      */
-    public static function put(Annotations $annotations)
+    public static function put(Annotations $annotations): void
     {
         self::$annotations[$annotations->target()]  = serialize($annotations);
         self::$unserialized[$annotations->target()] = $annotations;

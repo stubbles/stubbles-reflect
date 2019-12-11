@@ -30,7 +30,7 @@ class FunctionsTest extends TestCase
      * @group  issue_58
      * @test
      */
-    public function canEnableFileAnnotationCache()
+    public function canEnableFileAnnotationCache(): void
     {
         $root = vfsStream::setup();
         $file = vfsStream::newFile('annotations.cache')
@@ -40,6 +40,9 @@ class FunctionsTest extends TestCase
         assertTrue(AnnotationCache::has('foo'));
     }
 
+    /**
+     * @return  array<string,array<string,Annotation>>
+     */
     private function createdCachedAnnotation(): array
     {
         return ['foo' => ['bar' => new Annotation('bar', 'someFunction()')]];
@@ -50,7 +53,7 @@ class FunctionsTest extends TestCase
      * @group  issue_58
      * @test
      */
-    public function canEnableOtherAnnotationCache()
+    public function canEnableOtherAnnotationCache(): void
     {
         $annotationData = $this->createdCachedAnnotation();
         persistAnnotations(function() use($annotationData)

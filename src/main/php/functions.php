@@ -27,9 +27,10 @@ namespace stubbles\reflect {
      * \ReflectionMethod which allows reflection on the
      * specific method.
      *
-     * @param   string|object|callable  $class       class name, function name of or object instance to reflect
-     * @param   string                  $methodName  optional  specific method to reflect when first parameter refers to a class
-     * @return  \ReflectionClass|\ReflectionMethod|\ReflectionFunction
+     * @template T of object
+     * @param   class-string<T>|T|callable  $class       class name, function name of or object instance to reflect
+     * @param   string                      $methodName  optional  specific method to reflect when first parameter refers to a class
+     * @return  \ReflectionClass<T>|\ReflectionObject<T>|\ReflectionMethod|\ReflectionFunction
      * @throws  \ReflectionException
      * @throws  \InvalidArgumentException
      * @since   3.1.0
@@ -54,6 +55,7 @@ namespace stubbles\reflect {
         }
 
         if (\is_string($class) && (\class_exists($class) || \interface_exists($class))) {
+            /** @var  class-string<T>  $class */
             if (null != $methodName) {
                 return new \ReflectionMethod($class, $methodName);
             }
@@ -75,20 +77,24 @@ namespace stubbles\reflect {
     /**
      * shortcut for reflect($class, '__construct')
      *
-     * @param   string|object  $class  class name of or object instance to reflect constructor of
+     * @template T of object
+     * @param   class-string<T>|T  $class  class name of or object instance to reflect constructor of
      * @return  \ReflectionMethod
      * @since   3.1.0
      * @api
      */
     function reflectConstructor($class): \ReflectionMethod
     {
-        return reflect($class, '__construct');
+        /** @var \ReflectionMethod $constructor */
+        $constructor = reflect($class, '__construct');
+        return $constructor;
     }
 
     /**
      * returns annotations for given reflected
      *
-     * @param   \Reflector|string|object|callable  $reflected   class name, function name of or object instance to reflect
+     * @template T of object
+     * @param   \Reflector|class-string<T>|T|callable  $reflected   class name, function name of or object instance to reflect
      * @param   string                             $methodName  optional  method to reflect when first parameter refers to a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
@@ -121,7 +127,8 @@ namespace stubbles\reflect {
     /**
      * returns annotations of constructor of given reflected
      *
-     * @param   \ReflectionClass|string|object  $reflected   class name, class instance of or object instance to reflect constructor annotations of
+     * @template T of object
+     * @param   \ReflectionClass<T>|class-string<T>|T  $reflected   class name, class instance of or object instance to reflect constructor annotations of
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -142,9 +149,10 @@ namespace stubbles\reflect {
     /**
      * returns annotations for given parameter
      *
-     * @param   string                                              $name             name of parameter to retrieve annotations for
-     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
-     * @param   string                                              $methodName       optional  in case first param references a class
+     * @template T of object
+     * @param   string                                                  $name             name of parameter to retrieve annotations for
+     * @param   class-string<T>|T|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                                  $methodName       optional  in case first param references a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -156,8 +164,9 @@ namespace stubbles\reflect {
     /**
      * retrieves parameter with given name from referenced function or method
      *
-     * @param   string                                     $name             name of parameter to retrieve
-     * @param   string|object|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @template T of object
+     * @param   string                                         $name             name of parameter to retrieve
+     * @param   class-string<T>|T|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
      * @return  \stubbles\reflect\annotation\Annotations
      * @since   5.3.0
      */
@@ -228,9 +237,10 @@ namespace stubbles\reflect {
     /**
      * returns a sequence of all methods of given class
      *
-     * @param   string|object|\ReflectionClass  $class   class to return methods for
-     * @param   int                             $filter  optional  filter the results to include only methods with certain attributes using any combination of ReflectionMethod::IS_ constants
-     * @return  \stubbles\sequence\Sequence
+     * @template T of object
+     * @param   class-string<T>|T|\ReflectionClass<T>  $class   class to return methods for
+     * @param   int                                    $filter  optional  filter the results to include only methods with certain attributes using any combination of ReflectionMethod::IS_ constants
+     * @return  \stubbles\sequence\Sequence<\ReflectionMethod>
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -240,9 +250,9 @@ namespace stubbles\reflect {
             $class = reflect($class);
             if (!($class instanceof \ReflectionClass)) {
                 throw new \InvalidArgumentException(
-                        'Given class must be a class name, a class instance'
-                        . ' or an instance of \ReflectionClass'
-                    );
+                    'Given class must be a class name, a class instance'
+                    . ' or an instance of \ReflectionClass'
+                );
             }
         }
 
@@ -251,7 +261,7 @@ namespace stubbles\reflect {
         )->mapKeys(
                 function($key, \ReflectionMethod $method = null)
                 {
-                    if (null === $method) { var_dump($key); return $key; }
+                    if (null === $method) { return $key; }
                     return $method->getName();
                 }
         );
@@ -260,9 +270,10 @@ namespace stubbles\reflect {
     /**
      * returns a sequence of all properties of given class
      *
-     * @param   string|object|\ReflectionClass  $class   class to return properties for
-     * @param   int                             $filter  optional  filter the results to include only properties with certain attributes using any combination of ReflectionProperty::IS_ constants
-     * @return  \stubbles\sequence\Sequence
+     * @template T of object
+     * @param   class-string<T>|T|\ReflectionClass<T>  $class   class to return properties for
+     * @param   int                                    $filter  optional  filter the results to include only properties with certain attributes using any combination of ReflectionProperty::IS_ constants
+     * @return  \stubbles\sequence\Sequence<\ReflectionProperty>
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -291,9 +302,10 @@ namespace stubbles\reflect {
     /**
      * returns sequence of parameters of a function or method
      *
-     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
-     * @param   string                                              $methodName       optional  name of method in case first param references a class
-     * @return  \stubbles\sequence\Sequence
+     * @template T of object
+     * @param   class-string<T>|T|\ReflectionClass<T>|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   string                                                                      $methodName       optional  name of method in case first param references a class
+     * @return  \stubbles\sequence\Sequence<\ReflectionParameter>
      * @throws  \InvalidArgumentException
      * @since   5.3.0
      */
@@ -323,8 +335,9 @@ namespace stubbles\reflect {
     /**
      * returns constructor parameters for given class
      *
-     * @param   string|object|\ReflectionClass  $class  something that references a function or a class
-     * @return  \stubbles\sequence\Sequence
+     * @template T of object
+     * @param   class-string<T>|T|\ReflectionClass<T>  $class  something that references a function or a class
+     * @return  \stubbles\sequence\Sequence<\ReflectionParameter>
      * @since   5.3.0
      */
     function parametersOfConstructor($class): Sequence
@@ -335,8 +348,9 @@ namespace stubbles\reflect {
     /**
      * retrieves parameter with given name from referenced function or method
      *
+     * @template T of object
      * @param   string                                              $name             name of parameter to retrieve
-     * @param   string|object|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
+     * @param   class-string<T>|T|\ReflectionClass<T>|callable|\ReflectionFunctionAbstract  $classOrFunction  something that references a function or a class
      * @param   string                                              $methodName       optional  in case first param references a class
      * @return  \ReflectionParameter
      * @since   5.3.0
@@ -355,8 +369,9 @@ namespace stubbles\reflect {
     /**
      * retrieves parameter with given name from constructor of referenced class
      *
-     * @param   string                          $name   name of parameter to retrieve
-     * @param   string|object|\ReflectionClass  $class  something that references a function or a class
+     * @template T of object
+     * @param   string                                 $name   name of parameter to retrieve
+     * @param   class-string<T>|T|\ReflectionClass<T>  $class  something that references a function or a class
      * @return  \ReflectionParameter
      * @since   5.3.0
      */
@@ -401,7 +416,7 @@ namespace stubbles\reflect\annotation {
      * @since  3.1.0
      * @api
      */
-    function persistAnnotations(\Closure $readCache, \Closure $storeCache)
+    function persistAnnotations(\Closure $readCache, \Closure $storeCache): void
     {
         AnnotationCache::start($readCache, $storeCache);
     }
@@ -413,7 +428,7 @@ namespace stubbles\reflect\annotation {
      * @since  3.1.0
      * @api
      */
-    function persistAnnotationsInFile($cacheFile)
+    function persistAnnotationsInFile($cacheFile): void
     {
         AnnotationCache::startFromFileCache($cacheFile);
     }

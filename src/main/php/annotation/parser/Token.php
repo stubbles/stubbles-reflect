@@ -14,5 +14,8 @@ namespace stubbles\reflect\annotation\parser;
  */
 class Token
 {
+    /**
+     * @var  string
+     */
     public $value = '';
 }
