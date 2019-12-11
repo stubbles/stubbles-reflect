@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.1.0 (2019-12-11)
+
+* added more phpstan related type hints
+
 ## 9.0.1 (2019-11-18)
 
 * replace `array` in allowed values of parameters in functions with `callable`

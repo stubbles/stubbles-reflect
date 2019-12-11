@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f3a428727ffd615d1c7f7812b71bee3",
+    "content-hash": "e1ba4c1ad96661902a48837dfdb062b9",
     "packages": [
         {
             "name": "stubbles/sequence",
