@@ -6,8 +6,13 @@ parameters:
   paths:
     - ./src
   ignoreErrors:
-    # Class has dynamicly added methods which are called using __call()
-    - '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation#'
+    # Class Annotation has dynamicly added methods which are called using __call()
+    -
+        message: '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation#'
+        path: src/test/php/annotation/AnnotationTest.php
+    -
+        message: '#Call to an undefined method stubbles\\reflect\\annotation\\Annotation::getName\(\)#'
+        path: src/test/php/annotation/parser/ParserTest.php
     # Explicit tests that invalid values throw an exception
     -
         message: '#expects \(callable\(\): mixed\)\|class-string<object>|object, 404 given#'
