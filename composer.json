@@ -6,7 +6,7 @@
     "require": {
         "php": "^7.3",
         "stubbles/sequence": "^9.0",
-        "stubbles/values": "^9.0.1"
+        "stubbles/values": "^9.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.4",
