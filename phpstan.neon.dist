@@ -15,13 +15,16 @@ parameters:
         path: src/test/php/annotation/parser/ParserTest.php
     # Explicit tests that invalid values throw an exception
     -
-        message: '#expects \(callable\(\): mixed\)\|class-string<object>|object, 404 given#'
+        message: '#expects \(callable\(\): mixed\)\|class-string<object>\|object, 404 given#'
         path: src/test/php/FunctionsTest.php
     -
-        message: '#expects \(callable\(\): mixed\)\|object\|string, bool|float|int|string given#'
+        message: "#'doesNotExist' given#"
         path: src/test/php/FunctionsTest.php
     -
-        message: '#of function stubbles\\reflect\\reflect expects \(callable\(\): mixed\)|class-string<doesNotExist>|doesNotExist, doesNotExist given#'
+        message: '#expects class-string<object>\|object, int given#'
+        path: src/test/php/FunctionsTest.php
+    -
+        message: '#expects \(callable\(\): mixed\)\|class-string<object>\|object, bool\|float\|int\|string given#'
         path: src/test/php/FunctionsTest.php
     -
         message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\reflect#'
