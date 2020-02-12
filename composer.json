@@ -9,9 +9,9 @@
         "stubbles/values": "^9.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4",
+        "phpunit/phpunit": "^9.0",
         "mikey179/vfsstream": "^1.6.8",
-        "bovigo/assert": "^5.1.1"
+        "bovigo/assert": "^6.0"
     },
     "autoload": {
         "psr-4": {
