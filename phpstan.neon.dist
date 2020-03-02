@@ -38,3 +38,6 @@ parameters:
     -
         message: '#Unable to resolve the template type T in call to function stubbles\\reflect\\methodsOf#'
         path: src/test/php/FunctionsTest.php
+    -
+        message: '#class of function stubbles\\reflect\\methodsOf expects substr\|class-string<substr>|ReflectionClass<substr>\|substr, string given#'
+        path: src/test/php/FunctionsTest.php

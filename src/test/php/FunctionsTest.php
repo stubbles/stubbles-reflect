@@ -295,7 +295,7 @@ class FunctionsTest extends TestCase
      */
     public function methodsOfNonClassThrowsInvalidArgumentException(): void
     {
-        expect(function() { methodsOf('bovigo\assert\expect'); })
+        expect(function() { methodsOf('substr'); })
             ->throws(\InvalidArgumentException::class);
     }
 
@@ -339,7 +339,7 @@ class FunctionsTest extends TestCase
      */
     public function propertiesOfNonClassThrowsInvalidArgumentException(): void
     {
-        expect(function() { propertiesOf('bovigo\assert\expect'); })
+        expect(function() { propertiesOf('substr'); })
             ->throws(\InvalidArgumentException::class);
     }
 
