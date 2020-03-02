@@ -140,7 +140,7 @@ namespace stubbles\reflect {
               return new Annotations(_annotationTarget($reflected));
             }
         } else {
-          $constructor = reflectConstructor($reflected);
+            $constructor = reflectConstructor($reflected);
         }
 
         return annotationsOf($constructor);
