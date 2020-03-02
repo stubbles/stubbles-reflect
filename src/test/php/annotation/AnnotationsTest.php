@@ -15,6 +15,7 @@ use function bovigo\assert\{
     assertTrue,
     expect,
     predicate\equals,
+    predicate\isEmpty,
     predicate\isSameAs
 };
 /**
@@ -40,6 +41,15 @@ class AnnotationsTest extends TestCase
 
     /**
      * @test
+     * @since  9.2.0
+     */
+    public function annotationCountIs0ByDefault(): void
+    {
+        assertThat($this->annotations, isEmpty());
+    }
+
+    /**
+     * @test
      */
     public function doNotContainNonAddedAnnotation(): void
     {
@@ -58,6 +68,15 @@ class AnnotationsTest extends TestCase
 
     /**
      * @test
+     * @since  9.2.0
+     */
+    public function containsAddedAnnotationRaisesCountTo1(): void
+    {
+        assertThat($this->annotations->add(new Annotation('foo', __METHOD__))->count(), equals(1));
+    }
+
+    /**
+     * @test
      */
     public function containsMoreThanOneAnnotation(): void
     {
@@ -65,6 +84,19 @@ class AnnotationsTest extends TestCase
                 $this->annotations->add(new Annotation('foo', __METHOD__))
                         ->add(new Annotation('foo', __METHOD__))
                         ->contain('foo')
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function containsMoreThanOneAnnotationRaisesCount(): void
+    {
+        assertThat(
+            $this->annotations->add(new Annotation('foo', __METHOD__))
+                 ->add(new Annotation('foo', __METHOD__))
+                 ->count(),
+            equals(2)
         );
     }
 

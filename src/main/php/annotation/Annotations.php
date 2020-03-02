@@ -14,7 +14,7 @@ use stubbles\reflect\annotation\parser\Parser;
  * @since  5.0.0
  * @implements \IteratorAggregate<Annotation>
  */
-class Annotations implements \IteratorAggregate
+class Annotations implements \IteratorAggregate, \Countable
 {
     /**
      * list of annotation types and their instances
@@ -155,5 +155,21 @@ class Annotations implements \IteratorAggregate
         return new \RecursiveIteratorIterator(
                 new RecursiveArrayIterator($this->types)
         );
+    }
+
+    /**
+     * returns amount of annotations
+     *
+     * @return  int
+     * @since   9.2.0
+     */
+    public function count(): int
+    {
+        $count = 0;
+        foreach ($this->types as $annotations) {
+            $count += count($annotations);
+        }
+
+        return $count;
     }
 }

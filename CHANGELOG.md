@@ -1,5 +1,9 @@
 # Changelog
 
+## 9.2.0 (2020-03-02)
+
+* added new method `stubbles\reflect\annotation\Annotations::count()` so that the amount of annotations can be counted, implementing the  `\Countable` interface
+
 ## 9.1.0 (2019-12-11)
 
 * added more phpstan related type hints
