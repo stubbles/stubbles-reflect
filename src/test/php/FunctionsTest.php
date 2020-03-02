@@ -61,6 +61,7 @@ class FunctionsTest extends TestCase
     /**
      * @test
      * @dataProvider  argumentVariantsOfClassWithoutConstructor
+     * @param  class-string|object|\ReflectionClass  $toReflect
      */
     public function constructorAnnotationsForClassWithoutConstructorThrowsReflectionException($toReflect): void
     {
