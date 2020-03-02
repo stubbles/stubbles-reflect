@@ -201,11 +201,11 @@ To get a list of all annotations of an annotatable element call the
 `stubbles\reflect\annotation\Annotations` and supports the following invocations:
 
 ```php
-annotationsOf('my\ExampleClass`, `aMethod`); // returns annotations of this method
-annotationsOf($exampleInstance, `aMethod`); // returns annotations of this method
-annotationsOf('my\ExampleClass`); // returns annotations of this class
+annotationsOf('my\ExampleClass', 'aMethod'); // returns annotations of this method
+annotationsOf($exampleInstance, 'aMethod'); // returns annotations of this method
+annotationsOf('my\ExampleClass'); // returns annotations of this class
 annotationsOf($exampleInstance); // returns annotations of this class
-annotationsOf('my\examplefunction`); // returns annotations of this function
+annotationsOf('my\examplefunction'); // returns annotations of this function
 annotationsOf($reflectionParameter); // returns annotations of this parameter
 annotationsOf($reflectionProperty); // returns annotations of this class property
 ```
@@ -214,15 +214,15 @@ As convienience function to retrieve annotations of a class' constructor the
 function `stubbles\reflect\annotationsOfConstructorParameter()` can be used:
 
 ```php
-annotationsOfConstructorParameter('my\ExampleClass`);
+annotationsOfConstructorParameter('my\ExampleClass');
 annotationsOfConstructorParameter($exampleInstance);
 ```
 
 As convienience function to retrieve annotations of a function or method
-parameter the function `stubbles\reflect\annotationsOfParameter()` can be used:
+parameter the function 'stubbles\reflect\annotationsOfParameter()` can be used:
 
 ```php
-annotationsOfParameter('param', 'my\ExampleClass`, 'aMethod');
+annotationsOfParameter('param', 'my\ExampleClass', 'aMethod');
 annotationsOfParameter('param', $exampleInstance, 'aMethod');
 annotationsOfParameter('param', 'someFunction');
 ```
