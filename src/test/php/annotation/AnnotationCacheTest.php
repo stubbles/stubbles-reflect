@@ -125,4 +125,15 @@ class AnnotationCacheTest extends TestCase
         })
         ->throws(\RuntimeException::class);
     }
+
+    /**
+     * @test
+     * @since  9.2.0
+     */
+    public function annotationDataFromCacheCanBeRetrieved(): void
+    {
+        $a  = new Annotations(__CLASS__);
+        AnnotationCache::start(function() use ($a) { return [__CLASS__ => serialize($a)]; }, function() {});
+        assertThat(AnnotationCache::get(__CLASS__), equals($a));
+    }
 }
