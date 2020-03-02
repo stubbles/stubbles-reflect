@@ -130,6 +130,7 @@ namespace stubbles\reflect {
      * @template T of object
      * @param   \ReflectionClass<T>|class-string<T>|T  $reflected   class name, class instance of or object instance to reflect constructor annotations of
      * @return  \stubbles\reflect\annotation\Annotations
+     * @throws  \ReflectionException  when class doesn't have a constructor
      * @since   5.3.0
      */
     function annotationsOfConstructor($reflected): Annotations
@@ -137,7 +138,7 @@ namespace stubbles\reflect {
         if ($reflected instanceof \ReflectionClass) {
             $constructor = $reflected->getConstructor();
             if (null === $constructor) {
-              return new Annotations(_annotationTarget($reflected));
+                throw new \ReflectionException('Method ' . $reflected->getName() . '::__construct() does not exist');
             }
         } else {
             $constructor = reflectConstructor($reflected);

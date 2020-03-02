@@ -47,6 +47,29 @@ class FunctionsTest extends TestCase
     }
 
     /**
+     * @return  array<string,mixed[]>
+     */
+    public static function argumentVariantsOfClassWithoutConstructor(): array
+    {
+        return [
+            'class name' => [ClassWithoutConstructor::class],
+            'class instance' => [new ClassWithoutConstructor()],
+            'reflection instance' => [new \ReflectionClass(ClassWithoutConstructor::class)]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider  argumentVariantsOfClassWithoutConstructor
+     */
+    public function constructorAnnotationsForClassWithoutConstructorThrowsReflectionException($toReflect): void
+    {
+        expect(function() use ($toReflect) { annotationsOfConstructor($toReflect); })
+            ->throws(\ReflectionException::class)
+            ->withMessage('Method stubbles\reflect\ClassWithoutConstructor::__construct() does not exist');
+    }
+
+    /**
      * @test
      */
     public function constructorAnnotationsWithClassNameReturnsConstructorAnnotations(): void

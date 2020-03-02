@@ -3,6 +3,7 @@
 ## 9.2.0 (2020-03-02)
 
 * added new method `stubbles\reflect\annotation\Annotations::count()` so that the amount of annotations can be counted, implementing the  `\Countable` interface
+* unified behavior of `stubbles\reflect\annotationsOfConstructor()`: now always throws a `\ReflectionException` when class doesn't have a constructor, independent of whether argument is a class name, an instance, or an instance of `\ReflectionClass`
 
 ## 9.1.0 (2019-12-11)
 
