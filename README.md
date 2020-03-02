@@ -7,7 +7,7 @@ Reflection helper functions and annotations.
 Build status
 ------------
 
-[![Build Status](https://secure.travis-ci.org/stubbles/stubbles-reflect.png)](http://travis-ci.org/stubbles/stubbles-reflect) [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-reflect/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-reflect?branch=master)
+![Tests](https://github.com/stubbles/stubbles-reflect/workflows/Tests/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-reflect/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-reflect?branch=master)
 
 [![Latest Stable Version](https://poser.pugx.org/stubbles/reflect/version.png)](https://packagist.org/packages/stubbles/reflect) [![Latest Unstable Version](https://poser.pugx.org/stubbles/reflect/v/unstable.png)](//packagist.org/packages/stubbles/reflect)
 
