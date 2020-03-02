@@ -140,6 +140,18 @@ class FunctionsTest extends TestCase
     }
 
     /**
+     * @test
+     * @since  9.2.0
+     */
+    public function annotationsOfConstructorParameterWithClassNameReturnsParameterAnnotations(): void
+    {
+        assertThat(
+            annotationsOfConstructorParameter('example', ClassWithConstructor::class)->target(),
+            equals(ClassWithConstructor::class . '::__construct()#example')
+        );
+    }
+
+    /**
      * @var  int|null
      */
     private $someProperty = 303;
@@ -255,6 +267,16 @@ class FunctionsTest extends TestCase
 
     /**
      * @test
+     * @since  9.2.0
+     */
+    public function methodsOfNonClassThrowsInvalidArgumentException(): void
+    {
+        expect(function() { methodsOf('bovigo\assert\expect'); })
+            ->throws(\InvalidArgumentException::class);
+    }
+
+    /**
+     * @test
      */
     public function propertiesOfReturnsAllMethods(): void
     {
@@ -284,6 +306,16 @@ class FunctionsTest extends TestCase
     public function propertiesOfWithNonClassThrowsInvalidArgumentException(): void
     {
         expect(function() { propertiesOf(404); })
+            ->throws(\InvalidArgumentException::class);
+    }
+
+    /**
+     * @test
+     * @since  9.2.0
+     */
+    public function propertiesOfNonClassThrowsInvalidArgumentException(): void
+    {
+        expect(function() { propertiesOf('bovigo\assert\expect'); })
             ->throws(\InvalidArgumentException::class);
     }
 
@@ -345,12 +377,56 @@ class FunctionsTest extends TestCase
 
     /**
      * @test
+     * @since  9.2.0
+     */
+    public function parametersOfWithClassOnlyThrowsInvalidArgumentException(): void
+    {
+        expect(function() { parametersOf(__CLASS__); })
+            ->throws(\InvalidArgumentException::class);
+    }
+
+    /**
+     * @test
+     * @since  9.2.0
+     */
+    public function parametersOfConstructorForClassWithoutConstructorThrowsReflectionException(): void
+    {
+        expect(function() { parametersOfConstructor(new ClassWithoutConstructor()); })
+            ->throws(\ReflectionException::class);
+    }
+
+    /**
+     * @test
+     * @since  9.2.0
+     */
+    public function parametersOfConstructorReturnsListOfParameters(): void
+    {
+        assertThat(
+            parametersOfConstructor(ClassWithConstructor::class)->count(),
+            equals(1)
+        );
+    }
+
+    /**
+     * @test
      */
     public function parameterReturnsExactReflectionParameter(): void
     {
         assertThat(
                 parameter('refParam', $this, 'example')->getName(),
                 equals('refParam')
+        );
+    }
+
+    /**
+     * @test
+     * @since  9.2.0
+     */
+    public function constructorParameterReturnsExactReflectionParameter(): void
+    {
+        assertThat(
+            constructorParameter('example', ClassWithConstructor::class)->getName(),
+            equals('example')
         );
     }
 
