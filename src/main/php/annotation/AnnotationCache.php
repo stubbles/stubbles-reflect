@@ -18,13 +18,13 @@ class AnnotationCache
     /**
      * map of stored serialized annotations
      *
-     * @var  string[]
+     * @var  array<string,string>
      */
     private static $annotations  = [];
     /**
      * map of stored annotations
      *
-     * @var  \stubbles\reflect\annotation\Annotations[]
+     * @var  array<string,\stubbles\reflect\annotation\Annotations>
      */
     private static $unserialized = [];
     /**
@@ -36,7 +36,7 @@ class AnnotationCache
     /**
      * closure which stores the current annotation cache
      *
-     * @var  callable|null
+     * @var  callable(array<string,string>): void|null
      */
     private static $storeCache;
 
@@ -58,7 +58,7 @@ class AnnotationCache
      * A possible implementation for the file cache would look like this:
      * <code>
      * AnnotationCache::start(
-     *      function() use($cacheFile)
+     *      function() use($cacheFile): array
      *      {
      *          if (file_exists($cacheFile)) {
      *              return unserialize(file_get_contents($cacheFile));
@@ -66,15 +66,15 @@ class AnnotationCache
      *
      *          return [];
      *      },
-     *      function(array $annotationData) use($cacheFile)
+     *      function(array $annotationData) use($cacheFile): void
      *      {
      *          file_put_contents($cacheFile, serialize($annotationData));
      *      }
      * );
      * </code>
      *
-     * @param   callable  $readCache   function which can return cached annotation data
-     * @param   callable  $storeCache  function which takes cached annotation data and stores it
+     * @param   callable(): array<string,string>      $readCache   function which can return cached annotation data
+     * @param   callable(array<string,string>): void  $storeCache  function which takes cached annotation data and stores it
      * @throws  \RuntimeException
      * @since   3.0.0
      */
@@ -103,21 +103,27 @@ class AnnotationCache
     public static function startFromFileCache(string $cacheFile): void
     {
         self::start(
-                function() use($cacheFile)
-                {
-                    if (file_exists($cacheFile)) {
-                        $contents = file_get_contents($cacheFile);
-                        if (false !== $contents) {
-                          return unserialize($contents);
-                        }
+            /**
+             * @return array<string,string>
+             */
+            function() use($cacheFile): array
+            {
+                if (file_exists($cacheFile)) {
+                    $contents = file_get_contents($cacheFile);
+                    if (false !== $contents) {
+                        return unserialize($contents);
                     }
-
-                    return [];
-                },
-                function(array $annotationData) use($cacheFile)
-                {
-                    file_put_contents($cacheFile, serialize($annotationData));
                 }
+
+                return [];
+            },
+            /**
+             * @param array<string,string> $annotationData
+             */
+            function(array $annotationData) use($cacheFile): void
+            {
+                file_put_contents($cacheFile, serialize($annotationData));
+            }
         );
     }
 

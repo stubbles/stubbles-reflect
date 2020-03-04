@@ -108,7 +108,10 @@ class AnnotationCacheTest extends TestCase
     public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
-                AnnotationCache::start(function() { return serialize('foo'); }, function() {});
+            AnnotationCache::start(
+                function(): array { return serialize('foo'); },
+                function(): void {}
+            );
         })
         ->throws(\RuntimeException::class);
     }
@@ -121,7 +124,7 @@ class AnnotationCacheTest extends TestCase
     public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
-                AnnotationCache::start(function() { return 'foo'; }, function() {});
+            AnnotationCache::start(function() { return 'foo'; }, function(): void {});
         })
         ->throws(\RuntimeException::class);
     }
@@ -133,7 +136,10 @@ class AnnotationCacheTest extends TestCase
     public function annotationDataFromCacheCanBeRetrieved(): void
     {
         $a  = new Annotations(__CLASS__);
-        AnnotationCache::start(function() use ($a) { return [__CLASS__ => serialize($a)]; }, function() {});
+        AnnotationCache::start(
+            function() use ($a) { return [__CLASS__ => serialize($a)]; },
+            function(): void {}
+        );
         assertThat(AnnotationCache::get(__CLASS__), equals($a));
     }
 }

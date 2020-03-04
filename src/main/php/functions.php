@@ -412,12 +412,12 @@ namespace stubbles\reflect\annotation {
      * );
      * </code>
      *
-     * @param  \Closure  $readCache
-     * @param  \Closure  $storeCache
+     * @param  callable(): array<string,string>      $readCache
+     * @param  callable(array<string,string>): void  $storeCache
      * @since  3.1.0
      * @api
      */
-    function persistAnnotations(\Closure $readCache, \Closure $storeCache): void
+    function persistAnnotations(callable $readCache, callable $storeCache): void
     {
         AnnotationCache::start($readCache, $storeCache);
     }

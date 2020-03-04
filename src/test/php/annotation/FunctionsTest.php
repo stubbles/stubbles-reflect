@@ -56,11 +56,11 @@ class FunctionsTest extends TestCase
     public function canEnableOtherAnnotationCache(): void
     {
         $annotationData = $this->createdCachedAnnotation();
-        persistAnnotations(function() use($annotationData)
+        persistAnnotations(function() use($annotationData): array
                            {
                                return $annotationData;
                            },
-                           function($data) {}
+                           function(array $data): void {}
         );
         assertTrue(AnnotationCache::has('foo'));
     }
