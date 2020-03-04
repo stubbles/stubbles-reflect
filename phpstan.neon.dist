@@ -41,6 +41,3 @@ parameters:
     -
         message: '#class of function stubbles\\reflect\\methodsOf expects substr\|class-string<substr>|ReflectionClass<substr>\|substr, string given#'
         path: src/test/php/FunctionsTest.php
-    -
-        message: '#Anonymous function should return array but returns string#'
-        path: src/test/php/annotation/AnnotationCacheTest.php
