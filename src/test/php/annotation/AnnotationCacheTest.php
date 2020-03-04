@@ -109,7 +109,7 @@ class AnnotationCacheTest extends TestCase
     {
         expect(function() {
             AnnotationCache::start(
-                function(): array { return serialize('foo'); },
+                function() { return serialize('foo'); },
                 function(): void {}
             );
         })
