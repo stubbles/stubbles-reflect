@@ -1,5 +1,9 @@
 # Changelog
 
+## 10.0.0 (2022-12-??)
+
+* raised minimum required PHP version to 8.0
+
 ## 9.2.0 (2020-03-02)
 
 * added new method `stubbles\reflect\annotation\Annotations::count()` so that the amount of annotations can be counted, implementing the  `\Countable` interface
