@@ -265,7 +265,7 @@ class Annotation
         if (count($this->values) === 1
           && isset($this->values['__value'])
           && 'value' === $propertyName) {
-            return isset($this->values['__value']);
+            return true;
         }
 
         return isset($this->values[$propertyName]);

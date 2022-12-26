@@ -2,9 +2,10 @@ includes:
   - vendor/bovigo/assert/src/main/resources/phpstan/bovigo-assert.neon
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
+  checkGenericClassInNonGenericObjectType: false
   level: 8
   paths:
-    - ./src
+    - ./src/main/php
   ignoreErrors:
     # Class Annotation has dynamicly added methods which are called using __call()
     -
@@ -16,12 +17,6 @@ parameters:
     # Explicit tests that invalid values throw an exception
     -
         message: '#expects \(callable\(\): mixed\)\|class-string<object>\|object, 404 given#'
-        path: src/test/php/FunctionsTest.php
-    -
-        message: "#'doesNotExist' given#"
-        path: src/test/php/FunctionsTest.php
-    -
-        message: '#expects class-string<object>\|object, int given#'
         path: src/test/php/FunctionsTest.php
     -
         message: '#expects \(callable\(\): mixed\)\|class-string<object>\|object, bool\|float\|int\|string given#'
