@@ -42,7 +42,7 @@ namespace stubbles\reflect {
             return new \ReflectionFunction($class);
         }
 
-        if (\is_callable($class) && \is_array($class)) {
+        if (\is_array($class) && count($class) === 2) {
             list($class, $methodName) = $class;
         }
 
