@@ -7,7 +7,7 @@ Reflection helper functions and annotations.
 Build status
 ------------
 
-![Tests](https://github.com/stubbles/stubbles-reflect/workflows/Tests/badge.svg) [![Coverage Status](https://coveralls.io/repos/github/stubbles/stubbles-reflect/badge.svg?branch=master)](https://coveralls.io/github/stubbles/stubbles-reflect?branch=master)
+![Tests](https://github.com/stubbles/stubbles-reflect/workflows/Tests/badge.svg)
 
 [![Latest Stable Version](https://poser.pugx.org/stubbles/reflect/version.png)](https://packagist.org/packages/stubbles/reflect) [![Latest Unstable Version](https://poser.pugx.org/stubbles/reflect/v/unstable.png)](//packagist.org/packages/stubbles/reflect)
 
@@ -19,13 +19,13 @@ _stubbles/reflect_ is distributed as [Composer](https://getcomposer.org/)
 package. To install it as a dependency of your package use the following
 command:
 
-    composer require "stubbles/reflect": "^9.0"
+    composer require "stubbles/reflect": "^10.0"
 
 
 Requirements
 ------------
 
-_stubbles/reflect_ requires at least PHP 7.3.
+_stubbles/reflect_ requires at least PHP 8.2.
 
 Additionally it uses _[stubbles/sequence](https://github.com/stubbles/stubbles-sequence)_
 to return sequences from some of the functions, and

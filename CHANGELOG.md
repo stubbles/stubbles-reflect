@@ -1,6 +1,6 @@
 # Changelog
 
-## 10.0.0 (2022-12-??)
+## 10.0.0 (2023-12-31)
 
 * raised minimum required PHP version to 8.2
 
