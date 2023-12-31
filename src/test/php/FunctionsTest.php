@@ -196,7 +196,7 @@ class FunctionsTest extends TestCase
     /**
      * @return array<array<string>>
      */
-    public function properties(): array
+    public static function properties(): array
     {
         return [['->', 'someProperty'], ['::$', 'otherProperty']];
     }
@@ -228,7 +228,7 @@ class FunctionsTest extends TestCase
     /**
      * @since  8.0.1
      */
-    public function reflectorWithUndefinedDocComments(): Generator
+    public static function reflectorWithUndefinedDocComments(): Generator
     {
         $refMethod = new ReflectionMethod(SomethingToReflect::class, 'something');
         yield [new ReflectionClass('stdClass')];
@@ -326,10 +326,10 @@ class FunctionsTest extends TestCase
             ->throws(InvalidArgumentException::class);
     }
 
-    public function argumentsForParametersOf(): Generator
+    public static function argumentsForParametersOf(): Generator
     {
-        yield [$this, 'example'];
-        yield [new ReflectionMethod($this, 'example')];
+        yield [self::class, 'example'];
+        yield [new ReflectionMethod(self::class, 'example')];
     }
 
     /**

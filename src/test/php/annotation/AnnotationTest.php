@@ -197,7 +197,7 @@ class AnnotationTest extends TestCase
     /**
      * @return  array<string[]>
      */
-    public function booleanValues(): array
+    public static function booleanValues(): array
     {
         return [['true'], ['yes'], ['on']];
     }
@@ -274,7 +274,7 @@ class AnnotationTest extends TestCase
     /**
      * @return  array<array<mixed>>
      */
-    public function valueTypes(): array
+    public static function valueTypes(): array
     {
         return [
             [true, 'true'],
@@ -379,7 +379,7 @@ class AnnotationTest extends TestCase
      * @since  5.0.0
      * @return  array<array<mixed>>
      */
-    public function parseList(): array
+    public static function parseList(): array
     {
         return [
             ['This is a string', 'This is a string', 'asString'],
