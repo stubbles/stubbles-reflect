@@ -8,6 +8,8 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\assertTrue;
@@ -15,9 +17,9 @@ use function bovigo\assert\assertTrue;
  * Tests for stubbles\lang\*().
  *
  * @since  3.1.0
- * @group  lang
- * @group  lang_core
  */
+#[Group('lang')]
+#[Group('lang_core')]
 class FunctionsTest extends TestCase
 {
     protected function tearDown(): void
@@ -27,9 +29,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @since  3.0.0
-     * @group  issue_58
-     * @test
      */
+    #[Test]
+    #[Group('issue_58')]
     public function canEnableFileAnnotationCache(): void
     {
         $root = vfsStream::setup();
@@ -50,9 +52,9 @@ class FunctionsTest extends TestCase
 
     /**
      * @since  3.1.0
-     * @group  issue_58
-     * @test
      */
+    #[Test]
+    #[Group('issue_58')]
     public function canEnableOtherAnnotationCache(): void
     {
         $annotationData = $this->createdCachedAnnotation();

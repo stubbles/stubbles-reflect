@@ -10,6 +10,9 @@ namespace stubbles\reflect;
 
 use Generator;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -34,14 +37,12 @@ use function bovigo\assert\{
  * Tests for stubbles\reflect\*().
  *
  * @since 5.3.0
- * @group reflect
- * @group functions
  */
+#[Group('reflect')]
+#[Group('functions')]
 class FunctionsTest extends TestCase
 {
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithMethodNameReturnsMethodAnnotations(): void
     {
         assertThat(
@@ -50,9 +51,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithClassNameReturnsClassAnnotations(): void
     {
         assertThat(annotationsOf(__CLASS__)->target(), equals(__CLASS__));
@@ -66,10 +65,10 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider argumentVariantsOfClassWithoutConstructor
      * @param class-string|object|ReflectionClass $toReflect
      */
+    #[Test]
+    #[DataProvider('argumentVariantsOfClassWithoutConstructor')]
     public function constructorAnnotationsForClassWithoutConstructorThrowsReflectionException(
         string|object $toReflect
     ): void {
@@ -78,9 +77,7 @@ class FunctionsTest extends TestCase
             ->withMessage('Method stubbles\reflect\ClassWithoutConstructor::__construct() does not exist');
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorAnnotationsWithClassNameReturnsConstructorAnnotations(): void
     {
         assertThat(
@@ -89,17 +86,13 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithClassInstanceReturnsClassAnnotations(): void
     {
         assertThat(annotationsOf($this)->target(), equals(__CLASS__));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function constructorAnnotationsWithClassInstanceReturnsConstructorAnnotations(): void
     {
         assertThat(
@@ -108,9 +101,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithFunctionNameReturnsFunctionAnnotations(): void
     {
         assertThat(
@@ -119,9 +110,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithUnknownClassAndFunctionNameThrowsReflectionException(): void
     {
         expect(function() { annotationsOf('doesNotExist'); })
@@ -129,17 +118,12 @@ class FunctionsTest extends TestCase
             ->withMessage('Given function or class "doesNotExist" does not exist');
     }
 
-    /**
-     * @param  string  $refParam
-     */
     private function example(string $refParam): void
     {
-
+        // intentionally empty
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsWithReflectionParameterReturnsParameterAnnotations(): void
     {
         $refParam = new ReflectionParameter([$this, 'example'], 'refParam');
@@ -149,9 +133,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsOfParameterWithClassInstanceReturnsParameterAnnotations(): void
     {
         assertThat(
@@ -160,9 +142,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationsOfParameterWithClassNameReturnsParameterAnnotations(): void
     {
         assertThat(
@@ -172,9 +152,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function annotationsOfConstructorParameterWithClassNameReturnsParameterAnnotations(): void
     {
         assertThat(
@@ -201,10 +181,8 @@ class FunctionsTest extends TestCase
         return [['->', 'someProperty'], ['::$', 'otherProperty']];
     }
 
-    /**
-     * @test
-     * @dataProvider properties
-     */
+    #[Test]
+    #[DataProvider('properties')]
     public function annotationsWithReflectionPropertyReturnsPropertyAnnotations(
         string $connector,
         string $propertyName
@@ -216,9 +194,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function annotationTargetThrowsReflectionExceptionForNonSupportedAnnotationPlaces(): void
     {
         expect(fn() => _annotationTarget(new ReflectionExtension('date')))
@@ -237,43 +213,35 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider reflectorWithUndefinedDocComments
      * @since 8.0.1
      */
+    #[Test]
+    #[DataProvider('reflectorWithUndefinedDocComments')]
     public function undefinedDocCommentIsEmpty(Reflector $reflector): void
     {
         assertEmptyString(docComment($reflector));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function docCommentThrowsReflectionExceptionForNonSupportedAnnotationPlaces(): void
     {
         expect(fn() => docComment(new ReflectionExtension('date')))
             ->throws(ReflectionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function methodsOfReturnsAllMethods(): void
     {
         assertThat(methodsOf($this)->count(), isGreaterThan(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allMethodsAreInstanceOfReflectionMethod(): void
     {
         assertThat(methodsOf($this), each(isInstanceOf(ReflectionMethod::class)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function keyIsNameOfMethod(): void
     {
         // cast for phpstan :/
@@ -282,34 +250,28 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  9.2.0
      */
+    #[Test]
     public function methodsOfNonClassThrowsInvalidArgumentException(): void
     {
         expect(fn() => methodsOf('substr'))
             ->throws(InvalidArgumentException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function propertiesOfReturnsAllMethods(): void
     {
         assertThat(propertiesOf($this)->count(), isGreaterThan(0));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function allPropertiesAreInstanceOfReflectionProperty(): void
     {
         assertThat(propertiesOf($this), each(isInstanceOf(ReflectionProperty::class)));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function keyIsNameOfProperty(): void
     {
         $propertyName = key(propertiesOf($this)->data());
@@ -317,9 +279,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function propertiesOfNonClassThrowsInvalidArgumentException(): void
     {
         expect(fn() => propertiesOf('substr'))
@@ -332,19 +294,15 @@ class FunctionsTest extends TestCase
         yield [new ReflectionMethod(self::class, 'example')];
     }
 
-    /**
-     * @test
-     * @dataProvider argumentsForParametersOf
-     */
+    #[Test]
+    #[DataProvider('argumentsForParametersOf')]
     public function parametersOfReturnsAllParameters(...$reflect): void
     {
         assertThat(parametersOf(...$reflect)->count(), equals(1));
     }
 
-    /**
-     * @test
-     * @dataProvider argumentsForParametersOf
-     */
+    #[Test]
+    #[DataProvider('argumentsForParametersOf')]
     public function allParametersOfAreInstanceOfReflectionParameter(...$reflect): void
     {
         assertThat(
@@ -353,10 +311,8 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     * @dataProvider  argumentsForParametersOf
-     */
+    #[Test]
+    #[DataProvider('argumentsForParametersOf')]
     public function keyIsNameOfParameter(...$reflect): void
     {
         assertThat(
@@ -366,9 +322,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function parametersOfWithClassOnlyThrowsInvalidArgumentException(): void
     {
         expect(fn() => parametersOf(__CLASS__))
@@ -376,9 +332,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function parametersOfConstructorForClassWithoutConstructorThrowsReflectionException(): void
     {
         expect(fn() => parametersOfConstructor(new ClassWithoutConstructor()))
@@ -386,9 +342,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function parametersOfConstructorReturnsListOfParameters(): void
     {
         assertThat(
@@ -397,9 +353,7 @@ class FunctionsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parameterReturnsExactReflectionParameter(): void
     {
         assertThat(
@@ -409,9 +363,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 9.2.0
      */
+    #[Test]
     public function constructorParameterReturnsExactReflectionParameter(): void
     {
         assertThat(
@@ -421,9 +375,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectWithMethodNameReturnsReflectionMethod(): void
     {
         assertThat(
@@ -433,27 +387,27 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectWithClassNameReturnsReflectionClass(): void
     {
         assertThat(reflect(__CLASS__), isInstanceOf(ReflectionClass::class));
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectWithClassInstanceReturnsReflectionObject(): void
     {
         assertThat(reflect($this), isInstanceOf(ReflectionObject::class));
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectWithFunctionNameReturnsReflectionFunction(): void
     {
         assertThat(
@@ -463,9 +417,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectWithUnknownClassAndFunctionNameThrowsReflectionException(): void
     {
         expect(fn() => reflect('doesNotExist'))
@@ -474,18 +428,18 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.0.0
      */
+    #[Test]
     public function reflectInterface(): void
     {
         assertThat(reflect(SomethingToReflect::class), isInstanceOf(ReflectionClass::class));
     }
 
     /**
-     * @test
      * @since 4.1.4
      */
+    #[Test]
     public function reflectCallableWithInstanceReturnsReflectionMethod(): void
     {
         /** @var callable $callable */
@@ -494,9 +448,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.1.4
      */
+    #[Test]
     public function reflectCallableWithClassnameReturnsReflectionMethod(): void
     {
         /** @var callable $callable */
@@ -505,9 +459,9 @@ class FunctionsTest extends TestCase
     }
 
     /**
-     * @test
      * @since 4.1.4
      */
+    #[Test]
     public function reflectClosureReturnsReflectionObject(): void
     {
         assertThat(

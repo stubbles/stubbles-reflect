@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\reflect\annotation\parser;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use stubbles\reflect\annotation\Annotation;
 
@@ -16,19 +19,13 @@ use function bovigo\assert\fail;
 use function bovigo\assert\predicate\equals;
 /**
  * Test for stubbles\reflect\annotation\Parser.
- *
- * @group  reflect
- * @group  annotation
- * @group  parser
  */
+#[Group('reflect')]
+#[Group('annotation')]
+#[Group('parser')]
 class ParserTest extends TestCase
 {
-    /**
-     * instance to test
-     *
-     * @var  \stubbles\reflect\annotation\parser\Parser
-     */
-    private $parser;
+    private Parser $parser;
 
     protected function setUp(): void
     {
@@ -36,9 +33,8 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @param   string               $name
      * @param   array<string,mixed>  $values
-     * @return  \stubbles\reflect\annotation\Annotation[]
+     * @return  Annotation[]
      */
     private function expectedClassAnnotation(string $name, array $values = [], string $type = null): array
     {
@@ -46,7 +42,7 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @return  \stubbles\reflect\annotation\Annotation[]
+     * @return  Annotation[]
      */
     private function parseMyTestClassAnnotation(string $type): array
     {
@@ -59,9 +55,7 @@ class ParserTest extends TestCase
         return $this->parser->parse($docComment, MyTestClass::class)[MyTestClass::class]->named($type);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithoutValues(): void
     {
         assertThat(
@@ -70,9 +64,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithoutValuesButParentheses(): void
     {
         assertThat(
@@ -81,9 +73,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCastedAnnotation(): void
     {
         assertThat(
@@ -92,9 +82,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithSingleValue(): void
     {
         assertThat(
@@ -103,9 +91,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithValues(): void
     {
         assertThat(
@@ -117,9 +103,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithValueContainingSignalCharacters(): void
     {
         assertThat(
@@ -131,9 +115,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithConstantAsValue(): void
     {
         assertThat(
@@ -145,9 +127,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithStringContainingEscapedCharacters(): void
     {
         assertThat(
@@ -159,9 +139,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationSpanningMultipleLine(): void
     {
         assertThat(
@@ -173,9 +151,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesAnnotationWithClassAsValue(): void
     {
         assertThat(
@@ -187,9 +163,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function tabsAreNoProblemForParsing(): void
     {
         $comment = "/**\n\t * This is a test class that has many annotations.\n\t *\n\t * @Foo\n\t */";
@@ -203,10 +177,8 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @param   string               $name
      * @param   array<string,mixed>  $values
-     * @param   string               $type
-     * @return  \stubbles\reflect\annotation\Annotation[]
+     * @return  Annotation[]
      */
     private function expectedParameterAnnotation(string $name, array $values = [], string $type = null): array
     {
@@ -214,8 +186,7 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @param   string  $type
-     * @return  \stubbles\reflect\annotation\Annotation[]
+     * @return  Annotation[]
      */
     private function parseMyTestClass2Annotation(string $type): array
     {
@@ -231,9 +202,7 @@ class ParserTest extends TestCase
         )[MyTestClass2::class . '::foo()#bar']->named($type);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesArgumentAnnotationFromMethodDocComment(): void
     {
         assertThat(
@@ -242,9 +211,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesArgumentAnnotationWithValuesFromMethodDocComment(): void
     {
         assertThat(
@@ -256,9 +223,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCastedArgumentAnnotationFromMethodDocComment(): void
     {
         assertThat(
@@ -271,9 +236,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCastedArgumentAnnotationWithValuesFromMethodDocComment(): void
     {
         assertThat(
@@ -286,9 +249,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCastedArgumentAnnotationDifferentOrderFromMethodDocComment(): void
     {
         assertThat(
@@ -301,9 +262,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parsesCastedArgumentAnnotationDifferentOrderWithValuesFromMethodDocComment(): void
     {
         assertThat(
@@ -316,9 +275,7 @@ class ParserTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function parseIncompleteDocblockThrowsReflectionException(): void
     {
         expect(function() {
@@ -332,9 +289,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function missingEqualSignThrowsReflectionException(): void
     {
         expect(function() {
@@ -354,9 +311,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function paramNameStartingWithEqualSignThrowsReflectionException(): void
     {
         expect(function() {
@@ -375,9 +332,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function paramNameWithInvalidCharacterThrowsReflectionException(): void
     {
         expect(function() {
@@ -398,9 +355,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function moreThanOneSingleValueThrowsReflectionException(): void
     {
         expect(function() {
@@ -418,9 +375,7 @@ class ParserTest extends TestCase
                 );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function registerSingleAnnotationAfterParamValueThrowsReflectionException(): void
     {
         expect(function() {
@@ -439,9 +394,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.5.1
      */
+    #[Test]
     public function stringWithDoubleQuotesInsideSingleQuotes(): void
     {
         $annotations = $this->parser->parse('/**
@@ -457,9 +412,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function canNotUseEmptyParameterNamesInParamAnnotation(): void
     {
         expect(function() {
@@ -475,9 +430,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function canNotUseInvalidParameterNamesInParamAnnotation(): void
     {
         expect(function() {
@@ -496,9 +451,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function canNotUseEmptyAnnotationType(): void
     {
         expect(function() {
@@ -514,9 +469,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function canNotUseInvalidAnnotationType(): void
     {
         expect(function() {
@@ -536,9 +491,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function annotationSignWithoutNameThrowsReflectionException(): void
     {
         expect(function() {
@@ -554,9 +509,9 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function annotationNameWithInvalidCharactersThrowsReflectionException(): void
     {
         expect(function() {
@@ -576,10 +531,10 @@ class ParserTest extends TestCase
     }
 
     /**
-     * @test
-     * @group  multiline
      * @since  8.0.2
      */
+    #[Test]
+    #[Group('multiline')]
     public function canParseMultilineIndentedAnnotation(): void
     {
         $annotations = $this->parser->parse("/**

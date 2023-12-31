@@ -7,6 +7,10 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\reflect\annotation;
+
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
     assertThat,
@@ -18,11 +22,10 @@ use function bovigo\assert\{
 };
 /**
  * Test for stubbles\reflect\annotation\Annotation.
- *
- * @group  reflect
- * @group  annotation
- * @group  bug252
  */
+#[Group('reflect')]
+#[Group('annotation')]
+#[Group('bug252')]
 class AnnotationTest extends TestCase
 {
     const TEST_CONSTANT = 'baz';
@@ -37,17 +40,15 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
      * @since  4.0.0
      */
+    #[Test]
     public function returnsGivenTargetName(): void
     {
         assertThat($this->createAnnotation()->target(), equals('someFunction()'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function callUndefinedMethodThrowsReflectionException(): void
     {
         expect(function() { $this->createAnnotation()->invalid(); })
@@ -55,18 +56,12 @@ class AnnotationTest extends TestCase
             ->withMessage('The value with name "invalid" for annotation @Example[Life] at someFunction() does not exist');
     }
 
-    /**
-     * @param   string  $value
-     * @return  \stubbles\reflect\annotation\Annotation
-     */
-    private function createSingleValueAnnotation($value): Annotation
+    private function createSingleValueAnnotation(string $value): Annotation
     {
         return $this->createAnnotation(['__value' => $value]);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSpecialValueForAllMethodCallsWithGet(): void
     {
         $annotation = $this->createSingleValueAnnotation('bar');
@@ -74,9 +69,7 @@ class AnnotationTest extends TestCase
         assertThat($annotation->getOther(), equals('bar'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsSpecialValueForAllMethodCallsWithIs(): void
     {
         $annotation = $this->createSingleValueAnnotation('true');
@@ -84,9 +77,7 @@ class AnnotationTest extends TestCase
         assertTrue($annotation->isOther());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function throwsReflectionExceptionForMethodCallsWithoutGetOrIsOnSpecialValue(): void
     {
         expect(function() {
@@ -98,20 +89,20 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
-     * @group  value_by_name
      * @since  1.7.0
      */
+    #[Test]
+    #[Group('value_by_name')]
     public function returnsFalseOnCheckForUnsetProperty(): void
     {
         assertFalse($this->createAnnotation()->hasValueByName('foo'));
     }
 
     /**
-     * @test
-     * @group  value_by_name
      * @since  1.7.0
      */
+    #[Test]
+    #[Group('value_by_name')]
     public function returnsTrueOnCheckForSetProperty(): void
     {
         assertTrue(
@@ -121,20 +112,20 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
-     * @group  value_by_name
      * @since  1.7.0
      */
+    #[Test]
+    #[Group('value_by_name')]
     public function returnsNullForUnsetProperty(): void
     {
         assertNull($this->createAnnotation()->getValueByName('foo'));
     }
 
     /**
-     * @test
-     * @group  value_by_name
      * @since  5.0.0
      */
+    #[Test]
+    #[Group('value_by_name')]
     public function returnsDefaultForUnsetProperty(): void
     {
         assertThat(
@@ -144,10 +135,10 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
-     * @group  value_by_name
      * @since  1.7.0
      */
+    #[Test]
+    #[Group('value_by_name')]
     public function returnsValueForSetProperty(): void
     {
         assertThat(
@@ -156,25 +147,19 @@ class AnnotationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsNullForUnsetGetProperty(): void
     {
         assertNull($this->createAnnotation()->getFoo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsFalseForUnsetBooleanProperty(): void
     {
         assertFalse($this->createAnnotation()->isFoo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsValueOfGetProperty(): void
     {
         assertThat(
@@ -183,9 +168,7 @@ class AnnotationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsFirstArgumentIfGetPropertyNotSet(): void
     {
         assertThat(
@@ -202,59 +185,45 @@ class AnnotationTest extends TestCase
         return [['true'], ['yes'], ['on']];
     }
 
-    /**
-     * @test
-     * @dataProvider  booleanValues
-     */
+    #[Test]
+    #[DataProvider('booleanValues')]
     public function returnsValueOfBooleanProperty(string $bool): void
     {
         assertTrue($this->createAnnotation(['foo' => $bool])->isFoo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnTrueForValueCheckIfValueSet(): void
     {
         assertTrue($this->createSingleValueAnnotation('bar')->hasValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnFalseForValueCheckIfValueNotSet(): void
     {
         assertFalse($this->createAnnotation()->hasValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnFalseForValueCheckIfAnotherPropertySet(): void
     {
         assertFalse($this->createAnnotation(['foo' => 'bar'])->hasValue());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnTrueForPropertyCheckIfPropertySet(): void
     {
         $annotation = $this->createAnnotation(['foo' => 'bar']);
         assertTrue($annotation->hasFoo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnFalseForPropertyCheckIfPropertyNotSet(): void
     {
         assertFalse($this->createAnnotation()->hasFoo());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canAccessPropertyAsMethod(): void
     {
         assertThat(
@@ -263,9 +232,7 @@ class AnnotationTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canAccessBooleanPropertyAsMethod(): void
     {
         assertTrue($this->createAnnotation(['foo' => 'true'])->foo());
@@ -292,13 +259,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @param  mixed   $expected
-     * @param  string  $stringValue
-     * @test
-     * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypes($expected, string $stringValue): void
+    #[Test]
+    #[DataProvider('valueTypes')]
+    public function parsesValuesToTypes(mixed $expected, string $stringValue): void
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->foo(),
@@ -307,13 +272,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @param  mixed   $expected
-     * @param  string  $stringValue
-     * @test
-     * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithGet($expected, string $stringValue): void
+    #[Test]
+    #[DataProvider('valueTypes')]
+    public function parsesValuesToTypesWithGet(mixed $expected, string $stringValue): void
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->getFoo(),
@@ -322,13 +285,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @param  mixed   $expected
-     * @param  string  $stringValue
-     * @test
-     * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithGetValueByName($expected, string $stringValue): void
+    #[Test]
+    #[DataProvider('valueTypes')]
+    public function parsesValuesToTypesWithGetValueByName(mixed $expected, string $stringValue): void
     {
         assertThat(
                 $this->createAnnotation(['foo' => $stringValue])->getValueByName('foo'),
@@ -337,13 +298,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @param  mixed   $expected
-     * @param  string  $stringValue
-     * @test
-     * @dataProvider  valueTypes
      * @since  4.1.0
      */
-    public function parsesValuesToTypesWithSingleValue($expected, string $stringValue): void
+    #[Test]
+    #[DataProvider('valueTypes')]
+    public function parsesValuesToTypesWithSingleValue(mixed $expected, string $stringValue): void
     {
         assertThat(
                 $this->createSingleValueAnnotation($stringValue)->getValue(),
@@ -352,9 +311,9 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.0.0
      */
+    #[Test]
     public function canBeCastedToString(): void
     {
         assertThat(
@@ -364,9 +323,9 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function canBeCastedToStringWithSingleValue(): void
     {
         assertThat(
@@ -395,14 +354,11 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @param  mixed   $expected
-     * @param  string  $value
-     * @param  string  $type
-     * @test
-     * @dataProvider  parseList
      * @since  5.0.0
      */
-    public function parseReturnsValueCastedToRecognizedType($expected, string $value, string $type): void
+    #[Test]
+    #[DataProvider('parseList')]
+    public function parseReturnsValueCastedToRecognizedType(mixed $expected, string $value, string $type): void
     {
         assertThat(
                 $this->createAnnotation(['foo' => $value])->parse('foo')->$type(),
@@ -411,9 +367,9 @@ class AnnotationTest extends TestCase
     }
 
     /**
-     * @test
      * @since  8.0.0
      */
+    #[Test]
     public function parseReturnsNullWhenNoValueForRequestedNameExists(): void
     {
         assertNull(

@@ -8,6 +8,8 @@ declare(strict_types=1);
  */
 namespace stubbles\reflect\annotation;
 use org\bovigo\vfs\vfsStream;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 use function bovigo\assert\{
@@ -22,10 +24,9 @@ use function bovigo\assert\{
 };
 /**
  * Test for stubbles\reflect\annotation\AnnotationCache.
- *
- * @group  reflect
- * @group  annotation
  */
+#[Group('reflect')]
+#[Group('annotation')]
 class AnnotationCacheTest extends TestCase
 {
     protected function setUp(): void
@@ -40,18 +41,14 @@ class AnnotationCacheTest extends TestCase
         AnnotationCache::stop();
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function noAnnotationAddedDoesNotWriteCacheFile(): void
     {
         AnnotationCache::__shutdown();
         assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function addingAnnotationWritesCacheFile(): void
     {
         $annotations = new Annotations('someTarget');
@@ -60,9 +57,7 @@ class AnnotationCacheTest extends TestCase
         assertTrue(file_exists(vfsStream::url('root/annotations.cache')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function cacheFileContainsSerializedAnnotationData(): void
     {
         $annotations = new Annotations('someTarget');
@@ -80,9 +75,9 @@ class AnnotationCacheTest extends TestCase
 
     /**
      * @since  3.0.0
-     * @group  issue_58
-     * @test
      */
+    #[Test]
+    #[Group('issue_58')]
     public function stoppingAnnotationPersistenceDoesNotWriteCacheFileOnShutdown(): void
     {
         AnnotationCache::put(new Annotations('someTarget'));
@@ -91,9 +86,7 @@ class AnnotationCacheTest extends TestCase
         assertFalse(file_exists(vfsStream::url('root/annotations.cache')));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function retrieveAnnotationsForUncachedTargetReturnsEmptyAnnotations(): void
     {
         $annotations = iterator_to_array(AnnotationCache::get('DoesNotExist'));
@@ -102,9 +95,9 @@ class AnnotationCacheTest extends TestCase
 
     /**
      * @since  3.0.0
-     * @group  issue_58
-     * @test
      */
+    #[Test]
+    #[Group('issue_58')]
     public function startAnnotationCacheWithInvalidCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
@@ -118,9 +111,9 @@ class AnnotationCacheTest extends TestCase
 
     /**
      * @since  3.0.0
-     * @group  issue_58
-     * @test
      */
+    #[Test]
+    #[Group('issue_58')]
     public function startAnnotationCacheWithNonSerializedCacheDataThrowsRuntimeException(): void
     {
         expect(function() {
@@ -130,9 +123,9 @@ class AnnotationCacheTest extends TestCase
     }
 
     /**
-     * @test
      * @since  9.2.0
      */
+    #[Test]
     public function annotationDataFromCacheCanBeRetrieved(): void
     {
         $a  = new Annotations(__CLASS__);

@@ -7,6 +7,9 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 namespace stubbles\reflect\annotation;
+
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use function bovigo\assert\{
     assertThat,
@@ -21,18 +24,13 @@ use function bovigo\assert\{
 /**
  * Test for stubbles\reflect\annotation\Annotations.
  *
- * @group  reflect
- * @group  annotation
  * @since  5.0.0
  */
+#[Group('reflect')]
+#[Group('annotation')]
 class AnnotationsTest extends TestCase
 {
-    /**
-     * instance to test
-     *
-     * @var  \stubbles\reflect\annotation\Annotations
-     */
-    private $annotations;
+    private Annotations $annotations;
 
     protected function setUp(): void
     {
@@ -40,25 +38,21 @@ class AnnotationsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  9.2.0
      */
+    #[Test]
     public function annotationCountIs0ByDefault(): void
     {
         assertThat($this->annotations, isEmpty());
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function doNotContainNonAddedAnnotation(): void
     {
         assertFalse($this->annotations->contain('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsAddedAnnotation(): void
     {
         assertTrue(
@@ -67,17 +61,15 @@ class AnnotationsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  9.2.0
      */
+    #[Test]
     public function containsAddedAnnotationRaisesCountTo1(): void
     {
         assertThat($this->annotations->add(new Annotation('foo', __METHOD__))->count(), equals(1));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsMoreThanOneAnnotation(): void
     {
         assertTrue(
@@ -87,9 +79,7 @@ class AnnotationsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function containsMoreThanOneAnnotationRaisesCount(): void
     {
         assertThat(
@@ -101,9 +91,9 @@ class AnnotationsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function firstNamedReturnsFirstAddedAnnotationWithThisName(): void
     {
         $first = new Annotation('foo', __METHOD__);
@@ -116,26 +106,22 @@ class AnnotationsTest extends TestCase
     }
 
     /**
-     * @test
      * @since  5.3.0
      */
+    #[Test]
     public function firstNamedThrowsReflectionExceptionIfNoSuchAnnotationExists(): void
     {
         expect(function() { $this->annotations->firstNamed('foo'); })
             ->throws(\ReflectionException::class);
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsEmptyListIfNoneOfThisTypeAdded(): void
     {
         assertEmptyArray($this->annotations->named('foo'));
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsAllAnnotationsOfThisType(): void
     {
         assertThat(
@@ -147,9 +133,7 @@ class AnnotationsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function returnsAllAnnotations(): void
     {
         assertThat(
@@ -167,9 +151,7 @@ class AnnotationsTest extends TestCase
         );
     }
 
-    /**
-     * @test
-     */
+    #[Test]
     public function canIteratorOverAllAnnotations(): void
     {
         $this->annotations->add(new Annotation('foo', __METHOD__))
