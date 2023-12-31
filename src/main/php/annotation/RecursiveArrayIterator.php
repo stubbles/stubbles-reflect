@@ -21,8 +21,6 @@ class RecursiveArrayIterator extends \RecursiveArrayIterator
 {
     /**
      * checks whether the current index has any children
-     *
-     * @return  bool
      */
     public function hasChildren(): bool
     {

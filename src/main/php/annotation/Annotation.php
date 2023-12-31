@@ -14,29 +14,9 @@ use stubbles\values\Parse;
 class Annotation
 {
     /**
-     * name of annotation
-     *
-     * @var  string
-     */
-    private $name;
-    /**
-     * values of annotation
-     *
-     * @var  array<string,mixed>
-     */
-    private $values     = [];
-    /**
-     * target from which annotation was retrieved
-     *
-     * @var  string
-     */
-    private $target;
-    /**
      * original annotation type
-     *
-     * @var  string
      */
-    private $type;
+    private string $type;
 
     /**
      * constructor
@@ -47,14 +27,11 @@ class Annotation
      * @param  string               $type    optional  type of annotation in case $name reflects a casted type
      */
     public function __construct(
-            string $name,
-            string $target,
-            array $values = [],
+            private string $name,
+            private string $target,
+            private array $values = [],
             string $type = null
     ) {
-        $this->name   = $name;
-        $this->target = $target;
-        $this->values = $values;
         $this->type   = (null === $type) ? $name : $type;
     }
 
@@ -62,7 +39,6 @@ class Annotation
      * Returns the name under which the annotation is stored.
      *
      * @api
-     * @return  string
      */
     public function getAnnotationName(): string
     {
@@ -72,7 +48,6 @@ class Annotation
     /**
      * returns name of target where annotation is for, i.e. the class, method, function, property or parameter
      *
-     * @return  string
      * @since   4.0.0
      */
     public function target(): string
@@ -86,7 +61,6 @@ class Annotation
      * Contains always the real annotation type, as the annotation name in case
      * of casted annotations reflects the casted type.
      *
-     * @return  string
      * @since   5.0.0
      */
     public function type(): string
@@ -100,8 +74,6 @@ class Annotation
      * Returns null if a value with given name does not exist or is not set.
      *
      * @api
-     * @param   string  $name
-     * @return  bool
      * @since   1.7.0
      */
     public function hasValueByName(string $name): bool
@@ -120,7 +92,7 @@ class Annotation
      * @return  mixed
      * @since   1.7.0
      */
-    public function getValueByName(string $name, $default = null)
+    public function getValueByName(string $name, $default = null): mixed
     {
         if (isset($this->values[$name])) {
             return $this->parseType($this->values[$name]);
@@ -136,8 +108,6 @@ class Annotation
      * with given name does not exist or is not set.
      *
      * @api
-     * @param   string  $name
-     * @return  \stubbles\values\Parse
      * @since   5.0.0
      */
     public function parse(string $name): Parse
@@ -152,12 +122,10 @@ class Annotation
     /**
      * responds to a method call of an undefined method
      *
-     * @param   string               $name
      * @param   array<string,mixed>  $arguments
-     * @return  mixed
      * @throws  \ReflectionException
      */
-    public function  __call(string $name, array $arguments)
+    public function  __call(string $name, array $arguments): mixed
     {
         if (isset($this->values[$name])) {
             return $this->parseType($this->values[$name]);
@@ -189,11 +157,10 @@ class Annotation
      * returns first value in array or null if it does not exist
      *
      * @param   array<string,mixed>  $arguments
-     * @return  mixed
      */
-    protected function extractDefaultValue(array $arguments)
+    protected function extractDefaultValue(array $arguments): mixed
     {
-        if (count($arguments) === 0) {
+        if (empty($arguments)) {
             return null;
         }
 
@@ -202,12 +169,8 @@ class Annotation
 
     /**
      * returns property which is retrieved via get$PROPERTYNAME()
-     *
-     * @param   string  $propertyName
-     * @param   mixed   $defaultValue
-     * @return  mixed
      */
-    protected function getProperty(string $propertyName, $defaultValue)
+    protected function getProperty(string $propertyName, mixed $defaultValue): mixed
     {
         if (count($this->values) === 1 && isset($this->values['__value'])) {
             return $this->parseType($this->values['__value']);
@@ -222,11 +185,8 @@ class Annotation
 
     /**
      * parses value to correct type
-     *
-     * @param   string  $value
-     * @return  mixed
      */
-    private function parseType(string $value)
+    private function parseType(string $value): mixed
     {
         if ((substr($value, 0, 1) === '"' && substr($value, -1) === '"') || (substr($value, 0, 1) === "'" && substr($value, -1) === "'")) {
             return substr($value, 1, strlen($value) - 2);
@@ -237,9 +197,6 @@ class Annotation
 
     /**
      * returns boolean property which is retrieved via is$PROPERTYNAME()
-     *
-     * @param   string  $propertyName
-     * @return  bool
      */
     protected function getBooleanProperty(string $propertyName): bool
     {
@@ -256,9 +213,6 @@ class Annotation
 
     /**
      * checks if property which is checked via has$PROPERTYNAME() is set
-     *
-     * @param   string  $propertyName
-     * @return  bool
      */
     protected function hasProperty(string $propertyName): bool
     {
@@ -275,7 +229,6 @@ class Annotation
      * returns a string representation of the class
      *
      * @XmlIgnore
-     * @return  string
      */
     public function __toString(): string
     {

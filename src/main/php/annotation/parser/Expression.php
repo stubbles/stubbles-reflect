@@ -14,48 +14,21 @@ namespace stubbles\reflect\annotation\parser;
  */
 abstract class Expression
 {
-    /**
-     * @var  Expression
-     */
-    public static $DOCBLOCK;
+    public static Expression $DOCBLOCK;
     /**
      * map of characters which signal that this expressions ends and which expression follows
      *
      * @var  array<string,Expression>
      */
-    public $after = [];
-    /**
-     * @var  Expression
-     */
-    protected static $ANNOTATION;
-    /**
-     * @var  Expression
-     */
-    protected static $ANNOTATION_NAME;
-    /**
-     * @var  Expression
-     */
-    protected static $ANNOTATION_TYPE;
-    /**
-     * @var  Expression
-     */
-    protected static $PARAM_NAME;
-    /**
-     * @var  Expression
-     */
-    protected static $PARAM_VALUE;
-    /**
-     * @var  Expression
-     */
-    protected static $ARGUMENT;
-    /**
-     * @var  Expression
-     */
-    protected static $PARAM_VALUE_IN_SINGLE_QUOTES;
-    /**
-     * @var  Expression
-     */
-    protected static $PARAM_VALUE_IN_DOUBLE_QUOTES;
+    public array $after = [];
+    protected static Expression $ANNOTATION;
+    protected static Expression $ANNOTATION_NAME;
+    protected static Expression $ANNOTATION_TYPE;
+    protected static Expression $PARAM_NAME;
+    protected static Expression $PARAM_VALUE;
+    protected static Expression $ARGUMENT;
+    protected static Expression $PARAM_VALUE_IN_SINGLE_QUOTES;
+    protected static Expression $PARAM_VALUE_IN_DOUBLE_QUOTES;
 
     /**
      * static initializing

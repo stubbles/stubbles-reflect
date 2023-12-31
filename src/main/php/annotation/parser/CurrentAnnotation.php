@@ -17,56 +17,37 @@ class CurrentAnnotation
     const SINGLE_VALUE = '__value';
     /**
      * the name of the current annotation
-     *
-     * @var  string
      */
-    public $name;
+    public string $name = '';
     /**
      * actual type
-     *
-     * @var  string
      */
-    public $type;
+    public string $type = '';
     /**
      * map of parameters
      *
      * @var  array<string,string>
      */
-    public $params       = [];
+    public array $params       = [];
     /**
      * the name of the current annotation parameter
-     *
-     * @var  string
      */
-    public $currentParam = self::SINGLE_VALUE;
-    /**
-     * annotation target
-     *
-     * @var  string
-     */
-    public $target;
+    public string $currentParam = self::SINGLE_VALUE;
     /**
      * name of parameter when annotation is for function/method parameter
-     *
-     * @var  string
      */
-    public $targetParam;
+    public ?string $targetParam = null;
     /**
      * whether annotation must be ignored, i.e. because it's a phpdoc one
-     *
-     * @var  bool
      */
-    public $ignored      = false;
+    public bool $ignored      = false;
     /**
      * original target when parser detects its an annotation for a parameter
-     *
-     * @var  string
      */
-    private $originalTarget;
+    private string $originalTarget;
 
-    public function __construct(string $target)
+    public function __construct(public string $target)
     {
-        $this->target         = $target;
         $this->originalTarget = $target;
     }
 

@@ -19,7 +19,7 @@ class EnclosedParamValue extends Expression
      *
      * @var  array<string,Expression>
      */
-    public $after;
+    public array $after = [];
 
     public function init(string $quoteCharacter): void
     {

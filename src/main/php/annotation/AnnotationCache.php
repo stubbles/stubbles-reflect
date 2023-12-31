@@ -26,13 +26,11 @@ class AnnotationCache
      *
      * @var  array<string,\stubbles\reflect\annotation\Annotations>
      */
-    private static $unserialized = [];
+    private static array $unserialized = [];
     /**
      * flag whether cache contents changed
-     *
-     * @var  bool
      */
-    private static $cacheChanged = false;
+    private static bool $cacheChanged = false;
     /**
      * closure which stores the current annotation cache
      *
@@ -172,9 +170,6 @@ class AnnotationCache
 
     /**
      * check, whether annotations are available in the cache
-     *
-     * @param   string  $target  name of the target
-     * @return  bool
      */
     public static function has(string $target): bool
     {
@@ -183,9 +178,6 @@ class AnnotationCache
 
     /**
      * returns list of all annotations for given target
-     *
-     * @param   string  $target
-     * @return  \stubbles\reflect\annotation\Annotations
      */
     public static function get(string $target): Annotations
     {

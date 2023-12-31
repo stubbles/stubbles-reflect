@@ -19,7 +19,7 @@ class AnnotationName extends Expression
      *
      * @var  array<string,Expression>
      */
-    public $after;
+    public array $after = [];
 
     public function init(): void
     {
@@ -38,7 +38,7 @@ class AnnotationName extends Expression
      *
      * @var  array<string,int>
      */
-    private $forbiddenAnnotationNames = [
+    private array $forbiddenAnnotationNames = [
             'deprecated'     => 1,
             'example'        => 1,
             'ignore'         => 1,

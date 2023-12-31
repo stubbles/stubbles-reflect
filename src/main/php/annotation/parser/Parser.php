@@ -19,9 +19,7 @@ class Parser
     /**
      * parse a docblock and return all annotations found
      *
-     * @param   string  $docComment
-     * @param   string  $target
-     * @return  \stubbles\reflect\annotation\Annotations[]
+     * @return  Annotations[]
      * @throws  \ReflectionException
      */
     public function parse(string $docComment, string $target): array

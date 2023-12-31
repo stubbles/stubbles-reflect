@@ -21,13 +21,7 @@ class Annotations implements \IteratorAggregate, \Countable
      *
      * @var  array<string,Annotation[]>
      */
-    private $types       = [];
-    /**
-     * target for which annotations are for
-     *
-     * @var  string
-     */
-    private $target;
+    private array $types       = [];
 
     /**
      * parse a docblock and return all annotations found
@@ -47,21 +41,12 @@ class Annotations implements \IteratorAggregate, \Countable
         return $parser->parse($docComment, $target);
     }
 
-    /**
-     * constructor
-     *
-     * @param  string  $target
-     */
-    public function __construct($target)
-    {
-        $this->target = $target;
-    }
+    public function __construct(private string $target) { }
 
     /**
      * adds given annotation
      *
      * @internal  only to be called by the parser
-     * @param   \stubbles\reflect\annotation\Annotation  $annotation
      */
     public function add(Annotation $annotation): self
     {
@@ -76,8 +61,6 @@ class Annotations implements \IteratorAggregate, \Countable
 
     /**
      * target for which annotations are for
-     *
-     * @return  string
      */
     public function target(): string
     {
@@ -88,8 +71,6 @@ class Annotations implements \IteratorAggregate, \Countable
      * checks if at least one annotation of given type is present
      *
      * @api
-     * @param   string  $type
-     * @return  bool
      */
     public function contain(string $type): bool
     {
@@ -101,8 +82,6 @@ class Annotations implements \IteratorAggregate, \Countable
      *
      * If no such annotation exists a ReflectionException is thrown.
      *
-     * @param   string  $type
-     * @return  \stubbles\reflect\annotation\Annotation
      * @throws  \ReflectionException
      * @since   5.3.0
      */
@@ -119,7 +98,6 @@ class Annotations implements \IteratorAggregate, \Countable
      * returns a list of all annotations of this type
      *
      * @api
-     * @param   string  $type
      * @return  \stubbles\reflect\annotation\Annotation[]
      * @since   5.3.0
      */
@@ -160,7 +138,6 @@ class Annotations implements \IteratorAggregate, \Countable
     /**
      * returns amount of annotations
      *
-     * @return  int
      * @since   9.2.0
      */
     public function count(): int
