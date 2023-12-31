@@ -61,7 +61,8 @@ class AnnotationName extends Expression
             'uses'           => 1,
             'var'            => 1,
             'version'        => 1,
-            'api'            => 1
+            'api'            => 1,
+            'psalm-param'    => 1,
     ];
 
     /**
