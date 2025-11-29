@@ -111,7 +111,7 @@ namespace stubbles\reflect {
      */
     function annotationsOf(
         string|callable|object|array $reflected,
-        string $methodName = null
+        ?string $methodName = null
     ): Annotations {
         $reflector = ($reflected instanceof Reflector) ? $reflected : reflect($reflected, $methodName);
         $target    = _annotationTarget($reflector);
@@ -174,7 +174,7 @@ namespace stubbles\reflect {
     function annotationsOfParameter(
         string $name,
         $classOrFunction,
-        string $methodName = null
+        ?string $methodName = null
     ): Annotations {
         return annotationsOf(parameter($name, $classOrFunction, $methodName));
     }
@@ -264,7 +264,7 @@ namespace stubbles\reflect {
      */
     function methodsOf(
         string|object $class,
-        int $filter = null
+        ?int $filter = null
     ): Sequence {
         if (!($class instanceof ReflectionClass)) {
             $class = reflect($class);
@@ -279,7 +279,7 @@ namespace stubbles\reflect {
         return Sequence::of(
             null === $filter ? $class->getMethods() : $class->getMethods($filter)
         )->mapKeys(
-            function($key, ReflectionMethod $method = null)
+            function($key, ?ReflectionMethod $method = null)
             {
                 if (null === $method) { return $key; }
                 return $method->getName();
@@ -299,7 +299,7 @@ namespace stubbles\reflect {
      */
     function propertiesOf(
         string|object $class,
-        int $filter = null
+        ?int $filter = null
     ): Sequence {
         if (!($class instanceof ReflectionClass)) {
             $class = reflect($class);
@@ -328,7 +328,7 @@ namespace stubbles\reflect {
      */
     function parametersOf(
         string|object|callable $classOrFunction,
-        string $methodName = null
+        ?string $methodName = null
     ): Sequence {
         if (!$classOrFunction instanceof ReflectionFunctionAbstract) {
             $function = reflect($classOrFunction, $methodName);
@@ -369,7 +369,7 @@ namespace stubbles\reflect {
      * @return ReflectionParameter
      * @since  5.3.0
      */
-    function parameter(string $name, $classOrFunction, string $methodName = null): ReflectionParameter
+    function parameter(string $name, $classOrFunction, ?string $methodName = null): ReflectionParameter
     {
         return parametersOf($classOrFunction, $methodName)
             ->filter(fn(ReflectionParameter $parameter) => $parameter->getName() === $name)

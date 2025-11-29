@@ -36,7 +36,7 @@ class ParserTest extends TestCase
      * @param   array<string,mixed>  $values
      * @return  Annotation[]
      */
-    private function expectedClassAnnotation(string $name, array $values = [], string $type = null): array
+    private function expectedClassAnnotation(string $name, array $values = [], ?string $type = null): array
     {
         return [new Annotation($name, MyTestClass::class, $values, $type)];
     }
@@ -180,7 +180,7 @@ class ParserTest extends TestCase
      * @param   array<string,mixed>  $values
      * @return  Annotation[]
      */
-    private function expectedParameterAnnotation(string $name, array $values = [], string $type = null): array
+    private function expectedParameterAnnotation(string $name, array $values = [], ?string $type = null): array
     {
         return [new Annotation($name, MyTestClass2::class . '::foo()#bar', $values, $type)];
     }

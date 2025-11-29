@@ -30,7 +30,7 @@ class Annotation
             private string $name,
             private string $target,
             private array $values = [],
-            string $type = null
+            ?string $type = null
     ) {
         $this->type   = (null === $type) ? $name : $type;
     }
