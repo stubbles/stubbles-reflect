@@ -4,14 +4,14 @@
     "license": "BSD-3-Clause",
     "description": "Reflection helper functions and annotations.",
     "require": {
-        "php": "^8.2",
-        "stubbles/sequence": "^10.1",
-        "stubbles/values": "^11.0"
+        "php": "^8.3",
+        "stubbles/sequence": "^11.0",
+        "stubbles/values": "^12.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5",
-        "mikey179/vfsstream": "^1.6.11",
-        "bovigo/assert": "^8.0"
+        "phpunit/phpunit": "^12.4",
+        "mikey179/vfsstream": "^1.6.12",
+        "bovigo/assert": "^8.1"
     },
     "autoload": {
         "psr-4": {
