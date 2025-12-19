@@ -33,6 +33,11 @@ use function bovigo\assert\{
     predicate\isGreaterThan,
     predicate\isInstanceOf
 };
+use stubbles\reflect\test\helper\{
+    ClassWithConstructor,
+    ClassWithoutConstructor,
+    SomethingToReflect
+};
 /**
  * Tests for stubbles\reflect\*().
  *
@@ -74,7 +79,7 @@ class FunctionsTest extends TestCase
     ): void {
         expect(fn() => annotationsOfConstructor($toReflect))
             ->throws(\ReflectionException::class)
-            ->withMessage('Method stubbles\reflect\ClassWithoutConstructor::__construct() does not exist');
+            ->withMessage('Method stubbles\reflect\test\helper\ClassWithoutConstructor::__construct() does not exist');
     }
 
     #[Test]

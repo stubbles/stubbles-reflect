@@ -6,11 +6,11 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace stubbles\reflect;
+namespace stubbles\reflect\test\helper;
 /**
- * Helper interface for the test.
+ * Helper class for the test.
  */
-interface SomethingToReflect
+class ClassWithoutConstructor
 {
-    function something(string $foo): void;
+    // intentionally empty
 }
