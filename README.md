@@ -113,8 +113,47 @@ Returns parameter with given name from referenced function or method.
 Shortcut for `parameter($name, $class, '__construct')`.
 
 
+### `attributesOf($reflected, $methodName = null): Attributes`
+
+_Available since release 11.1.0_
+
+To get a list of all attributes of an attributable element call the
+`stubbles\reflect\attributesOf()` function. It returns an instance of
+`stubbles\reflect\Attributes` and supports the following invocations:
+
+```php
+attributesOf('my\ExampleClass', 'aMethod'); // returns annotations of this method
+attributesOf($exampleInstance, 'aMethod'); // returns annotations of this method
+attributesOf('my\ExampleClass'); // returns annotations of this class
+attributesOf($exampleInstance); // returns annotations of this class
+attributesOf('my\examplefunction'); // returns annotations of this function
+attributesOf($reflectionParameter); // returns annotations of this parameter
+attributesOf($reflectionProperty); // returns annotations of this class property
+```
+
+The return value is an instance of `stubbles\reflect\Attributes`, which provides access to the attributes on the reflectable:
+
+#### `contains(string $type): bool`
+
+Returns true when the reflected has an attribute of the given type, and false when not.
+
+#### `firstNamed(string $type): object`
+
+Returns the first attribute instance of the given type on the reflected.
+
+#### `named(string $type): object[]`
+
+Returns a list containing all attributes of the given type on the reflected.
+
+#### `isEmpty(): bool`
+
+Returns true when the reflected doesn't have any attributes at all, false otherwise.
+
+
 Annotations
 -----------
+
+_Deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead._
 
 For details about the concept behind annotations see
 [annotations](http://en.wikipedia.org/wiki/Annotations) which contains a general

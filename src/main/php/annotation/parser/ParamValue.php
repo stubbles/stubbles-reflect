@@ -11,6 +11,7 @@ namespace stubbles\reflect\annotation\parser;
  * Parser is inside an annotation param value.
  *
  * @internal
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class ParamValue extends Expression
 {

@@ -101,6 +101,23 @@ namespace stubbles\reflect {
     }
 
     /**
+     * provides access to attributes of something that can be reflected
+     *
+     * @template T of object
+     * @param  Reflector|class-string<T>|T|callable $reflected   class name, function name of or object instance to reflect
+     * @param  string                               $methodName  optional  method to reflect when first parameter refers to a class
+     * @return Attributes
+     * @since  11.1.0
+     */
+    function attributesOf(
+        string|callable|object|array $reflected,
+        ?string $methodName = null
+    ): Attributes {
+        $reflector = ($reflected instanceof Reflector) ? $reflected : reflect($reflected, $methodName);
+        return Attributes::createFrom($reflector, _annotationTarget($reflector));
+    }
+
+    /**
      * returns annotations for given reflected
      *
      * @template T of object
@@ -108,6 +125,7 @@ namespace stubbles\reflect {
      * @param  string                               $methodName  optional  method to reflect when first parameter refers to a class
      * @return Annotations
      * @since  5.3.0
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function annotationsOf(
         string|callable|object|array $reflected,
@@ -144,6 +162,7 @@ namespace stubbles\reflect {
      * @return Annotations
      * @throws ReflectionException  when class doesn't have a constructor
      * @since  5.3.0
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function annotationsOfConstructor(string|object $reflected): Annotations
     {
@@ -170,6 +189,7 @@ namespace stubbles\reflect {
      * @param  string                                                  $methodName       optional  in case first param references a class
      * @return Annotations
      * @since  5.3.0
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function annotationsOfParameter(
         string $name,
@@ -187,6 +207,7 @@ namespace stubbles\reflect {
      * @param  class-string<T>|T|ReflectionClass  $class something that references a class
      * @return Annotations
      * @since  5.3.0
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function annotationsOfConstructorParameter(string $name, $class): Annotations
     {
@@ -427,6 +448,7 @@ namespace stubbles\reflect\annotation {
      * @param callable(array<string,string>): void  $storeCache
      * @since 3.1.0
      * @api
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function persistAnnotations(callable $readCache, callable $storeCache): void
     {
@@ -439,6 +461,7 @@ namespace stubbles\reflect\annotation {
      * @param string  $cacheFile
      * @since 3.1.0
      * @api
+     * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
      */
     function persistAnnotationsInFile($cacheFile): void
     {

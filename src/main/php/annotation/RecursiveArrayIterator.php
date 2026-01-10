@@ -16,6 +16,7 @@ namespace stubbles\reflect\annotation;
  *
  * @internal
  * @since  5.0.0
+ * @deprecated since 11.1.0, will be removed with 12.0.0
  */
 class RecursiveArrayIterator extends \RecursiveArrayIterator
 {

@@ -1,5 +1,16 @@
 # Changelog
 
+## 11.1.0 (2026-??-??)
+
+* added `stubbles\reflect\attributesOf()`
+* @deprecated support for annotations, will be removed with 12.0.0, use attributes instead. With this, the following functions are deprecated and will be removed with 12.0.0:
+  * `stubbles\reflect\annotationsOf()`
+  * `stubbles\reflect\annotationsOfConstructor()`
+  * `stubbles\reflect\annotationsOfParameter()`
+  * `stubbles\reflect\annotationsOfConstructorParameter()`
+  * `stubbles\reflect\annotations\persistAnnotations()`
+  * `stubbles\reflect\annotations\persistAnnotationsInFile()`
+
 ## 11.0.0 (2025-11-29)
 
 ### BC breaks

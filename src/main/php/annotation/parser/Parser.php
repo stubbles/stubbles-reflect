@@ -13,6 +13,7 @@ use stubbles\reflect\annotation\Annotations;
  * Parser to parse annotations from doc comments.
  *
  * @internal
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class Parser
 {

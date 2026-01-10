@@ -10,6 +10,7 @@ namespace stubbles\reflect\annotation\parser;
  * Parser is in docblock, but not in any annotation.
  *
  * @internal
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class Docblock extends Expression
 {

@@ -6,14 +6,15 @@ declare(strict_types=1);
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace stubbles\reflect\annotation\parser;
+namespace stubbles\reflect\test\helper;
+
+use Attribute;
+
 /**
- * The current token.
- *
- * @internal
- * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
+ * @since 11.1.0
  */
-class Token
+#[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
+class AnotherClassAttribute
 {
-    public string $value = '';
+    // intentionally empty
 }

@@ -11,6 +11,7 @@ namespace stubbles\reflect\annotation\parser;
  * Parser is inside the annotation argument.
  *
  * @internal
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class AnnotationForArgument extends Expression
 {

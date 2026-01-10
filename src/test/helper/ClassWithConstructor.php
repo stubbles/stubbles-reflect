@@ -10,6 +10,9 @@ namespace stubbles\reflect\test\helper;
 /**
  * Helper class for the test.
  */
+#[SomeClassAttribute(303)]
+#[SomeClassAttribute(404)]
+#[AnotherClassAttribute]
 class ClassWithConstructor
 {
     /** @var  int */

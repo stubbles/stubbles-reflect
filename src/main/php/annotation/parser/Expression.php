@@ -11,6 +11,7 @@ namespace stubbles\reflect\annotation\parser;
  * Represents an expression that can be encountered during parsing.
  *
  * @internal
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 abstract class Expression
 {

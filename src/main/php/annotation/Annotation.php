@@ -10,6 +10,8 @@ namespace stubbles\reflect\annotation;
 use stubbles\values\Parse;
 /**
  * Represents an annotation on the code.
+ *
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class Annotation
 {

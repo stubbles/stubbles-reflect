@@ -12,6 +12,7 @@ namespace stubbles\reflect\annotation;
  *
  * @internal
  * @static
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class AnnotationCache
 {

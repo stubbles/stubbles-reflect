@@ -13,6 +13,7 @@ use stubbles\reflect\annotation\parser\Parser;
  *
  * @since  5.0.0
  * @implements \IteratorAggregate<Annotation>
+ * @deprecated since 11.1.0, will be removed with 12.0.0, use attributes instead
  */
 class Annotations implements \IteratorAggregate, \Countable
 {
